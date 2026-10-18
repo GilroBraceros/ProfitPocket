@@ -1,0 +1,379 @@
+﻿{
+    "profileSaveAndFreshLogin":  true,
+    "dirtyGuard":  true,
+    "feedbackReview":  true,
+    "keyboardMenus":  true,
+    "ticketReplyHistory":  true,
+    "duplicateClickBlocked":  true,
+    "escapedOutput":  true,
+    "filtersPreserved":  true,
+    "formLayouts":  [
+                        {
+                            "width":  1440,
+                            "action":  "ticket_update"
+                        },
+                        {
+                            "width":  768,
+                            "action":  "ticket_update"
+                        },
+                        {
+                            "width":  320,
+                            "action":  "ticket_update"
+                        },
+                        {
+                            "width":  1440,
+                            "action":  "ticket_view"
+                        },
+                        {
+                            "width":  768,
+                            "action":  "ticket_view"
+                        },
+                        {
+                            "width":  320,
+                            "action":  "ticket_view"
+                        },
+                        {
+                            "width":  1440,
+                            "action":  "user_view"
+                        },
+                        {
+                            "width":  768,
+                            "action":  "user_view"
+                        },
+                        {
+                            "width":  320,
+                            "action":  "user_view"
+                        },
+                        {
+                            "width":  1440,
+                            "action":  "business_view"
+                        },
+                        {
+                            "width":  768,
+                            "action":  "business_view"
+                        },
+                        {
+                            "width":  320,
+                            "action":  "business_view"
+                        },
+                        {
+                            "width":  1440,
+                            "action":  "suspend"
+                        },
+                        {
+                            "width":  768,
+                            "action":  "suspend"
+                        },
+                        {
+                            "width":  320,
+                            "action":  "suspend"
+                        },
+                        {
+                            "width":  1440,
+                            "action":  "feedback_update"
+                        },
+                        {
+                            "width":  768,
+                            "action":  "feedback_update"
+                        },
+                        {
+                            "width":  320,
+                            "action":  "feedback_update"
+                        },
+                        {
+                            "width":  1440,
+                            "action":  "announcement_create"
+                        },
+                        {
+                            "width":  768,
+                            "action":  "announcement_create"
+                        },
+                        {
+                            "width":  320,
+                            "action":  "announcement_create"
+                        },
+                        {
+                            "width":  1440,
+                            "action":  "profile"
+                        },
+                        {
+                            "width":  768,
+                            "action":  "profile"
+                        },
+                        {
+                            "width":  320,
+                            "action":  "profile"
+                        },
+                        {
+                            "width":  1440,
+                            "action":  "role"
+                        },
+                        {
+                            "width":  768,
+                            "action":  "role"
+                        },
+                        {
+                            "width":  320,
+                            "action":  "role"
+                        },
+                        {
+                            "width":  1440,
+                            "action":  "setting"
+                        },
+                        {
+                            "width":  768,
+                            "action":  "setting"
+                        },
+                        {
+                            "width":  320,
+                            "action":  "setting"
+                        }
+                    ],
+    "layouts":  [
+                    {
+                        "module":  "dashboard",
+                        "pageWidth":  1425,
+                        "width":  1440,
+                        "clientWidth":  1425
+                    },
+                    {
+                        "module":  "dashboard",
+                        "pageWidth":  1009,
+                        "width":  1024,
+                        "clientWidth":  1009
+                    },
+                    {
+                        "module":  "dashboard",
+                        "pageWidth":  753,
+                        "width":  768,
+                        "clientWidth":  753
+                    },
+                    {
+                        "module":  "dashboard",
+                        "pageWidth":  375,
+                        "width":  390,
+                        "clientWidth":  375
+                    },
+                    {
+                        "module":  "dashboard",
+                        "pageWidth":  305,
+                        "width":  320,
+                        "clientWidth":  305
+                    },
+                    {
+                        "module":  "users",
+                        "pageWidth":  1440,
+                        "width":  1440,
+                        "clientWidth":  1440
+                    },
+                    {
+                        "module":  "users",
+                        "pageWidth":  1024,
+                        "width":  1024,
+                        "clientWidth":  1024
+                    },
+                    {
+                        "module":  "users",
+                        "pageWidth":  768,
+                        "width":  768,
+                        "clientWidth":  768
+                    },
+                    {
+                        "module":  "users",
+                        "pageWidth":  375,
+                        "width":  390,
+                        "clientWidth":  375
+                    },
+                    {
+                        "module":  "users",
+                        "pageWidth":  305,
+                        "width":  320,
+                        "clientWidth":  305
+                    },
+                    {
+                        "module":  "businesses",
+                        "pageWidth":  1440,
+                        "width":  1440,
+                        "clientWidth":  1440
+                    },
+                    {
+                        "module":  "businesses",
+                        "pageWidth":  1024,
+                        "width":  1024,
+                        "clientWidth":  1024
+                    },
+                    {
+                        "module":  "businesses",
+                        "pageWidth":  768,
+                        "width":  768,
+                        "clientWidth":  768
+                    },
+                    {
+                        "module":  "businesses",
+                        "pageWidth":  375,
+                        "width":  390,
+                        "clientWidth":  375
+                    },
+                    {
+                        "module":  "businesses",
+                        "pageWidth":  305,
+                        "width":  320,
+                        "clientWidth":  305
+                    },
+                    {
+                        "module":  "tickets",
+                        "pageWidth":  1440,
+                        "width":  1440,
+                        "clientWidth":  1440
+                    },
+                    {
+                        "module":  "tickets",
+                        "pageWidth":  1024,
+                        "width":  1024,
+                        "clientWidth":  1024
+                    },
+                    {
+                        "module":  "tickets",
+                        "pageWidth":  768,
+                        "width":  768,
+                        "clientWidth":  768
+                    },
+                    {
+                        "module":  "tickets",
+                        "pageWidth":  375,
+                        "width":  390,
+                        "clientWidth":  375
+                    },
+                    {
+                        "module":  "tickets",
+                        "pageWidth":  305,
+                        "width":  320,
+                        "clientWidth":  305
+                    },
+                    {
+                        "module":  "feedback",
+                        "pageWidth":  1440,
+                        "width":  1440,
+                        "clientWidth":  1440
+                    },
+                    {
+                        "module":  "feedback",
+                        "pageWidth":  1024,
+                        "width":  1024,
+                        "clientWidth":  1024
+                    },
+                    {
+                        "module":  "feedback",
+                        "pageWidth":  768,
+                        "width":  768,
+                        "clientWidth":  768
+                    },
+                    {
+                        "module":  "feedback",
+                        "pageWidth":  375,
+                        "width":  390,
+                        "clientWidth":  375
+                    },
+                    {
+                        "module":  "feedback",
+                        "pageWidth":  305,
+                        "width":  320,
+                        "clientWidth":  305
+                    },
+                    {
+                        "module":  "announcements",
+                        "pageWidth":  1440,
+                        "width":  1440,
+                        "clientWidth":  1440
+                    },
+                    {
+                        "module":  "announcements",
+                        "pageWidth":  1024,
+                        "width":  1024,
+                        "clientWidth":  1024
+                    },
+                    {
+                        "module":  "announcements",
+                        "pageWidth":  768,
+                        "width":  768,
+                        "clientWidth":  768
+                    },
+                    {
+                        "module":  "announcements",
+                        "pageWidth":  390,
+                        "width":  390,
+                        "clientWidth":  390
+                    },
+                    {
+                        "module":  "announcements",
+                        "pageWidth":  320,
+                        "width":  320,
+                        "clientWidth":  320
+                    },
+                    {
+                        "module":  "logs",
+                        "pageWidth":  1440,
+                        "width":  1440,
+                        "clientWidth":  1440
+                    },
+                    {
+                        "module":  "logs",
+                        "pageWidth":  1009,
+                        "width":  1024,
+                        "clientWidth":  1009
+                    },
+                    {
+                        "module":  "logs",
+                        "pageWidth":  753,
+                        "width":  768,
+                        "clientWidth":  753
+                    },
+                    {
+                        "module":  "logs",
+                        "pageWidth":  375,
+                        "width":  390,
+                        "clientWidth":  375
+                    },
+                    {
+                        "module":  "logs",
+                        "pageWidth":  305,
+                        "width":  320,
+                        "clientWidth":  305
+                    },
+                    {
+                        "module":  "settings",
+                        "pageWidth":  1425,
+                        "width":  1440,
+                        "clientWidth":  1425
+                    },
+                    {
+                        "module":  "settings",
+                        "pageWidth":  1009,
+                        "width":  1024,
+                        "clientWidth":  1009
+                    },
+                    {
+                        "module":  "settings",
+                        "pageWidth":  753,
+                        "width":  768,
+                        "clientWidth":  753
+                    },
+                    {
+                        "module":  "settings",
+                        "pageWidth":  375,
+                        "width":  390,
+                        "clientWidth":  375
+                    },
+                    {
+                        "module":  "settings",
+                        "pageWidth":  305,
+                        "width":  320,
+                        "clientWidth":  305
+                    }
+                ],
+    "mobileNavigation":  true,
+    "accountStatus":  true,
+    "settingsNavigation":  true,
+    "announcementCrud":  true,
+    "javascriptErrors":  0
+}

@@ -1,0 +1,337 @@
+'use strict';
+
+// Search only the current business's server-rendered options; no new library.
+const filterOptions = (input, select) => {
+    const query = input.value.toLocaleLowerCase().trim();
+    [...select.options].forEach((option) => {
+        option.hidden = option.value !== '' && !option.selected && !option.textContent.toLocaleLowerCase().includes(query);
+    });
+};
+function initializeSaleForm(root = document) {
+initializePaymentMethods(root);
+root.querySelectorAll('[data-filter-select]').forEach((input) => {
+    input.addEventListener('input', () => filterOptions(input, document.getElementById(input.dataset.filterSelect)));
+});
+
+const entryForm = root.querySelector('#sale-entry-form');
+if (entryForm && !entryForm.dataset.initialized) {
+    entryForm.dataset.initialized = 'true';
+    const items = document.getElementById('sale-items');
+    const addButton = document.getElementById('add-sale-item');
+    const mode = document.getElementById('save_mode');
+    const plan = document.getElementById('payment_plan');
+    const paidInput = document.getElementById('initial_payment');
+    const discountType = document.getElementById('discount_type');
+    const discountInput = document.getElementById('discount_value');
+    const errorMessage = document.getElementById('sale-preview-error');
+    const decimal = (value, scale) => {
+        if (!new RegExp(`^[0-9]+(?:\\.[0-9]{1,${scale}})?$`).test(value)) return null;
+        const [whole, fraction = ''] = value.split('.');
+        return BigInt(whole) * (10n ** BigInt(scale)) + BigInt(fraction.padEnd(scale, '0'));
+    };
+    const plain = (cents) => `${cents / 100n}.${String(cents % 100n).padStart(2, '0')}`;
+    const pesos = (cents) => {
+        const negative = cents < 0n;
+        const absolute = negative ? -cents : cents;
+        return `${negative ? '−' : ''}₱${(absolute / 100n).toLocaleString('en-PH')}.${String(absolute % 100n).padStart(2, '0')}`;
+    };
+    const reindex = () => {
+        const rows = [...items.querySelectorAll('.sale-item-row')];
+        rows.forEach((row, index) => {
+            row.querySelectorAll('[data-field]').forEach((input) => { input.name = `items[${index}][${input.dataset.field}]`; });
+            row.querySelector('[data-remove-item]').disabled = rows.length === 1;
+        });
+        addButton.disabled = rows.length >= 50 || !document.getElementById('sale-item-template').content.querySelector('option[value]:not([value=""])');
+    };
+    const recalculate = () => {
+        if (entryForm.getAttribute('aria-busy') === 'true') return true;
+        let subtotal = 0n;
+        let complete = items.children.length > 0;
+        let warning = '';
+        items.querySelectorAll('.sale-item-row').forEach((row) => {
+            const product = row.querySelector('[data-field=product_id]');
+            const option = product.selectedOptions[0];
+            const quantity = decimal(row.querySelector('[data-field=quantity]').value, 3);
+            const price = decimal(row.querySelector('[data-field=unit_price]').value, 2);
+            const cost = row.dataset.snapshotCost && row.dataset.originalProduct === product.value ? row.dataset.snapshotCost : (option?.dataset.cost || '0.00');
+            row.querySelector('[data-unit-cost]').textContent = pesos(decimal(cost, 2) || 0n);
+            if (!product.value || quantity === null || quantity <= 0n || price === null) {
+                complete = false;
+                row.querySelector('[data-line-total]').textContent = '—';
+                return;
+            }
+            const line = (quantity * price + 500n) / 1000n;
+            subtotal += line;
+            row.querySelector('[data-line-total]').textContent = pesos(line);
+        });
+        discountInput.readOnly = discountType.value === 'none';
+        if (discountType.value === 'none') discountInput.value = '0.00';
+        discountInput.max = discountType.value === 'percent' ? '100' : plain(subtotal);
+        const discount = decimal(discountInput.value, 2);
+        let total = subtotal;
+        if (discount === null) { warning = 'Enter a valid discount.'; }
+        else if (discountType.value === 'fixed') {
+            total = subtotal - discount;
+            if (discount > subtotal) warning = 'The fixed discount cannot exceed the subtotal.';
+        } else if (discountType.value === 'percent') {
+            if (discount > 10000n) warning = 'Percentage discounts must be between 0 and 100.';
+            else total = (subtotal * (10000n - discount) + 5000n) / 10000n;
+        }
+        if (total < 0n) total = 0n;
+        const draft = mode.value === 'draft';
+        paidInput.readOnly = draft || plan.value !== 'partial';
+        paidInput.max = plain(total);
+        if (draft || plan.value === 'unpaid') paidInput.value = '0.00';
+        else if (plan.value === 'full') paidInput.value = plain(total);
+        const paid = decimal(paidInput.value, 2);
+        const credit = plan.value !== 'full' || entryForm.dataset.creditHistory === 'true';
+        document.getElementById('customer_id').required = credit;
+        const hasBalance = paid === null || total > paid;
+        document.getElementById('due_date').disabled = !hasBalance;
+        document.getElementById('due_date').closest('[data-due-date]').hidden = !hasBalance;
+        document.getElementById('due_date').min = document.getElementById('sold_at').value.slice(0, 10);
+        document.getElementById('payment_method_id').required = !draft && paid !== null && paid > 0n;
+        document.getElementById('payment_method_id').disabled = draft || paid === 0n;
+        document.getElementById('payment_reference').disabled = draft || paid === 0n;
+        entryForm.querySelector('[data-payment-method-fields]').updatePaymentMethod(!draft && paid !== null && paid > 0n);
+        document.getElementById('payment_notes').disabled=draft || paid===0n;
+        if (paid === null) warning = 'Enter a valid nonnegative payment.';
+        else if (paid > total) warning = 'The payment cannot exceed the sale total.';
+        else if (!draft && plan.value === 'partial' && (paid <= 0n || paid >= total)) warning = 'A partial payment must be above zero and below the total.';
+        if (!complete) warning = 'Choose each product and enter a valid quantity and price.';
+        else if (total <= 0n && !warning) warning = 'The final total must be greater than zero.';
+        document.getElementById('preview-subtotal').textContent = pesos(subtotal);
+        document.getElementById('preview-discount').textContent = pesos(subtotal - total);
+        document.getElementById('preview-total').textContent = pesos(total);
+        document.getElementById('preview-paid').textContent = paid === null ? '—' : pesos(paid);
+        document.getElementById('preview-balance').textContent = paid === null ? '—' : pesos(total - paid);
+        errorMessage.textContent = warning;
+        paidInput.setCustomValidity(!draft && plan.value === 'partial' && (paid === null || paid <= 0n || paid >= total) ? 'Enter an amount above zero and below the total.' : '');
+        discountInput.setCustomValidity(discount === null || (discountType.value === 'fixed' && discount > subtotal) || (discountType.value === 'percent' && discount > 10000n) ? 'Enter a discount within the allowed amount.' : '');
+        return complete && !warning;
+    };
+    addButton.addEventListener('click', () => {
+        if (items.children.length >= 50) return;
+        items.appendChild(document.getElementById('sale-item-template').content.cloneNode(true));
+        reindex(); recalculate();
+        items.lastElementChild.querySelector('[data-product-search]').focus();
+    });
+    items.addEventListener('click', (event) => {
+        const removeButton = event.target.closest('[data-remove-item]');
+        if (removeButton && items.children.length > 1) { removeButton.closest('.sale-item-row').remove(); reindex(); recalculate(); }
+    });
+    items.addEventListener('input', (event) => {
+        if (event.target.matches('[data-product-search]')) {
+            filterOptions(event.target, event.target.closest('.sale-item-row').querySelector('[data-field=product_id]'));
+        } else { recalculate(); }
+    });
+    items.addEventListener('change', (event) => {
+        if (event.target.matches('[data-field=product_id]')) {
+            const row = event.target.closest('.sale-item-row');
+            row.querySelector('[data-field=unit_price]').value = event.target.selectedOptions[0]?.dataset.price || '0.00';
+            row.querySelector('[data-field=sale_item_id]').value = '';
+            row.dataset.snapshotCost = '';
+            recalculate();
+        }
+    });
+    entryForm.addEventListener('input', (event) => { if (!event.target.closest('#sale-items')) recalculate(); });
+    entryForm.addEventListener('change', recalculate);
+    entryForm.addEventListener('submit', (event) => {
+        if (!recalculate()) { event.preventDefault(); errorMessage.scrollIntoView({ block: 'center' }); }
+    });
+    reindex(); recalculate();
+}
+
+}
+initializeSaleForm();
+
+const voidModal = document.getElementById('void-sale-modal');
+if (voidModal && location.hash === '#void-sale' && typeof bootstrap !== 'undefined') {
+    bootstrap.Modal.getOrCreateInstance(voidModal).show();
+}
+
+// One shared Bootstrap modal keeps focus, state and confirmation dialogs simple.
+const salesModalElement = document.getElementById('sales-action-modal');
+if (salesModalElement && typeof bootstrap !== 'undefined') {
+    const modal = bootstrap.Modal.getOrCreateInstance(salesModalElement);
+    const dialog = salesModalElement.querySelector('.modal-dialog');
+    const content = salesModalElement.querySelector('.modal-content');
+    let pendingLoad = null;
+    let busy = false;
+    let dirty = false;
+    let opener = null;
+    let feedbackNumber = 0;
+
+    const focusContent = () => {
+        const target = content.querySelector('input:not([type=hidden]):not([disabled]), textarea, select') || content.querySelector('.modal-title');
+        if (target) { if (target.matches('.modal-title')) target.tabIndex = -1; target.focus({preventScroll:true}); }
+    };
+    const showFeedback = (message, success) => {
+        const feedback = document.getElementById('sales-feedback');
+        feedback.className = `alert ${success ? 'alert-success' : 'alert-warning'}`;
+        feedback.textContent = message;
+        feedback.focus({preventScroll:true});
+    };
+    const showError = (form, message) => {
+        const box = form.querySelector('.sale-submit-error');
+        box.textContent = message;
+        box.classList.remove('d-none');
+        box.focus();
+    };
+    const fieldError = (field, message) => {
+        if (!field || field.type === 'hidden' || field.disabled) return;
+        const details = field.closest('details');
+        if (details) details.open = true;
+        for (const id of (field.getAttribute('aria-describedby')||'').split(' ')) {
+            if (id.startsWith('sale-field-error-')) document.getElementById(id)?.remove();
+        }
+        const feedback = document.createElement('div');
+        feedback.id = `sale-field-error-${++feedbackNumber}`;
+        feedback.className = 'invalid-feedback d-block sale-field-error';
+        feedback.textContent = message;
+        field.insertAdjacentElement('afterend', feedback);
+        field.classList.add('is-invalid');
+        field.setAttribute('aria-invalid', 'true');
+        const descriptions=(field.getAttribute('aria-describedby')||'').split(' ').filter(id=>id && !id.startsWith('sale-field-error-'));
+        field.setAttribute('aria-describedby', [...descriptions, feedback.id].join(' '));
+    };
+    const clearFieldErrors = (form) => {
+        form.querySelectorAll('.sale-field-error').forEach(element => element.remove());
+        form.querySelectorAll('.is-invalid').forEach(field => {
+            field.classList.remove('is-invalid'); field.removeAttribute('aria-invalid');
+            const descriptions=(field.getAttribute('aria-describedby')||'').split(' ').filter(id=>id && !id.startsWith('sale-field-error-'));
+            if (descriptions.length) field.setAttribute('aria-describedby', descriptions.join(' ')); else field.removeAttribute('aria-describedby');
+        });
+    };
+    const refreshSales = async () => {
+        const response = await fetch(location.href, {credentials:'same-origin',cache:'no-store'});
+        const html = new DOMParser().parseFromString(await response.text(), 'text/html');
+        const updated = html.getElementById('dashboard-content');
+        if (!response.ok || !updated?.querySelector('.sales-history')) throw new Error('The sales list could not be refreshed.');
+        const scroll = window.scrollY;
+        const tableScroll = document.querySelector('.sales-history .table-responsive')?.scrollLeft || 0;
+        // Replace only the list region; keep the page's modal and navigation.
+        document.getElementById('dashboard-content').replaceWith(updated);
+        const period = updated.querySelector('#period');
+        const dates = updated.querySelector('#custom-dates');
+        const updateDates = () => {
+            const custom = period.value === 'custom'; dates.hidden = !custom;
+            dates.querySelectorAll('input').forEach(field=>{field.disabled=!custom;field.required=custom;});
+        };
+        period.addEventListener('change',updateDates); updateDates();
+        const newTable = document.querySelector('.sales-history .table-responsive');
+        if (newTable) newTable.scrollLeft = tableScroll;
+        window.scrollTo({top:scroll,behavior:'instant'});
+        return updated;
+    };
+    document.addEventListener('click', async (event) => {
+        const link = event.target.closest('a[data-sale-modal]');
+        if (!link || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+        event.preventDefault();
+        if (busy || (dirty && !window.confirm('Discard your unsaved changes?'))) return;
+        pendingLoad?.abort();
+        pendingLoad = new AbortController();
+        const currentLoad = pendingLoad;
+        opener = link; dirty = false;
+        dialog.classList.toggle('modal-xl', ['create','edit'].includes(link.dataset.saleModal));
+        dialog.classList.toggle('modal-lg', link.dataset.saleModal === 'details');
+        dialog.classList.toggle('modal-fullscreen-sm-down', link.dataset.saleModal !== 'void');
+        content.innerHTML = '<div class="modal-header"><h2 class="modal-title" id="sales-modal-title">Loading sale</h2><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body sale-modal-loading" role="status"><span class="spinner-border spinner-border-sm" aria-hidden="true"></span> Loading…</div>';
+        modal.show();
+        const url = new URL(link.href); url.hash = ''; url.searchParams.set('modal','1');
+        if (link.dataset.saleModal === 'void') url.searchParams.set('action','void');
+        try {
+            const response = await fetch(url,{credentials:'same-origin',cache:'no-store',signal:currentLoad.signal});
+            const html = await response.text();
+            if (currentLoad.signal.aborted) return;
+            const fragment = new DOMParser().parseFromString(html,'text/html');
+            if (response.redirected || !fragment.getElementById('sales-modal-title')) throw new Error('Your session may have expired. Sign in again, then reopen the sale.');
+            content.replaceChildren(...fragment.body.childNodes);
+            initializeSaleForm(content);
+            focusContent();
+        } catch (error) {
+            if (error.name === 'AbortError') return;
+            content.innerHTML = '<div class="modal-header"><h2 class="modal-title" id="sales-modal-title">Unable to open sale</h2><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body"><div class="alert alert-danger" role="alert"></div></div><div class="modal-footer"><button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Close</button></div>';
+            content.querySelector('.alert').textContent = error.message;
+            focusContent();
+        }
+    });
+    salesModalElement.addEventListener('input', event => {
+        if (event.target.closest('form')) dirty = true;
+        const field = event.target;
+        if (field.classList.contains('is-invalid')) {
+            const descriptions=(field.getAttribute('aria-describedby')||'').split(' ').filter(id=>{
+                if (id.startsWith('sale-field-error-')) { document.getElementById(id)?.remove(); return false; }
+                return !!id;
+            });
+            field.classList.remove('is-invalid'); field.removeAttribute('aria-invalid');
+            if (descriptions.length) field.setAttribute('aria-describedby',descriptions.join(' ')); else field.removeAttribute('aria-describedby');
+        }
+    });
+    salesModalElement.addEventListener('change', event => { if (event.target.closest('form')) dirty = true; });
+    salesModalElement.addEventListener('click', event => { if (event.target.closest('[data-remove-item],#add-sale-item')) dirty = true; });
+    salesModalElement.addEventListener('hide.bs.modal', event => {
+        if (busy || (dirty && !window.confirm('Discard your unsaved changes?'))) { event.preventDefault(); return; }
+        pendingLoad?.abort(); dirty = false;
+    });
+    salesModalElement.addEventListener('hidden.bs.modal', () => {
+        content.replaceChildren();
+        const target = opener?.isConnected ? opener : document.querySelector('[data-sale-modal="create"]');
+        target?.focus({preventScroll:true});
+    });
+    window.addEventListener('beforeunload', event => {
+        if (dirty || busy) { event.preventDefault(); event.returnValue = ''; }
+    });
+    salesModalElement.addEventListener('submit', async event => {
+        const form = event.target.closest('form[data-sale-async]');
+        if (!form) return;
+        const previewValid = !event.defaultPrevented;
+        event.preventDefault();
+        if (busy) return;
+        clearFieldErrors(form);
+        const invalid = [...form.elements].filter(field=>field.willValidate && !field.validity.valid);
+        invalid.forEach(field => fieldError(field,field.validationMessage));
+        if (invalid.length || !previewValid) {
+            if (invalid.length) invalid[0].focus();
+            else showError(form,form.querySelector('#sale-preview-error')?.textContent || 'Please check the sale details.');
+            return;
+        }
+        form.querySelector('.sale-submit-error').classList.add('d-none');
+        const payload = new FormData(form);
+        const controls = [...form.querySelectorAll('input,select,textarea,button')].map(element=>[element,element.disabled]);
+        const button = form.querySelector('button[type=submit]');
+        const label = button.dataset.submitLabel || button.textContent;
+        busy = true; form.setAttribute('aria-busy','true');
+        controls.forEach(([element])=>{element.disabled=true;});
+        content.querySelectorAll('[data-bs-dismiss]').forEach(element=>{element.disabled=true;});
+        button.innerHTML = '<span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>Saving…';
+        try {
+            const response = await fetch(form.action,{method:'POST',body:payload,credentials:'same-origin',headers:{Accept:'application/json'}});
+            if (!response.headers.get('content-type')?.includes('application/json')) throw new Error('The server could not confirm the save. Keep this form open and retry, or sign in again if your session expired.');
+            const result = await response.json();
+            if (!response.ok || !result.success) {
+                for (const [name,message] of Object.entries(result.fields||{})) {
+                    // Controls were disabled only for submission; restore before marking errors.
+                    const field = form.elements.namedItem(name);
+                    const state = controls.find(([element])=>element===field);
+                    if (state) field.disabled=state[1];
+                    fieldError(field,message);
+                }
+                showError(form,result.message || 'Please check the sale details.');
+                return;
+            }
+            dirty = false;
+            let refreshed = true;
+            try { await refreshSales(); } catch (_) { refreshed = false; }
+            busy = false; modal.hide();
+            showFeedback(result.message + (refreshed ? '' : ' The sale was saved, but the list could not refresh. Reload the page to see updated figures.'),refreshed);
+        } catch (error) {
+            showError(form,error.message + ' Your entered information has been kept.');
+        } finally {
+            busy = false; form.removeAttribute('aria-busy');
+            controls.forEach(([element,disabled])=>{element.disabled=disabled;});
+            content.querySelectorAll('[data-bs-dismiss]').forEach(element=>{element.disabled=false;});
+            button.textContent = label;
+        }
+    });
+}

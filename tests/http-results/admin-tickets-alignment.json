@@ -1,0 +1,44 @@
+﻿{
+    "bodyFont":  14,
+    "aligned":  true,
+    "columns":  [
+                    {
+                        "style":  null,
+                        "width":  113.796875,
+                        "display":  "table-column"
+                    },
+                    {
+                        "style":  null,
+                        "width":  330.015625,
+                        "display":  "table-column"
+                    },
+                    {
+                        "style":  null,
+                        "width":  227.59375,
+                        "display":  "table-column"
+                    },
+                    {
+                        "style":  null,
+                        "width":  147.9375,
+                        "display":  "table-column"
+                    },
+                    {
+                        "style":  null,
+                        "width":  147.9375,
+                        "display":  "table-column"
+                    },
+                    {
+                        "style":  null,
+                        "width":  170.71875,
+                        "display":  "table-column"
+                    }
+                ],
+    "headers":  [
+                    114,
+                    330,
+                    228,
+                    148,
+                    148,
+                    171
+                ]
+}

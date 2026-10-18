@@ -1,0 +1,2962 @@
+{
+    "columns": [
+        {
+            "TABLE_NAME": "activity_logs",
+            "COLUMN_NAME": "activity_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "PRI"
+        },
+        {
+            "TABLE_NAME": "activity_logs",
+            "COLUMN_NAME": "actor_user_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "activity_logs",
+            "COLUMN_NAME": "business_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "activity_logs",
+            "COLUMN_NAME": "action_code",
+            "COLUMN_TYPE": "varchar(80)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "activity_logs",
+            "COLUMN_NAME": "entity_type",
+            "COLUMN_TYPE": "varchar(60)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "activity_logs",
+            "COLUMN_NAME": "entity_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "activity_logs",
+            "COLUMN_NAME": "before_data",
+            "COLUMN_TYPE": "longtext",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "activity_logs",
+            "COLUMN_NAME": "after_data",
+            "COLUMN_TYPE": "longtext",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "activity_logs",
+            "COLUMN_NAME": "details",
+            "COLUMN_TYPE": "varchar(255)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "activity_logs",
+            "COLUMN_NAME": "occurred_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "admin_action_logs",
+            "COLUMN_NAME": "admin_action_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "PRI"
+        },
+        {
+            "TABLE_NAME": "admin_action_logs",
+            "COLUMN_NAME": "admin_user_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "admin_action_logs",
+            "COLUMN_NAME": "target_user_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "admin_action_logs",
+            "COLUMN_NAME": "action_code",
+            "COLUMN_TYPE": "varchar(80)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "admin_action_logs",
+            "COLUMN_NAME": "old_value",
+            "COLUMN_TYPE": "longtext",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "admin_action_logs",
+            "COLUMN_NAME": "new_value",
+            "COLUMN_TYPE": "longtext",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "admin_action_logs",
+            "COLUMN_NAME": "reason",
+            "COLUMN_TYPE": "varchar(255)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "admin_action_logs",
+            "COLUMN_NAME": "created_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "announcements",
+            "COLUMN_NAME": "announcement_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "PRI"
+        },
+        {
+            "TABLE_NAME": "announcements",
+            "COLUMN_NAME": "author_admin_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "announcements",
+            "COLUMN_NAME": "title",
+            "COLUMN_TYPE": "varchar(200)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "announcements",
+            "COLUMN_NAME": "body",
+            "COLUMN_TYPE": "text",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "announcements",
+            "COLUMN_NAME": "announcement_status",
+            "COLUMN_TYPE": "enum('draft','published','archived')",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "announcements",
+            "COLUMN_NAME": "published_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "announcements",
+            "COLUMN_NAME": "created_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "auth_sessions",
+            "COLUMN_NAME": "session_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "PRI"
+        },
+        {
+            "TABLE_NAME": "auth_sessions",
+            "COLUMN_NAME": "user_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "auth_sessions",
+            "COLUMN_NAME": "token_hash",
+            "COLUMN_TYPE": "char(64)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "UNI"
+        },
+        {
+            "TABLE_NAME": "auth_sessions",
+            "COLUMN_NAME": "created_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "auth_sessions",
+            "COLUMN_NAME": "expires_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "auth_sessions",
+            "COLUMN_NAME": "revoked_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "auth_sessions",
+            "COLUMN_NAME": "ip_address",
+            "COLUMN_TYPE": "varbinary(16)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "auth_sessions",
+            "COLUMN_NAME": "user_agent",
+            "COLUMN_TYPE": "varchar(255)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "backup_jobs",
+            "COLUMN_NAME": "backup_job_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "PRI"
+        },
+        {
+            "TABLE_NAME": "backup_jobs",
+            "COLUMN_NAME": "initiated_by",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "backup_jobs",
+            "COLUMN_NAME": "backup_status",
+            "COLUMN_TYPE": "enum('queued','running','success','failed')",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "backup_jobs",
+            "COLUMN_NAME": "storage_reference",
+            "COLUMN_TYPE": "varchar(255)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "backup_jobs",
+            "COLUMN_NAME": "started_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "backup_jobs",
+            "COLUMN_NAME": "finished_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "backup_jobs",
+            "COLUMN_NAME": "error_summary",
+            "COLUMN_TYPE": "varchar(255)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "backup_jobs",
+            "COLUMN_NAME": "created_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "businesses",
+            "COLUMN_NAME": "business_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "PRI"
+        },
+        {
+            "TABLE_NAME": "businesses",
+            "COLUMN_NAME": "owner_user_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "UNI"
+        },
+        {
+            "TABLE_NAME": "businesses",
+            "COLUMN_NAME": "business_category_id",
+            "COLUMN_TYPE": "smallint(5) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "businesses",
+            "COLUMN_NAME": "business_name",
+            "COLUMN_TYPE": "varchar(150)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "businesses",
+            "COLUMN_NAME": "description",
+            "COLUMN_TYPE": "text",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "businesses",
+            "COLUMN_NAME": "address",
+            "COLUMN_TYPE": "varchar(255)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "businesses",
+            "COLUMN_NAME": "contact_number",
+            "COLUMN_TYPE": "varchar(30)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "businesses",
+            "COLUMN_NAME": "created_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "businesses",
+            "COLUMN_NAME": "updated_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "business_categories",
+            "COLUMN_NAME": "business_category_id",
+            "COLUMN_TYPE": "smallint(5) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "PRI"
+        },
+        {
+            "TABLE_NAME": "business_categories",
+            "COLUMN_NAME": "category_name",
+            "COLUMN_TYPE": "varchar(80)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "UNI"
+        },
+        {
+            "TABLE_NAME": "business_categories",
+            "COLUMN_NAME": "description",
+            "COLUMN_TYPE": "varchar(255)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "customers",
+            "COLUMN_NAME": "customer_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "PRI"
+        },
+        {
+            "TABLE_NAME": "customers",
+            "COLUMN_NAME": "business_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "customers",
+            "COLUMN_NAME": "customer_name",
+            "COLUMN_TYPE": "varchar(150)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "customers",
+            "COLUMN_NAME": "phone",
+            "COLUMN_TYPE": "varchar(30)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "customers",
+            "COLUMN_NAME": "email",
+            "COLUMN_TYPE": "varchar(191)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "customers",
+            "COLUMN_NAME": "address",
+            "COLUMN_TYPE": "varchar(255)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "customers",
+            "COLUMN_NAME": "notes",
+            "COLUMN_TYPE": "text",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "customers",
+            "COLUMN_NAME": "is_active",
+            "COLUMN_TYPE": "tinyint(1)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "customers",
+            "COLUMN_NAME": "created_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "customers",
+            "COLUMN_NAME": "updated_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "customer_credits",
+            "COLUMN_NAME": "sale_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "PRI"
+        },
+        {
+            "TABLE_NAME": "customer_credits",
+            "COLUMN_NAME": "due_date",
+            "COLUMN_TYPE": "date",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "customer_credits",
+            "COLUMN_NAME": "notes",
+            "COLUMN_TYPE": "text",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "customer_credits",
+            "COLUMN_NAME": "reminder_notes",
+            "COLUMN_TYPE": "text",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "customer_credits",
+            "COLUMN_NAME": "created_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "expenses",
+            "COLUMN_NAME": "expense_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "PRI"
+        },
+        {
+            "TABLE_NAME": "expenses",
+            "COLUMN_NAME": "business_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "expenses",
+            "COLUMN_NAME": "expense_category_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "expenses",
+            "COLUMN_NAME": "payment_method_id",
+            "COLUMN_TYPE": "smallint(5) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "expenses",
+            "COLUMN_NAME": "recurring_expense_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "expenses",
+            "COLUMN_NAME": "recurrence_due_on",
+            "COLUMN_TYPE": "date",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "expenses",
+            "COLUMN_NAME": "entered_by",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "expenses",
+            "COLUMN_NAME": "description",
+            "COLUMN_TYPE": "varchar(255)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "expenses",
+            "COLUMN_NAME": "amount",
+            "COLUMN_TYPE": "decimal(13,2)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "expenses",
+            "COLUMN_NAME": "expense_date",
+            "COLUMN_TYPE": "date",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "expenses",
+            "COLUMN_NAME": "expense_treatment",
+            "COLUMN_TYPE": "enum('operating','inventory_purchase','other_cash_outflow')",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "expenses",
+            "COLUMN_NAME": "expense_status",
+            "COLUMN_TYPE": "enum('posted','void')",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "expenses",
+            "COLUMN_NAME": "notes",
+            "COLUMN_TYPE": "text",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "expenses",
+            "COLUMN_NAME": "void_reason",
+            "COLUMN_TYPE": "varchar(255)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "expenses",
+            "COLUMN_NAME": "voided_by",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "expenses",
+            "COLUMN_NAME": "voided_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "expenses",
+            "COLUMN_NAME": "created_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "expenses",
+            "COLUMN_NAME": "updated_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "expense_categories",
+            "COLUMN_NAME": "expense_category_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "PRI"
+        },
+        {
+            "TABLE_NAME": "expense_categories",
+            "COLUMN_NAME": "business_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "expense_categories",
+            "COLUMN_NAME": "category_name",
+            "COLUMN_TYPE": "varchar(100)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "expense_categories",
+            "COLUMN_NAME": "is_active",
+            "COLUMN_TYPE": "tinyint(1)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "expense_receipts",
+            "COLUMN_NAME": "receipt_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "PRI"
+        },
+        {
+            "TABLE_NAME": "expense_receipts",
+            "COLUMN_NAME": "expense_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "expense_receipts",
+            "COLUMN_NAME": "business_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "expense_receipts",
+            "COLUMN_NAME": "uploaded_by",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "expense_receipts",
+            "COLUMN_NAME": "file_storage_key",
+            "COLUMN_TYPE": "varchar(255)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "expense_receipts",
+            "COLUMN_NAME": "original_filename",
+            "COLUMN_TYPE": "varchar(255)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "expense_receipts",
+            "COLUMN_NAME": "mime_type",
+            "COLUMN_TYPE": "varchar(100)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "expense_receipts",
+            "COLUMN_NAME": "file_size_bytes",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "expense_receipts",
+            "COLUMN_NAME": "uploaded_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "password_reset_tokens",
+            "COLUMN_NAME": "reset_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "PRI"
+        },
+        {
+            "TABLE_NAME": "password_reset_tokens",
+            "COLUMN_NAME": "user_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "password_reset_tokens",
+            "COLUMN_NAME": "token_hash",
+            "COLUMN_TYPE": "char(64)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "UNI"
+        },
+        {
+            "TABLE_NAME": "password_reset_tokens",
+            "COLUMN_NAME": "expires_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "password_reset_tokens",
+            "COLUMN_NAME": "used_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "password_reset_tokens",
+            "COLUMN_NAME": "created_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "payment_methods",
+            "COLUMN_NAME": "payment_method_id",
+            "COLUMN_TYPE": "smallint(5) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "PRI"
+        },
+        {
+            "TABLE_NAME": "payment_methods",
+            "COLUMN_NAME": "method_code",
+            "COLUMN_TYPE": "varchar(40)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "UNI"
+        },
+        {
+            "TABLE_NAME": "payment_methods",
+            "COLUMN_NAME": "method_name",
+            "COLUMN_TYPE": "varchar(80)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "payment_methods",
+            "COLUMN_NAME": "is_active",
+            "COLUMN_TYPE": "tinyint(1)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "permissions",
+            "COLUMN_NAME": "permission_id",
+            "COLUMN_TYPE": "smallint(5) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "PRI"
+        },
+        {
+            "TABLE_NAME": "permissions",
+            "COLUMN_NAME": "permission_code",
+            "COLUMN_TYPE": "varchar(60)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "UNI"
+        },
+        {
+            "TABLE_NAME": "permissions",
+            "COLUMN_NAME": "description",
+            "COLUMN_TYPE": "varchar(255)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "platform_settings",
+            "COLUMN_NAME": "setting_key",
+            "COLUMN_TYPE": "varchar(100)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "PRI"
+        },
+        {
+            "TABLE_NAME": "platform_settings",
+            "COLUMN_NAME": "setting_value",
+            "COLUMN_TYPE": "text",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "platform_settings",
+            "COLUMN_NAME": "updated_by",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "platform_settings",
+            "COLUMN_NAME": "updated_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "products",
+            "COLUMN_NAME": "product_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "PRI"
+        },
+        {
+            "TABLE_NAME": "products",
+            "COLUMN_NAME": "business_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "products",
+            "COLUMN_NAME": "product_name",
+            "COLUMN_TYPE": "varchar(150)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "products",
+            "COLUMN_NAME": "sku",
+            "COLUMN_TYPE": "varchar(60)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "products",
+            "COLUMN_NAME": "description",
+            "COLUMN_TYPE": "text",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "products",
+            "COLUMN_NAME": "default_selling_price",
+            "COLUMN_TYPE": "decimal(13,2)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "products",
+            "COLUMN_NAME": "default_unit_cost",
+            "COLUMN_TYPE": "decimal(13,2)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "products",
+            "COLUMN_NAME": "is_active",
+            "COLUMN_TYPE": "tinyint(1)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "products",
+            "COLUMN_NAME": "created_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "products",
+            "COLUMN_NAME": "updated_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "recurring_expenses",
+            "COLUMN_NAME": "recurring_expense_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "PRI"
+        },
+        {
+            "TABLE_NAME": "recurring_expenses",
+            "COLUMN_NAME": "business_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "recurring_expenses",
+            "COLUMN_NAME": "expense_category_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "recurring_expenses",
+            "COLUMN_NAME": "payment_method_id",
+            "COLUMN_TYPE": "smallint(5) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "recurring_expenses",
+            "COLUMN_NAME": "description",
+            "COLUMN_TYPE": "varchar(255)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "recurring_expenses",
+            "COLUMN_NAME": "amount",
+            "COLUMN_TYPE": "decimal(13,2)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "recurring_expenses",
+            "COLUMN_NAME": "expense_treatment",
+            "COLUMN_TYPE": "enum('operating','inventory_purchase','other_cash_outflow')",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "recurring_expenses",
+            "COLUMN_NAME": "frequency",
+            "COLUMN_TYPE": "enum('daily','weekly','monthly','yearly')",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "recurring_expenses",
+            "COLUMN_NAME": "repeat_every",
+            "COLUMN_TYPE": "smallint(5) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "recurring_expenses",
+            "COLUMN_NAME": "start_date",
+            "COLUMN_TYPE": "date",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "recurring_expenses",
+            "COLUMN_NAME": "next_due_date",
+            "COLUMN_TYPE": "date",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "recurring_expenses",
+            "COLUMN_NAME": "end_date",
+            "COLUMN_TYPE": "date",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "recurring_expenses",
+            "COLUMN_NAME": "is_active",
+            "COLUMN_TYPE": "tinyint(1)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "recurring_expenses",
+            "COLUMN_NAME": "created_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "roles",
+            "COLUMN_NAME": "role_id",
+            "COLUMN_TYPE": "smallint(5) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "PRI"
+        },
+        {
+            "TABLE_NAME": "roles",
+            "COLUMN_NAME": "role_code",
+            "COLUMN_TYPE": "varchar(40)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "UNI"
+        },
+        {
+            "TABLE_NAME": "roles",
+            "COLUMN_NAME": "role_name",
+            "COLUMN_TYPE": "varchar(80)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "roles",
+            "COLUMN_NAME": "role_type",
+            "COLUMN_TYPE": "enum('owner','admin')",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "role_permissions",
+            "COLUMN_NAME": "role_id",
+            "COLUMN_TYPE": "smallint(5) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "PRI"
+        },
+        {
+            "TABLE_NAME": "role_permissions",
+            "COLUMN_NAME": "permission_id",
+            "COLUMN_TYPE": "smallint(5) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "PRI"
+        },
+        {
+            "TABLE_NAME": "sales",
+            "COLUMN_NAME": "sale_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "PRI"
+        },
+        {
+            "TABLE_NAME": "sales",
+            "COLUMN_NAME": "business_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "sales",
+            "COLUMN_NAME": "customer_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "sales",
+            "COLUMN_NAME": "created_by",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "sales",
+            "COLUMN_NAME": "sale_number",
+            "COLUMN_TYPE": "varchar(60)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "sales",
+            "COLUMN_NAME": "sale_type",
+            "COLUMN_TYPE": "enum('immediate','credit')",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "sales",
+            "COLUMN_NAME": "sale_status",
+            "COLUMN_TYPE": "enum('draft','posted','void')",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "sales",
+            "COLUMN_NAME": "sold_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "sales",
+            "COLUMN_NAME": "discount_type",
+            "COLUMN_TYPE": "enum('none','fixed','percent')",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "sales",
+            "COLUMN_NAME": "discount_value",
+            "COLUMN_TYPE": "decimal(13,2)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "sales",
+            "COLUMN_NAME": "notes",
+            "COLUMN_TYPE": "text",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "sales",
+            "COLUMN_NAME": "void_reason",
+            "COLUMN_TYPE": "varchar(255)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "sales",
+            "COLUMN_NAME": "voided_by",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "sales",
+            "COLUMN_NAME": "voided_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "sales",
+            "COLUMN_NAME": "created_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "sales",
+            "COLUMN_NAME": "updated_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "sale_items",
+            "COLUMN_NAME": "sale_item_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "PRI"
+        },
+        {
+            "TABLE_NAME": "sale_items",
+            "COLUMN_NAME": "sale_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "sale_items",
+            "COLUMN_NAME": "business_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "sale_items",
+            "COLUMN_NAME": "product_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "sale_items",
+            "COLUMN_NAME": "product_name_snapshot",
+            "COLUMN_TYPE": "varchar(150)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "sale_items",
+            "COLUMN_NAME": "quantity",
+            "COLUMN_TYPE": "decimal(12,3)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "sale_items",
+            "COLUMN_NAME": "unit_price",
+            "COLUMN_TYPE": "decimal(13,2)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "sale_items",
+            "COLUMN_NAME": "unit_cost",
+            "COLUMN_TYPE": "decimal(13,2)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "sale_items",
+            "COLUMN_NAME": "created_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "sale_payments",
+            "COLUMN_NAME": "payment_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "PRI"
+        },
+        {
+            "TABLE_NAME": "sale_payments",
+            "COLUMN_NAME": "sale_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "sale_payments",
+            "COLUMN_NAME": "business_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "sale_payments",
+            "COLUMN_NAME": "payment_method_id",
+            "COLUMN_TYPE": "smallint(5) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "sale_payments",
+            "COLUMN_NAME": "provider_name",
+            "COLUMN_TYPE": "varchar(80)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "sale_payments",
+            "COLUMN_NAME": "entered_by",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "sale_payments",
+            "COLUMN_NAME": "payment_kind",
+            "COLUMN_TYPE": "enum('collection','refund')",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "sale_payments",
+            "COLUMN_NAME": "amount",
+            "COLUMN_TYPE": "decimal(13,2)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "sale_payments",
+            "COLUMN_NAME": "reverses_payment_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "sale_payments",
+            "COLUMN_NAME": "paid_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "sale_payments",
+            "COLUMN_NAME": "reference_number",
+            "COLUMN_TYPE": "varchar(100)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "sale_payments",
+            "COLUMN_NAME": "idempotency_key",
+            "COLUMN_TYPE": "varchar(100)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "sale_payments",
+            "COLUMN_NAME": "notes",
+            "COLUMN_TYPE": "text",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "sale_payments",
+            "COLUMN_NAME": "created_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "support_tickets",
+            "COLUMN_NAME": "ticket_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "PRI"
+        },
+        {
+            "TABLE_NAME": "support_tickets",
+            "COLUMN_NAME": "submitted_by",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "support_tickets",
+            "COLUMN_NAME": "assigned_admin_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "support_tickets",
+            "COLUMN_NAME": "subject",
+            "COLUMN_TYPE": "varchar(200)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "support_tickets",
+            "COLUMN_NAME": "description",
+            "COLUMN_TYPE": "text",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "support_tickets",
+            "COLUMN_NAME": "priority",
+            "COLUMN_TYPE": "enum('low','normal','high')",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "support_tickets",
+            "COLUMN_NAME": "ticket_status",
+            "COLUMN_TYPE": "enum('open','in_progress','resolved','closed')",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "support_tickets",
+            "COLUMN_NAME": "created_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "support_tickets",
+            "COLUMN_NAME": "updated_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "support_tickets",
+            "COLUMN_NAME": "resolved_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "ticket_messages",
+            "COLUMN_NAME": "message_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "PRI"
+        },
+        {
+            "TABLE_NAME": "ticket_messages",
+            "COLUMN_NAME": "ticket_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "ticket_messages",
+            "COLUMN_NAME": "sender_user_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "ticket_messages",
+            "COLUMN_NAME": "message_body",
+            "COLUMN_TYPE": "text",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "ticket_messages",
+            "COLUMN_NAME": "created_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "ticket_status_history",
+            "COLUMN_NAME": "history_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "PRI"
+        },
+        {
+            "TABLE_NAME": "ticket_status_history",
+            "COLUMN_NAME": "ticket_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "ticket_status_history",
+            "COLUMN_NAME": "changed_by",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "ticket_status_history",
+            "COLUMN_NAME": "old_status",
+            "COLUMN_TYPE": "enum('open','in_progress','resolved','closed')",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "ticket_status_history",
+            "COLUMN_NAME": "new_status",
+            "COLUMN_TYPE": "enum('open','in_progress','resolved','closed')",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "ticket_status_history",
+            "COLUMN_NAME": "changed_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "users",
+            "COLUMN_NAME": "user_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "PRI"
+        },
+        {
+            "TABLE_NAME": "users",
+            "COLUMN_NAME": "role_id",
+            "COLUMN_TYPE": "smallint(5) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "users",
+            "COLUMN_NAME": "full_name",
+            "COLUMN_TYPE": "varchar(150)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "users",
+            "COLUMN_NAME": "username",
+            "COLUMN_TYPE": "varchar(60)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "UNI"
+        },
+        {
+            "TABLE_NAME": "users",
+            "COLUMN_NAME": "email",
+            "COLUMN_TYPE": "varchar(191)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "UNI"
+        },
+        {
+            "TABLE_NAME": "users",
+            "COLUMN_NAME": "phone",
+            "COLUMN_TYPE": "varchar(30)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "users",
+            "COLUMN_NAME": "password_hash",
+            "COLUMN_TYPE": "varchar(255)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "users",
+            "COLUMN_NAME": "account_status",
+            "COLUMN_TYPE": "enum('active','inactive','suspended','deactivated')",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "users",
+            "COLUMN_NAME": "email_verified_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "users",
+            "COLUMN_NAME": "last_login_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "users",
+            "COLUMN_NAME": "created_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "users",
+            "COLUMN_NAME": "updated_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "user_feedback",
+            "COLUMN_NAME": "feedback_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": "PRI"
+        },
+        {
+            "TABLE_NAME": "user_feedback",
+            "COLUMN_NAME": "submitted_by",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": "MUL"
+        },
+        {
+            "TABLE_NAME": "user_feedback",
+            "COLUMN_NAME": "category",
+            "COLUMN_TYPE": "enum('bug','suggestion','compliment','other')",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "user_feedback",
+            "COLUMN_NAME": "message",
+            "COLUMN_TYPE": "text",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "user_feedback",
+            "COLUMN_NAME": "status",
+            "COLUMN_TYPE": "enum('new','reviewed','archived')",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "user_feedback",
+            "COLUMN_NAME": "created_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_business_credit_totals",
+            "COLUMN_NAME": "business_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_business_credit_totals",
+            "COLUMN_NAME": "outstanding_utang",
+            "COLUMN_TYPE": "decimal(65,2)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_credit_balances",
+            "COLUMN_NAME": "sale_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_credit_balances",
+            "COLUMN_NAME": "business_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_credit_balances",
+            "COLUMN_NAME": "customer_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_credit_balances",
+            "COLUMN_NAME": "sale_number",
+            "COLUMN_TYPE": "varchar(60)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_credit_balances",
+            "COLUMN_NAME": "credit_created_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_credit_balances",
+            "COLUMN_NAME": "due_date",
+            "COLUMN_TYPE": "date",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_credit_balances",
+            "COLUMN_NAME": "notes",
+            "COLUMN_TYPE": "text",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_credit_balances",
+            "COLUMN_NAME": "reminder_notes",
+            "COLUMN_TYPE": "text",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_credit_balances",
+            "COLUMN_NAME": "original_sale_amount",
+            "COLUMN_TYPE": "decimal(58,2)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_credit_balances",
+            "COLUMN_NAME": "total_paid",
+            "COLUMN_TYPE": "decimal(35,2)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_credit_balances",
+            "COLUMN_NAME": "balance_due",
+            "COLUMN_TYPE": "decimal(59,2)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_credit_balances",
+            "COLUMN_NAME": "credit_status",
+            "COLUMN_TYPE": "varchar(14)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_daily_financials",
+            "COLUMN_NAME": "business_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_daily_financials",
+            "COLUMN_NAME": "activity_date",
+            "COLUMN_TYPE": "date",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_daily_financials",
+            "COLUMN_NAME": "net_sales",
+            "COLUMN_TYPE": "decimal(65,2)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_daily_financials",
+            "COLUMN_NAME": "cost_of_goods_sold",
+            "COLUMN_TYPE": "decimal(65,2)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_daily_financials",
+            "COLUMN_NAME": "gross_profit",
+            "COLUMN_TYPE": "decimal(65,2)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_daily_financials",
+            "COLUMN_NAME": "operating_expenses",
+            "COLUMN_TYPE": "decimal(35,2)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_daily_financials",
+            "COLUMN_NAME": "net_profit",
+            "COLUMN_TYPE": "decimal(65,2)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_daily_financials",
+            "COLUMN_NAME": "cash_received",
+            "COLUMN_TYPE": "decimal(35,2)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_daily_financials",
+            "COLUMN_NAME": "cash_spent",
+            "COLUMN_TYPE": "decimal(35,2)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_daily_financials",
+            "COLUMN_NAME": "net_cash_flow",
+            "COLUMN_TYPE": "decimal(36,2)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_daily_financial_events",
+            "COLUMN_NAME": "business_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_daily_financial_events",
+            "COLUMN_NAME": "activity_date",
+            "COLUMN_TYPE": "date",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_daily_financial_events",
+            "COLUMN_NAME": "net_sales",
+            "COLUMN_TYPE": "decimal(58,2)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_daily_financial_events",
+            "COLUMN_NAME": "cogs",
+            "COLUMN_TYPE": "decimal(45,2)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_daily_financial_events",
+            "COLUMN_NAME": "operating_expenses",
+            "COLUMN_TYPE": "decimal(13,2)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_daily_financial_events",
+            "COLUMN_NAME": "cash_in",
+            "COLUMN_TYPE": "decimal(13,2)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_daily_financial_events",
+            "COLUMN_NAME": "cash_out",
+            "COLUMN_TYPE": "decimal(13,2)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_dashboard_overview",
+            "COLUMN_NAME": "business_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_dashboard_overview",
+            "COLUMN_NAME": "business_name",
+            "COLUMN_TYPE": "varchar(150)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_dashboard_overview",
+            "COLUMN_NAME": "total_net_sales",
+            "COLUMN_TYPE": "decimal(65,2)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_dashboard_overview",
+            "COLUMN_NAME": "total_cogs",
+            "COLUMN_TYPE": "decimal(65,2)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_dashboard_overview",
+            "COLUMN_NAME": "total_operating_expenses",
+            "COLUMN_TYPE": "decimal(57,2)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_dashboard_overview",
+            "COLUMN_NAME": "estimated_net_profit",
+            "COLUMN_TYPE": "decimal(65,2)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_dashboard_overview",
+            "COLUMN_NAME": "total_cash_received",
+            "COLUMN_TYPE": "decimal(57,2)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_dashboard_overview",
+            "COLUMN_NAME": "total_cash_spent",
+            "COLUMN_TYPE": "decimal(57,2)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_dashboard_overview",
+            "COLUMN_NAME": "net_cash_flow",
+            "COLUMN_TYPE": "decimal(58,2)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_dashboard_overview",
+            "COLUMN_NAME": "outstanding_utang",
+            "COLUMN_TYPE": "decimal(65,2)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_payment_totals",
+            "COLUMN_NAME": "sale_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_payment_totals",
+            "COLUMN_NAME": "net_paid",
+            "COLUMN_TYPE": "decimal(35,2)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_sale_financials",
+            "COLUMN_NAME": "sale_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_sale_financials",
+            "COLUMN_NAME": "business_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_sale_financials",
+            "COLUMN_NAME": "customer_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_sale_financials",
+            "COLUMN_NAME": "sale_number",
+            "COLUMN_TYPE": "varchar(60)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_sale_financials",
+            "COLUMN_NAME": "sale_type",
+            "COLUMN_TYPE": "enum('immediate','credit')",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_sale_financials",
+            "COLUMN_NAME": "sale_status",
+            "COLUMN_TYPE": "enum('draft','posted','void')",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_sale_financials",
+            "COLUMN_NAME": "sold_at",
+            "COLUMN_TYPE": "datetime",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_sale_financials",
+            "COLUMN_NAME": "discount_type",
+            "COLUMN_TYPE": "enum('none','fixed','percent')",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_sale_financials",
+            "COLUMN_NAME": "discount_value",
+            "COLUMN_TYPE": "decimal(13,2)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_sale_financials",
+            "COLUMN_NAME": "subtotal",
+            "COLUMN_TYPE": "decimal(45,2)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_sale_financials",
+            "COLUMN_NAME": "cost_of_goods_sold",
+            "COLUMN_TYPE": "decimal(45,2)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_sale_financials",
+            "COLUMN_NAME": "net_sale",
+            "COLUMN_TYPE": "decimal(58,2)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_sale_financials",
+            "COLUMN_NAME": "total_paid",
+            "COLUMN_TYPE": "decimal(35,2)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_sale_financials",
+            "COLUMN_NAME": "balance_due",
+            "COLUMN_TYPE": "decimal(59,2)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_sale_item_totals",
+            "COLUMN_NAME": "sale_id",
+            "COLUMN_TYPE": "bigint(20) unsigned",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_sale_item_totals",
+            "COLUMN_NAME": "subtotal",
+            "COLUMN_TYPE": "decimal(45,2)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_sale_item_totals",
+            "COLUMN_NAME": "cost_of_goods_sold",
+            "COLUMN_TYPE": "decimal(45,2)",
+            "IS_NULLABLE": "YES",
+            "COLUMN_KEY": ""
+        },
+        {
+            "TABLE_NAME": "v_sale_item_totals",
+            "COLUMN_NAME": "item_rows",
+            "COLUMN_TYPE": "bigint(21)",
+            "IS_NULLABLE": "NO",
+            "COLUMN_KEY": ""
+        }
+    ],
+    "keys": [
+        {
+            "TABLE_NAME": "activity_logs",
+            "COLUMN_NAME": "actor_user_id",
+            "CONSTRAINT_NAME": "activity_logs_ibfk_1",
+            "REFERENCED_TABLE_NAME": "users",
+            "REFERENCED_COLUMN_NAME": "user_id"
+        },
+        {
+            "TABLE_NAME": "activity_logs",
+            "COLUMN_NAME": "business_id",
+            "CONSTRAINT_NAME": "activity_logs_ibfk_2",
+            "REFERENCED_TABLE_NAME": "businesses",
+            "REFERENCED_COLUMN_NAME": "business_id"
+        },
+        {
+            "TABLE_NAME": "activity_logs",
+            "COLUMN_NAME": "activity_id",
+            "CONSTRAINT_NAME": "PRIMARY",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "admin_action_logs",
+            "COLUMN_NAME": "admin_user_id",
+            "CONSTRAINT_NAME": "admin_action_logs_ibfk_1",
+            "REFERENCED_TABLE_NAME": "users",
+            "REFERENCED_COLUMN_NAME": "user_id"
+        },
+        {
+            "TABLE_NAME": "admin_action_logs",
+            "COLUMN_NAME": "target_user_id",
+            "CONSTRAINT_NAME": "admin_action_logs_ibfk_2",
+            "REFERENCED_TABLE_NAME": "users",
+            "REFERENCED_COLUMN_NAME": "user_id"
+        },
+        {
+            "TABLE_NAME": "admin_action_logs",
+            "COLUMN_NAME": "admin_action_id",
+            "CONSTRAINT_NAME": "PRIMARY",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "announcements",
+            "COLUMN_NAME": "author_admin_id",
+            "CONSTRAINT_NAME": "announcements_ibfk_1",
+            "REFERENCED_TABLE_NAME": "users",
+            "REFERENCED_COLUMN_NAME": "user_id"
+        },
+        {
+            "TABLE_NAME": "announcements",
+            "COLUMN_NAME": "announcement_id",
+            "CONSTRAINT_NAME": "PRIMARY",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "auth_sessions",
+            "COLUMN_NAME": "user_id",
+            "CONSTRAINT_NAME": "auth_sessions_ibfk_1",
+            "REFERENCED_TABLE_NAME": "users",
+            "REFERENCED_COLUMN_NAME": "user_id"
+        },
+        {
+            "TABLE_NAME": "auth_sessions",
+            "COLUMN_NAME": "session_id",
+            "CONSTRAINT_NAME": "PRIMARY",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "auth_sessions",
+            "COLUMN_NAME": "token_hash",
+            "CONSTRAINT_NAME": "uq_session_token",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "backup_jobs",
+            "COLUMN_NAME": "initiated_by",
+            "CONSTRAINT_NAME": "backup_jobs_ibfk_1",
+            "REFERENCED_TABLE_NAME": "users",
+            "REFERENCED_COLUMN_NAME": "user_id"
+        },
+        {
+            "TABLE_NAME": "backup_jobs",
+            "COLUMN_NAME": "backup_job_id",
+            "CONSTRAINT_NAME": "PRIMARY",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "businesses",
+            "COLUMN_NAME": "owner_user_id",
+            "CONSTRAINT_NAME": "businesses_ibfk_1",
+            "REFERENCED_TABLE_NAME": "users",
+            "REFERENCED_COLUMN_NAME": "user_id"
+        },
+        {
+            "TABLE_NAME": "businesses",
+            "COLUMN_NAME": "business_category_id",
+            "CONSTRAINT_NAME": "businesses_ibfk_2",
+            "REFERENCED_TABLE_NAME": "business_categories",
+            "REFERENCED_COLUMN_NAME": "business_category_id"
+        },
+        {
+            "TABLE_NAME": "businesses",
+            "COLUMN_NAME": "business_id",
+            "CONSTRAINT_NAME": "PRIMARY",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "businesses",
+            "COLUMN_NAME": "business_id",
+            "CONSTRAINT_NAME": "uq_business_owner_pair",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "businesses",
+            "COLUMN_NAME": "owner_user_id",
+            "CONSTRAINT_NAME": "uq_business_owner_pair",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "businesses",
+            "COLUMN_NAME": "owner_user_id",
+            "CONSTRAINT_NAME": "uq_one_business_per_owner",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "business_categories",
+            "COLUMN_NAME": "category_name",
+            "CONSTRAINT_NAME": "category_name",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "business_categories",
+            "COLUMN_NAME": "business_category_id",
+            "CONSTRAINT_NAME": "PRIMARY",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "customers",
+            "COLUMN_NAME": "business_id",
+            "CONSTRAINT_NAME": "customers_ibfk_1",
+            "REFERENCED_TABLE_NAME": "businesses",
+            "REFERENCED_COLUMN_NAME": "business_id"
+        },
+        {
+            "TABLE_NAME": "customers",
+            "COLUMN_NAME": "customer_id",
+            "CONSTRAINT_NAME": "PRIMARY",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "customers",
+            "COLUMN_NAME": "customer_id",
+            "CONSTRAINT_NAME": "uq_customer_business",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "customers",
+            "COLUMN_NAME": "business_id",
+            "CONSTRAINT_NAME": "uq_customer_business",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "customer_credits",
+            "COLUMN_NAME": "sale_id",
+            "CONSTRAINT_NAME": "customer_credits_ibfk_1",
+            "REFERENCED_TABLE_NAME": "sales",
+            "REFERENCED_COLUMN_NAME": "sale_id"
+        },
+        {
+            "TABLE_NAME": "customer_credits",
+            "COLUMN_NAME": "sale_id",
+            "CONSTRAINT_NAME": "PRIMARY",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "expenses",
+            "COLUMN_NAME": "business_id",
+            "CONSTRAINT_NAME": "expenses_ibfk_1",
+            "REFERENCED_TABLE_NAME": "businesses",
+            "REFERENCED_COLUMN_NAME": "business_id"
+        },
+        {
+            "TABLE_NAME": "expenses",
+            "COLUMN_NAME": "expense_category_id",
+            "CONSTRAINT_NAME": "expenses_ibfk_2",
+            "REFERENCED_TABLE_NAME": "expense_categories",
+            "REFERENCED_COLUMN_NAME": "expense_category_id"
+        },
+        {
+            "TABLE_NAME": "expenses",
+            "COLUMN_NAME": "business_id",
+            "CONSTRAINT_NAME": "expenses_ibfk_2",
+            "REFERENCED_TABLE_NAME": "expense_categories",
+            "REFERENCED_COLUMN_NAME": "business_id"
+        },
+        {
+            "TABLE_NAME": "expenses",
+            "COLUMN_NAME": "recurring_expense_id",
+            "CONSTRAINT_NAME": "expenses_ibfk_3",
+            "REFERENCED_TABLE_NAME": "recurring_expenses",
+            "REFERENCED_COLUMN_NAME": "recurring_expense_id"
+        },
+        {
+            "TABLE_NAME": "expenses",
+            "COLUMN_NAME": "business_id",
+            "CONSTRAINT_NAME": "expenses_ibfk_3",
+            "REFERENCED_TABLE_NAME": "recurring_expenses",
+            "REFERENCED_COLUMN_NAME": "business_id"
+        },
+        {
+            "TABLE_NAME": "expenses",
+            "COLUMN_NAME": "payment_method_id",
+            "CONSTRAINT_NAME": "expenses_ibfk_4",
+            "REFERENCED_TABLE_NAME": "payment_methods",
+            "REFERENCED_COLUMN_NAME": "payment_method_id"
+        },
+        {
+            "TABLE_NAME": "expenses",
+            "COLUMN_NAME": "business_id",
+            "CONSTRAINT_NAME": "expenses_ibfk_5",
+            "REFERENCED_TABLE_NAME": "businesses",
+            "REFERENCED_COLUMN_NAME": "business_id"
+        },
+        {
+            "TABLE_NAME": "expenses",
+            "COLUMN_NAME": "entered_by",
+            "CONSTRAINT_NAME": "expenses_ibfk_5",
+            "REFERENCED_TABLE_NAME": "businesses",
+            "REFERENCED_COLUMN_NAME": "owner_user_id"
+        },
+        {
+            "TABLE_NAME": "expenses",
+            "COLUMN_NAME": "business_id",
+            "CONSTRAINT_NAME": "expenses_ibfk_6",
+            "REFERENCED_TABLE_NAME": "businesses",
+            "REFERENCED_COLUMN_NAME": "business_id"
+        },
+        {
+            "TABLE_NAME": "expenses",
+            "COLUMN_NAME": "voided_by",
+            "CONSTRAINT_NAME": "expenses_ibfk_6",
+            "REFERENCED_TABLE_NAME": "businesses",
+            "REFERENCED_COLUMN_NAME": "owner_user_id"
+        },
+        {
+            "TABLE_NAME": "expenses",
+            "COLUMN_NAME": "expense_id",
+            "CONSTRAINT_NAME": "PRIMARY",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "expenses",
+            "COLUMN_NAME": "expense_id",
+            "CONSTRAINT_NAME": "uq_expense_business",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "expenses",
+            "COLUMN_NAME": "business_id",
+            "CONSTRAINT_NAME": "uq_expense_business",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "expenses",
+            "COLUMN_NAME": "recurring_expense_id",
+            "CONSTRAINT_NAME": "uq_recurring_occurrence",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "expenses",
+            "COLUMN_NAME": "recurrence_due_on",
+            "CONSTRAINT_NAME": "uq_recurring_occurrence",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "expense_categories",
+            "COLUMN_NAME": "business_id",
+            "CONSTRAINT_NAME": "expense_categories_ibfk_1",
+            "REFERENCED_TABLE_NAME": "businesses",
+            "REFERENCED_COLUMN_NAME": "business_id"
+        },
+        {
+            "TABLE_NAME": "expense_categories",
+            "COLUMN_NAME": "expense_category_id",
+            "CONSTRAINT_NAME": "PRIMARY",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "expense_categories",
+            "COLUMN_NAME": "expense_category_id",
+            "CONSTRAINT_NAME": "uq_exp_cat_business",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "expense_categories",
+            "COLUMN_NAME": "business_id",
+            "CONSTRAINT_NAME": "uq_exp_cat_business",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "expense_categories",
+            "COLUMN_NAME": "business_id",
+            "CONSTRAINT_NAME": "uq_exp_cat_name",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "expense_categories",
+            "COLUMN_NAME": "category_name",
+            "CONSTRAINT_NAME": "uq_exp_cat_name",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "expense_receipts",
+            "COLUMN_NAME": "expense_id",
+            "CONSTRAINT_NAME": "expense_receipts_ibfk_1",
+            "REFERENCED_TABLE_NAME": "expenses",
+            "REFERENCED_COLUMN_NAME": "expense_id"
+        },
+        {
+            "TABLE_NAME": "expense_receipts",
+            "COLUMN_NAME": "business_id",
+            "CONSTRAINT_NAME": "expense_receipts_ibfk_1",
+            "REFERENCED_TABLE_NAME": "expenses",
+            "REFERENCED_COLUMN_NAME": "business_id"
+        },
+        {
+            "TABLE_NAME": "expense_receipts",
+            "COLUMN_NAME": "business_id",
+            "CONSTRAINT_NAME": "expense_receipts_ibfk_2",
+            "REFERENCED_TABLE_NAME": "businesses",
+            "REFERENCED_COLUMN_NAME": "business_id"
+        },
+        {
+            "TABLE_NAME": "expense_receipts",
+            "COLUMN_NAME": "uploaded_by",
+            "CONSTRAINT_NAME": "expense_receipts_ibfk_2",
+            "REFERENCED_TABLE_NAME": "businesses",
+            "REFERENCED_COLUMN_NAME": "owner_user_id"
+        },
+        {
+            "TABLE_NAME": "expense_receipts",
+            "COLUMN_NAME": "receipt_id",
+            "CONSTRAINT_NAME": "PRIMARY",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "password_reset_tokens",
+            "COLUMN_NAME": "user_id",
+            "CONSTRAINT_NAME": "password_reset_tokens_ibfk_1",
+            "REFERENCED_TABLE_NAME": "users",
+            "REFERENCED_COLUMN_NAME": "user_id"
+        },
+        {
+            "TABLE_NAME": "password_reset_tokens",
+            "COLUMN_NAME": "reset_id",
+            "CONSTRAINT_NAME": "PRIMARY",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "password_reset_tokens",
+            "COLUMN_NAME": "token_hash",
+            "CONSTRAINT_NAME": "uq_reset_token",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "payment_methods",
+            "COLUMN_NAME": "method_code",
+            "CONSTRAINT_NAME": "method_code",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "payment_methods",
+            "COLUMN_NAME": "payment_method_id",
+            "CONSTRAINT_NAME": "PRIMARY",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "permissions",
+            "COLUMN_NAME": "permission_code",
+            "CONSTRAINT_NAME": "permission_code",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "permissions",
+            "COLUMN_NAME": "permission_id",
+            "CONSTRAINT_NAME": "PRIMARY",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "platform_settings",
+            "COLUMN_NAME": "updated_by",
+            "CONSTRAINT_NAME": "platform_settings_ibfk_1",
+            "REFERENCED_TABLE_NAME": "users",
+            "REFERENCED_COLUMN_NAME": "user_id"
+        },
+        {
+            "TABLE_NAME": "platform_settings",
+            "COLUMN_NAME": "setting_key",
+            "CONSTRAINT_NAME": "PRIMARY",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "products",
+            "COLUMN_NAME": "product_id",
+            "CONSTRAINT_NAME": "PRIMARY",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "products",
+            "COLUMN_NAME": "business_id",
+            "CONSTRAINT_NAME": "products_ibfk_1",
+            "REFERENCED_TABLE_NAME": "businesses",
+            "REFERENCED_COLUMN_NAME": "business_id"
+        },
+        {
+            "TABLE_NAME": "products",
+            "COLUMN_NAME": "product_id",
+            "CONSTRAINT_NAME": "uq_product_business",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "products",
+            "COLUMN_NAME": "business_id",
+            "CONSTRAINT_NAME": "uq_product_business",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "products",
+            "COLUMN_NAME": "business_id",
+            "CONSTRAINT_NAME": "uq_product_sku_per_business",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "products",
+            "COLUMN_NAME": "sku",
+            "CONSTRAINT_NAME": "uq_product_sku_per_business",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "recurring_expenses",
+            "COLUMN_NAME": "recurring_expense_id",
+            "CONSTRAINT_NAME": "PRIMARY",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "recurring_expenses",
+            "COLUMN_NAME": "business_id",
+            "CONSTRAINT_NAME": "recurring_expenses_ibfk_1",
+            "REFERENCED_TABLE_NAME": "businesses",
+            "REFERENCED_COLUMN_NAME": "business_id"
+        },
+        {
+            "TABLE_NAME": "recurring_expenses",
+            "COLUMN_NAME": "expense_category_id",
+            "CONSTRAINT_NAME": "recurring_expenses_ibfk_2",
+            "REFERENCED_TABLE_NAME": "expense_categories",
+            "REFERENCED_COLUMN_NAME": "expense_category_id"
+        },
+        {
+            "TABLE_NAME": "recurring_expenses",
+            "COLUMN_NAME": "business_id",
+            "CONSTRAINT_NAME": "recurring_expenses_ibfk_2",
+            "REFERENCED_TABLE_NAME": "expense_categories",
+            "REFERENCED_COLUMN_NAME": "business_id"
+        },
+        {
+            "TABLE_NAME": "recurring_expenses",
+            "COLUMN_NAME": "payment_method_id",
+            "CONSTRAINT_NAME": "recurring_expenses_ibfk_3",
+            "REFERENCED_TABLE_NAME": "payment_methods",
+            "REFERENCED_COLUMN_NAME": "payment_method_id"
+        },
+        {
+            "TABLE_NAME": "recurring_expenses",
+            "COLUMN_NAME": "recurring_expense_id",
+            "CONSTRAINT_NAME": "uq_recurring_business",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "recurring_expenses",
+            "COLUMN_NAME": "business_id",
+            "CONSTRAINT_NAME": "uq_recurring_business",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "roles",
+            "COLUMN_NAME": "role_id",
+            "CONSTRAINT_NAME": "PRIMARY",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "roles",
+            "COLUMN_NAME": "role_code",
+            "CONSTRAINT_NAME": "role_code",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "role_permissions",
+            "COLUMN_NAME": "role_id",
+            "CONSTRAINT_NAME": "PRIMARY",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "role_permissions",
+            "COLUMN_NAME": "permission_id",
+            "CONSTRAINT_NAME": "PRIMARY",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "role_permissions",
+            "COLUMN_NAME": "role_id",
+            "CONSTRAINT_NAME": "role_permissions_ibfk_1",
+            "REFERENCED_TABLE_NAME": "roles",
+            "REFERENCED_COLUMN_NAME": "role_id"
+        },
+        {
+            "TABLE_NAME": "role_permissions",
+            "COLUMN_NAME": "permission_id",
+            "CONSTRAINT_NAME": "role_permissions_ibfk_2",
+            "REFERENCED_TABLE_NAME": "permissions",
+            "REFERENCED_COLUMN_NAME": "permission_id"
+        },
+        {
+            "TABLE_NAME": "sales",
+            "COLUMN_NAME": "sale_id",
+            "CONSTRAINT_NAME": "PRIMARY",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "sales",
+            "COLUMN_NAME": "business_id",
+            "CONSTRAINT_NAME": "sales_ibfk_1",
+            "REFERENCED_TABLE_NAME": "businesses",
+            "REFERENCED_COLUMN_NAME": "business_id"
+        },
+        {
+            "TABLE_NAME": "sales",
+            "COLUMN_NAME": "customer_id",
+            "CONSTRAINT_NAME": "sales_ibfk_2",
+            "REFERENCED_TABLE_NAME": "customers",
+            "REFERENCED_COLUMN_NAME": "customer_id"
+        },
+        {
+            "TABLE_NAME": "sales",
+            "COLUMN_NAME": "business_id",
+            "CONSTRAINT_NAME": "sales_ibfk_2",
+            "REFERENCED_TABLE_NAME": "customers",
+            "REFERENCED_COLUMN_NAME": "business_id"
+        },
+        {
+            "TABLE_NAME": "sales",
+            "COLUMN_NAME": "business_id",
+            "CONSTRAINT_NAME": "sales_ibfk_3",
+            "REFERENCED_TABLE_NAME": "businesses",
+            "REFERENCED_COLUMN_NAME": "business_id"
+        },
+        {
+            "TABLE_NAME": "sales",
+            "COLUMN_NAME": "created_by",
+            "CONSTRAINT_NAME": "sales_ibfk_3",
+            "REFERENCED_TABLE_NAME": "businesses",
+            "REFERENCED_COLUMN_NAME": "owner_user_id"
+        },
+        {
+            "TABLE_NAME": "sales",
+            "COLUMN_NAME": "business_id",
+            "CONSTRAINT_NAME": "sales_ibfk_4",
+            "REFERENCED_TABLE_NAME": "businesses",
+            "REFERENCED_COLUMN_NAME": "business_id"
+        },
+        {
+            "TABLE_NAME": "sales",
+            "COLUMN_NAME": "voided_by",
+            "CONSTRAINT_NAME": "sales_ibfk_4",
+            "REFERENCED_TABLE_NAME": "businesses",
+            "REFERENCED_COLUMN_NAME": "owner_user_id"
+        },
+        {
+            "TABLE_NAME": "sales",
+            "COLUMN_NAME": "sale_id",
+            "CONSTRAINT_NAME": "uq_sale_business",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "sales",
+            "COLUMN_NAME": "business_id",
+            "CONSTRAINT_NAME": "uq_sale_business",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "sales",
+            "COLUMN_NAME": "business_id",
+            "CONSTRAINT_NAME": "uq_sale_number_per_business",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "sales",
+            "COLUMN_NAME": "sale_number",
+            "CONSTRAINT_NAME": "uq_sale_number_per_business",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "sale_items",
+            "COLUMN_NAME": "sale_item_id",
+            "CONSTRAINT_NAME": "PRIMARY",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "sale_items",
+            "COLUMN_NAME": "sale_id",
+            "CONSTRAINT_NAME": "sale_items_ibfk_1",
+            "REFERENCED_TABLE_NAME": "sales",
+            "REFERENCED_COLUMN_NAME": "sale_id"
+        },
+        {
+            "TABLE_NAME": "sale_items",
+            "COLUMN_NAME": "business_id",
+            "CONSTRAINT_NAME": "sale_items_ibfk_1",
+            "REFERENCED_TABLE_NAME": "sales",
+            "REFERENCED_COLUMN_NAME": "business_id"
+        },
+        {
+            "TABLE_NAME": "sale_items",
+            "COLUMN_NAME": "product_id",
+            "CONSTRAINT_NAME": "sale_items_ibfk_2",
+            "REFERENCED_TABLE_NAME": "products",
+            "REFERENCED_COLUMN_NAME": "product_id"
+        },
+        {
+            "TABLE_NAME": "sale_items",
+            "COLUMN_NAME": "business_id",
+            "CONSTRAINT_NAME": "sale_items_ibfk_2",
+            "REFERENCED_TABLE_NAME": "products",
+            "REFERENCED_COLUMN_NAME": "business_id"
+        },
+        {
+            "TABLE_NAME": "sale_payments",
+            "COLUMN_NAME": "payment_id",
+            "CONSTRAINT_NAME": "PRIMARY",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "sale_payments",
+            "COLUMN_NAME": "sale_id",
+            "CONSTRAINT_NAME": "sale_payments_ibfk_1",
+            "REFERENCED_TABLE_NAME": "sales",
+            "REFERENCED_COLUMN_NAME": "sale_id"
+        },
+        {
+            "TABLE_NAME": "sale_payments",
+            "COLUMN_NAME": "business_id",
+            "CONSTRAINT_NAME": "sale_payments_ibfk_1",
+            "REFERENCED_TABLE_NAME": "sales",
+            "REFERENCED_COLUMN_NAME": "business_id"
+        },
+        {
+            "TABLE_NAME": "sale_payments",
+            "COLUMN_NAME": "reverses_payment_id",
+            "CONSTRAINT_NAME": "sale_payments_ibfk_2",
+            "REFERENCED_TABLE_NAME": "sale_payments",
+            "REFERENCED_COLUMN_NAME": "payment_id"
+        },
+        {
+            "TABLE_NAME": "sale_payments",
+            "COLUMN_NAME": "sale_id",
+            "CONSTRAINT_NAME": "sale_payments_ibfk_2",
+            "REFERENCED_TABLE_NAME": "sale_payments",
+            "REFERENCED_COLUMN_NAME": "sale_id"
+        },
+        {
+            "TABLE_NAME": "sale_payments",
+            "COLUMN_NAME": "business_id",
+            "CONSTRAINT_NAME": "sale_payments_ibfk_2",
+            "REFERENCED_TABLE_NAME": "sale_payments",
+            "REFERENCED_COLUMN_NAME": "business_id"
+        },
+        {
+            "TABLE_NAME": "sale_payments",
+            "COLUMN_NAME": "payment_method_id",
+            "CONSTRAINT_NAME": "sale_payments_ibfk_3",
+            "REFERENCED_TABLE_NAME": "payment_methods",
+            "REFERENCED_COLUMN_NAME": "payment_method_id"
+        },
+        {
+            "TABLE_NAME": "sale_payments",
+            "COLUMN_NAME": "business_id",
+            "CONSTRAINT_NAME": "sale_payments_ibfk_4",
+            "REFERENCED_TABLE_NAME": "businesses",
+            "REFERENCED_COLUMN_NAME": "business_id"
+        },
+        {
+            "TABLE_NAME": "sale_payments",
+            "COLUMN_NAME": "entered_by",
+            "CONSTRAINT_NAME": "sale_payments_ibfk_4",
+            "REFERENCED_TABLE_NAME": "businesses",
+            "REFERENCED_COLUMN_NAME": "owner_user_id"
+        },
+        {
+            "TABLE_NAME": "sale_payments",
+            "COLUMN_NAME": "business_id",
+            "CONSTRAINT_NAME": "uq_payment_idempotency",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "sale_payments",
+            "COLUMN_NAME": "idempotency_key",
+            "CONSTRAINT_NAME": "uq_payment_idempotency",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "sale_payments",
+            "COLUMN_NAME": "payment_id",
+            "CONSTRAINT_NAME": "uq_payment_same_sale",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "sale_payments",
+            "COLUMN_NAME": "sale_id",
+            "CONSTRAINT_NAME": "uq_payment_same_sale",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "sale_payments",
+            "COLUMN_NAME": "business_id",
+            "CONSTRAINT_NAME": "uq_payment_same_sale",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "support_tickets",
+            "COLUMN_NAME": "ticket_id",
+            "CONSTRAINT_NAME": "PRIMARY",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "support_tickets",
+            "COLUMN_NAME": "submitted_by",
+            "CONSTRAINT_NAME": "support_tickets_ibfk_1",
+            "REFERENCED_TABLE_NAME": "users",
+            "REFERENCED_COLUMN_NAME": "user_id"
+        },
+        {
+            "TABLE_NAME": "support_tickets",
+            "COLUMN_NAME": "assigned_admin_id",
+            "CONSTRAINT_NAME": "support_tickets_ibfk_2",
+            "REFERENCED_TABLE_NAME": "users",
+            "REFERENCED_COLUMN_NAME": "user_id"
+        },
+        {
+            "TABLE_NAME": "ticket_messages",
+            "COLUMN_NAME": "message_id",
+            "CONSTRAINT_NAME": "PRIMARY",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "ticket_messages",
+            "COLUMN_NAME": "ticket_id",
+            "CONSTRAINT_NAME": "ticket_messages_ibfk_1",
+            "REFERENCED_TABLE_NAME": "support_tickets",
+            "REFERENCED_COLUMN_NAME": "ticket_id"
+        },
+        {
+            "TABLE_NAME": "ticket_messages",
+            "COLUMN_NAME": "sender_user_id",
+            "CONSTRAINT_NAME": "ticket_messages_ibfk_2",
+            "REFERENCED_TABLE_NAME": "users",
+            "REFERENCED_COLUMN_NAME": "user_id"
+        },
+        {
+            "TABLE_NAME": "ticket_status_history",
+            "COLUMN_NAME": "history_id",
+            "CONSTRAINT_NAME": "PRIMARY",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "ticket_status_history",
+            "COLUMN_NAME": "ticket_id",
+            "CONSTRAINT_NAME": "ticket_status_history_ibfk_1",
+            "REFERENCED_TABLE_NAME": "support_tickets",
+            "REFERENCED_COLUMN_NAME": "ticket_id"
+        },
+        {
+            "TABLE_NAME": "ticket_status_history",
+            "COLUMN_NAME": "changed_by",
+            "CONSTRAINT_NAME": "ticket_status_history_ibfk_2",
+            "REFERENCED_TABLE_NAME": "users",
+            "REFERENCED_COLUMN_NAME": "user_id"
+        },
+        {
+            "TABLE_NAME": "users",
+            "COLUMN_NAME": "user_id",
+            "CONSTRAINT_NAME": "PRIMARY",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "users",
+            "COLUMN_NAME": "email",
+            "CONSTRAINT_NAME": "uq_user_email",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "users",
+            "COLUMN_NAME": "username",
+            "CONSTRAINT_NAME": "uq_user_username",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "users",
+            "COLUMN_NAME": "role_id",
+            "CONSTRAINT_NAME": "users_ibfk_1",
+            "REFERENCED_TABLE_NAME": "roles",
+            "REFERENCED_COLUMN_NAME": "role_id"
+        },
+        {
+            "TABLE_NAME": "user_feedback",
+            "COLUMN_NAME": "feedback_id",
+            "CONSTRAINT_NAME": "PRIMARY",
+            "REFERENCED_TABLE_NAME": null,
+            "REFERENCED_COLUMN_NAME": null
+        },
+        {
+            "TABLE_NAME": "user_feedback",
+            "COLUMN_NAME": "submitted_by",
+            "CONSTRAINT_NAME": "user_feedback_ibfk_1",
+            "REFERENCED_TABLE_NAME": "users",
+            "REFERENCED_COLUMN_NAME": "user_id"
+        }
+    ],
+    "views": [
+        {
+            "TABLE_NAME": "v_business_credit_totals",
+            "VIEW_DEFINITION": "select `v_credit_balances`.`business_id` AS `business_id`,round(sum(`v_credit_balances`.`balance_due`),2) AS `outstanding_utang` from `profitpocket_db`.`v_credit_balances` where `v_credit_balances`.`credit_status` not in ('void','fully_paid') group by `v_credit_balances`.`business_id`"
+        },
+        {
+            "TABLE_NAME": "v_credit_balances",
+            "VIEW_DEFINITION": "select `f`.`sale_id` AS `sale_id`,`f`.`business_id` AS `business_id`,`f`.`customer_id` AS `customer_id`,`f`.`sale_number` AS `sale_number`,`c`.`created_at` AS `credit_created_at`,`c`.`due_date` AS `due_date`,`c`.`notes` AS `notes`,`c`.`reminder_notes` AS `reminder_notes`,`f`.`net_sale` AS `original_sale_amount`,`f`.`total_paid` AS `total_paid`,`f`.`balance_due` AS `balance_due`,case when `f`.`sale_status` = 'void' then 'void' when `f`.`balance_due` = 0 then 'fully_paid' when `c`.`due_date` is not null and `c`.`due_date` < curdate() then 'overdue' when `f`.`total_paid` > 0 then 'partially_paid' else 'unpaid' end AS `credit_status` from (`profitpocket_db`.`customer_credits` `c` join `profitpocket_db`.`v_sale_financials` `f` on(`f`.`sale_id` = `c`.`sale_id`))"
+        },
+        {
+            "TABLE_NAME": "v_daily_financials",
+            "VIEW_DEFINITION": "select `v_daily_financial_events`.`business_id` AS `business_id`,`v_daily_financial_events`.`activity_date` AS `activity_date`,round(sum(`v_daily_financial_events`.`net_sales`),2) AS `net_sales`,round(sum(`v_daily_financial_events`.`cogs`),2) AS `cost_of_goods_sold`,round(sum(`v_daily_financial_events`.`net_sales`) - sum(`v_daily_financial_events`.`cogs`),2) AS `gross_profit`,round(sum(`v_daily_financial_events`.`operating_expenses`),2) AS `operating_expenses`,round(sum(`v_daily_financial_events`.`net_sales`) - sum(`v_daily_financial_events`.`cogs`) - sum(`v_daily_financial_events`.`operating_expenses`),2) AS `net_profit`,round(sum(`v_daily_financial_events`.`cash_in`),2) AS `cash_received`,round(sum(`v_daily_financial_events`.`cash_out`),2) AS `cash_spent`,round(sum(`v_daily_financial_events`.`cash_in`) - sum(`v_daily_financial_events`.`cash_out`),2) AS `net_cash_flow` from `profitpocket_db`.`v_daily_financial_events` group by `v_daily_financial_events`.`business_id`,`v_daily_financial_events`.`activity_date`"
+        },
+        {
+            "TABLE_NAME": "v_daily_financial_events",
+            "VIEW_DEFINITION": "select `v_sale_financials`.`business_id` AS `business_id`,cast(`v_sale_financials`.`sold_at` as date) AS `activity_date`,`v_sale_financials`.`net_sale` AS `net_sales`,`v_sale_financials`.`cost_of_goods_sold` AS `cogs`,0.00 AS `operating_expenses`,0.00 AS `cash_in`,0.00 AS `cash_out` from `profitpocket_db`.`v_sale_financials` where `v_sale_financials`.`sale_status` = 'posted' union all select `profitpocket_db`.`expenses`.`business_id` AS `business_id`,`profitpocket_db`.`expenses`.`expense_date` AS `expense_date`,0.00 AS `0.00`,0.00 AS `0.00`,case when `profitpocket_db`.`expenses`.`expense_treatment` = 'operating' then `profitpocket_db`.`expenses`.`amount` else 0.00 end AS `Name_exp_5`,0.00 AS `0.00`,`profitpocket_db`.`expenses`.`amount` AS `amount` from `profitpocket_db`.`expenses` where `profitpocket_db`.`expenses`.`expense_status` = 'posted' union all select `p`.`business_id` AS `business_id`,cast(`p`.`paid_at` as date) AS `DATE(p.paid_at)`,0.00 AS `0.00`,0.00 AS `0.00`,0.00 AS `0.00`,case when `p`.`payment_kind` = 'collection' then `p`.`amount` else -`p`.`amount` end AS `Name_exp_6`,0.00 AS `0.00` from (`profitpocket_db`.`sale_payments` `p` join `profitpocket_db`.`sales` `s` on(`s`.`sale_id` = `p`.`sale_id`)) where `s`.`sale_status` in ('posted','void')"
+        },
+        {
+            "TABLE_NAME": "v_dashboard_overview",
+            "VIEW_DEFINITION": "select `b`.`business_id` AS `business_id`,`b`.`business_name` AS `business_name`,coalesce(sum(`d`.`net_sales`),0.00) AS `total_net_sales`,coalesce(sum(`d`.`cost_of_goods_sold`),0.00) AS `total_cogs`,coalesce(sum(`d`.`operating_expenses`),0.00) AS `total_operating_expenses`,coalesce(sum(`d`.`net_profit`),0.00) AS `estimated_net_profit`,coalesce(sum(`d`.`cash_received`),0.00) AS `total_cash_received`,coalesce(sum(`d`.`cash_spent`),0.00) AS `total_cash_spent`,coalesce(sum(`d`.`net_cash_flow`),0.00) AS `net_cash_flow`,coalesce(`c`.`outstanding_utang`,0.00) AS `outstanding_utang` from ((`profitpocket_db`.`businesses` `b` left join `profitpocket_db`.`v_daily_financials` `d` on(`d`.`business_id` = `b`.`business_id`)) left join `profitpocket_db`.`v_business_credit_totals` `c` on(`c`.`business_id` = `b`.`business_id`)) group by `b`.`business_id`,`b`.`business_name`,`c`.`outstanding_utang`"
+        },
+        {
+            "TABLE_NAME": "v_payment_totals",
+            "VIEW_DEFINITION": "select `profitpocket_db`.`sale_payments`.`sale_id` AS `sale_id`,round(sum(case `profitpocket_db`.`sale_payments`.`payment_kind` when 'collection' then `profitpocket_db`.`sale_payments`.`amount` else -`profitpocket_db`.`sale_payments`.`amount` end),2) AS `net_paid` from `profitpocket_db`.`sale_payments` group by `profitpocket_db`.`sale_payments`.`sale_id`"
+        },
+        {
+            "TABLE_NAME": "v_sale_financials",
+            "VIEW_DEFINITION": "select `s`.`sale_id` AS `sale_id`,`s`.`business_id` AS `business_id`,`s`.`customer_id` AS `customer_id`,`s`.`sale_number` AS `sale_number`,`s`.`sale_type` AS `sale_type`,`s`.`sale_status` AS `sale_status`,`s`.`sold_at` AS `sold_at`,`s`.`discount_type` AS `discount_type`,`s`.`discount_value` AS `discount_value`,coalesce(`i`.`subtotal`,0.00) AS `subtotal`,coalesce(`i`.`cost_of_goods_sold`,0.00) AS `cost_of_goods_sold`,round(case `s`.`discount_type` when 'percent' then coalesce(`i`.`subtotal`,0) * (1 - `s`.`discount_value` / 100) when 'fixed' then coalesce(`i`.`subtotal`,0) - `s`.`discount_value` else coalesce(`i`.`subtotal`,0) end,2) AS `net_sale`,coalesce(`p`.`net_paid`,0.00) AS `total_paid`,greatest(0,round(case `s`.`discount_type` when 'percent' then coalesce(`i`.`subtotal`,0) * (1 - `s`.`discount_value` / 100) when 'fixed' then coalesce(`i`.`subtotal`,0) - `s`.`discount_value` else coalesce(`i`.`subtotal`,0) end - coalesce(`p`.`net_paid`,0),2)) AS `balance_due` from ((`profitpocket_db`.`sales` `s` left join `profitpocket_db`.`v_sale_item_totals` `i` on(`i`.`sale_id` = `s`.`sale_id`)) left join `profitpocket_db`.`v_payment_totals` `p` on(`p`.`sale_id` = `s`.`sale_id`))"
+        },
+        {
+            "TABLE_NAME": "v_sale_item_totals",
+            "VIEW_DEFINITION": "select `profitpocket_db`.`sale_items`.`sale_id` AS `sale_id`,round(sum(round(`profitpocket_db`.`sale_items`.`quantity` * `profitpocket_db`.`sale_items`.`unit_price`,2)),2) AS `subtotal`,round(sum(round(`profitpocket_db`.`sale_items`.`quantity` * `profitpocket_db`.`sale_items`.`unit_cost`,2)),2) AS `cost_of_goods_sold`,count(0) AS `item_rows` from `profitpocket_db`.`sale_items` group by `profitpocket_db`.`sale_items`.`sale_id`"
+        }
+    ],
+    "methods": [
+        {
+            "payment_method_id": 1,
+            "method_code": "cash",
+            "method_name": "Cash",
+            "is_active": 1
+        },
+        {
+            "payment_method_id": 2,
+            "method_code": "gcash",
+            "method_name": "GCash",
+            "is_active": 1
+        },
+        {
+            "payment_method_id": 3,
+            "method_code": "maya",
+            "method_name": "Maya",
+            "is_active": 1
+        },
+        {
+            "payment_method_id": 4,
+            "method_code": "bank",
+            "method_name": "Bank Transfer",
+            "is_active": 1
+        },
+        {
+            "payment_method_id": 5,
+            "method_code": "wallet_other",
+            "method_name": "Other Digital Wallet",
+            "is_active": 1
+        }
+    ],
+    "objects": {
+        "BASE TABLE": 28,
+        "VIEW": 8
+    },
+    "triggers": 27,
+    "remaining_payment_browser_fixtures": 0
+}

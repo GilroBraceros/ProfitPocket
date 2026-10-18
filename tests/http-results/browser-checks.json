@@ -1,0 +1,503 @@
+﻿{
+    "customDateControls":  true,
+    "utang":  {
+                  "module":  "Payment Management",
+                  "responsive":  [
+                                     {
+                                         "width":  1440
+                                     },
+                                     {
+                                         "width":  1024
+                                     },
+                                     {
+                                         "width":  768
+                                     },
+                                     {
+                                         "width":  390
+                                     },
+                                     {
+                                         "width":  320
+                                     }
+                                 ],
+                  "financialWrites":  0,
+                  "legacyRedirect":  true
+              },
+    "sales":  {
+                  "unsavedChangesGuard":  true,
+                  "removeItem":  true,
+                  "responsive":  [
+                                     {
+                                         "page":  "sales",
+                                         "viewport":  768,
+                                         "pageWidth":  768,
+                                         "tableScroll":  1120
+                                     },
+                                     {
+                                         "page":  "sales",
+                                         "viewport":  390,
+                                         "pageWidth":  390,
+                                         "tableScroll":  1120
+                                     },
+                                     {
+                                         "page":  "sales",
+                                         "viewport":  320,
+                                         "pageWidth":  320,
+                                         "tableScroll":  1120
+                                     },
+                                     {
+                                         "page":  "sale modal",
+                                         "viewport":  768,
+                                         "pageWidth":  768,
+                                         "bodyWidth":  498,
+                                         "bodyScrollWidth":  498,
+                                         "footerBottom":  871,
+                                         "bodyScrollable":  true
+                                     },
+                                     {
+                                         "page":  "sale modal",
+                                         "viewport":  390,
+                                         "pageWidth":  390,
+                                         "bodyWidth":  388,
+                                         "bodyScrollWidth":  388,
+                                         "footerBottom":  899,
+                                         "bodyScrollable":  true
+                                     },
+                                     {
+                                         "page":  "sale modal",
+                                         "viewport":  320,
+                                         "pageWidth":  320,
+                                         "bodyWidth":  318,
+                                         "bodyScrollWidth":  318,
+                                         "footerBottom":  899,
+                                         "bodyScrollable":  true
+                                     }
+                                 ],
+                  "multipleItems":  true,
+                  "adjacentValidation":  true,
+                  "realDraftSaveAndListRefresh":  true,
+                  "focusRestored":  true,
+                  "readonlyDetailsAndPostedEdits":  true,
+                  "financialSubmissions":  0,
+                  "calculations":  {
+                                       "subtotal":  "₱12.36",
+                                       "total":  "₱10.82",
+                                       "partialBalance":  "5.82",
+                                       "fixedTotal":  "11.36",
+                                       "items":  2,
+                                       "formValid":  true
+                                   },
+                  "filtersAndScrollPreserved":  true,
+                  "voidConfirmation":  true,
+                  "serverErrorPreservesInput":  true,
+                  "loadingAndDuplicateProtection":  true
+              },
+    "reports":  {
+                    "emptyStates":  true,
+                    "invalidDateRejected":  true,
+                    "chartReconciled":  true,
+                    "printAllTabs":  true,
+                    "customDates":  true,
+                    "detailModals":  [
+                                         "sales",
+                                         "expenses",
+                                         "utang"
+                                     ],
+                    "csvDownload":  true,
+                    "responsive":  [
+                                       {
+                                           "tab":  "sales",
+                                           "viewport":  1440,
+                                           "pageWidth":  1425,
+                                           "cards":  4,
+                                           "chart":  true,
+                                           "activeNavigation":  true,
+                                           "selectedTabs":  1
+                                       },
+                                       {
+                                           "tab":  "sales",
+                                           "viewport":  1024,
+                                           "pageWidth":  1009,
+                                           "cards":  4,
+                                           "chart":  true,
+                                           "activeNavigation":  true,
+                                           "selectedTabs":  1
+                                       },
+                                       {
+                                           "tab":  "sales",
+                                           "viewport":  768,
+                                           "pageWidth":  753,
+                                           "cards":  4,
+                                           "chart":  true,
+                                           "activeNavigation":  true,
+                                           "selectedTabs":  1
+                                       },
+                                       {
+                                           "tab":  "sales",
+                                           "viewport":  390,
+                                           "pageWidth":  375,
+                                           "cards":  4,
+                                           "chart":  true,
+                                           "activeNavigation":  true,
+                                           "selectedTabs":  1
+                                       },
+                                       {
+                                           "tab":  "sales",
+                                           "viewport":  320,
+                                           "pageWidth":  305,
+                                           "cards":  4,
+                                           "chart":  true,
+                                           "activeNavigation":  true,
+                                           "selectedTabs":  1
+                                       },
+                                       {
+                                           "tab":  "expenses",
+                                           "viewport":  1440,
+                                           "pageWidth":  1425,
+                                           "cards":  4,
+                                           "chart":  true,
+                                           "activeNavigation":  true,
+                                           "selectedTabs":  1
+                                       },
+                                       {
+                                           "tab":  "expenses",
+                                           "viewport":  1024,
+                                           "pageWidth":  1009,
+                                           "cards":  4,
+                                           "chart":  true,
+                                           "activeNavigation":  true,
+                                           "selectedTabs":  1
+                                       },
+                                       {
+                                           "tab":  "expenses",
+                                           "viewport":  768,
+                                           "pageWidth":  753,
+                                           "cards":  4,
+                                           "chart":  true,
+                                           "activeNavigation":  true,
+                                           "selectedTabs":  1
+                                       },
+                                       {
+                                           "tab":  "expenses",
+                                           "viewport":  390,
+                                           "pageWidth":  375,
+                                           "cards":  4,
+                                           "chart":  true,
+                                           "activeNavigation":  true,
+                                           "selectedTabs":  1
+                                       },
+                                       {
+                                           "tab":  "expenses",
+                                           "viewport":  320,
+                                           "pageWidth":  305,
+                                           "cards":  4,
+                                           "chart":  true,
+                                           "activeNavigation":  true,
+                                           "selectedTabs":  1
+                                       },
+                                       {
+                                           "tab":  "profit",
+                                           "viewport":  1440,
+                                           "pageWidth":  1425,
+                                           "cards":  4,
+                                           "chart":  true,
+                                           "activeNavigation":  true,
+                                           "selectedTabs":  1
+                                       },
+                                       {
+                                           "tab":  "profit",
+                                           "viewport":  1024,
+                                           "pageWidth":  1009,
+                                           "cards":  4,
+                                           "chart":  true,
+                                           "activeNavigation":  true,
+                                           "selectedTabs":  1
+                                       },
+                                       {
+                                           "tab":  "profit",
+                                           "viewport":  768,
+                                           "pageWidth":  753,
+                                           "cards":  4,
+                                           "chart":  true,
+                                           "activeNavigation":  true,
+                                           "selectedTabs":  1
+                                       },
+                                       {
+                                           "tab":  "profit",
+                                           "viewport":  390,
+                                           "pageWidth":  375,
+                                           "cards":  4,
+                                           "chart":  true,
+                                           "activeNavigation":  true,
+                                           "selectedTabs":  1
+                                       },
+                                       {
+                                           "tab":  "profit",
+                                           "viewport":  320,
+                                           "pageWidth":  305,
+                                           "cards":  4,
+                                           "chart":  true,
+                                           "activeNavigation":  true,
+                                           "selectedTabs":  1
+                                       },
+                                       {
+                                           "tab":  "utang",
+                                           "viewport":  1440,
+                                           "pageWidth":  1425,
+                                           "cards":  4,
+                                           "chart":  true,
+                                           "activeNavigation":  true,
+                                           "selectedTabs":  1
+                                       },
+                                       {
+                                           "tab":  "utang",
+                                           "viewport":  1024,
+                                           "pageWidth":  1009,
+                                           "cards":  4,
+                                           "chart":  true,
+                                           "activeNavigation":  true,
+                                           "selectedTabs":  1
+                                       },
+                                       {
+                                           "tab":  "utang",
+                                           "viewport":  768,
+                                           "pageWidth":  753,
+                                           "cards":  4,
+                                           "chart":  true,
+                                           "activeNavigation":  true,
+                                           "selectedTabs":  1
+                                       },
+                                       {
+                                           "tab":  "utang",
+                                           "viewport":  390,
+                                           "pageWidth":  375,
+                                           "cards":  4,
+                                           "chart":  true,
+                                           "activeNavigation":  true,
+                                           "selectedTabs":  1
+                                       },
+                                       {
+                                           "tab":  "utang",
+                                           "viewport":  320,
+                                           "pageWidth":  305,
+                                           "cards":  4,
+                                           "chart":  true,
+                                           "activeNavigation":  true,
+                                           "selectedTabs":  1
+                                       }
+                                   ],
+                    "readOnly":  true
+                },
+    "expenses":  {
+                     "duplicateSubmitBlocked":  true,
+                     "expensePosts":  "one rejected CSRF request; no financial writes",
+                     "serverErrorPreservesInput":  true,
+                     "readOnlyFinancialFields":  true,
+                     "focusRestored":  true,
+                     "responsive":  [
+                                        {
+                                            "page":  "expenses",
+                                            "viewport":  1440,
+                                            "pageWidth":  1425,
+                                            "summaryCards":  3,
+                                            "active":  true
+                                        },
+                                        {
+                                            "page":  "expenses",
+                                            "viewport":  768,
+                                            "pageWidth":  768,
+                                            "summaryCards":  3,
+                                            "active":  true
+                                        },
+                                        {
+                                            "page":  "expenses",
+                                            "viewport":  390,
+                                            "pageWidth":  390,
+                                            "summaryCards":  3,
+                                            "active":  true
+                                        },
+                                        {
+                                            "page":  "expenses",
+                                            "viewport":  320,
+                                            "pageWidth":  320,
+                                            "summaryCards":  3,
+                                            "active":  true
+                                        },
+                                        {
+                                            "page":  "expense modal",
+                                            "viewport":  768,
+                                            "pageWidth":  768,
+                                            "bodyWidth":  498,
+                                            "bodyScrollWidth":  498,
+                                            "footerBottom":  871
+                                        },
+                                        {
+                                            "page":  "expense modal",
+                                            "viewport":  390,
+                                            "pageWidth":  390,
+                                            "bodyWidth":  388,
+                                            "bodyScrollWidth":  388,
+                                            "footerBottom":  899
+                                        },
+                                        {
+                                            "page":  "expense modal",
+                                            "viewport":  320,
+                                            "pageWidth":  320,
+                                            "bodyWidth":  318,
+                                            "bodyScrollWidth":  318,
+                                            "footerBottom":  899
+                                        }
+                                    ],
+                     "emptyState":  true,
+                     "nativeAndReceiptValidation":  true,
+                     "unsavedChangesGuard":  true,
+                     "dashboardShortcut":  true
+                 },
+    "accountDropdown":  true,
+    "products":  {
+                     "belowCostWarning":  true,
+                     "archivedSalesExclusion":  true,
+                     "fixturesCleaned":  true,
+                     "escapedOutput":  true,
+                     "keyboardActions":  true,
+                     "realCreateEditArchiveRestore":  true,
+                     "duplicateClickBlocked":  true,
+                     "responsive":  [
+                                        {
+                                            "page":  "products",
+                                            "viewport":  1440,
+                                            "pageWidth":  1440,
+                                            "cards":  2
+                                        },
+                                        {
+                                            "page":  "products",
+                                            "viewport":  1024,
+                                            "pageWidth":  1024,
+                                            "cards":  2
+                                        },
+                                        {
+                                            "page":  "products",
+                                            "viewport":  768,
+                                            "pageWidth":  768,
+                                            "cards":  2
+                                        },
+                                        {
+                                            "page":  "products",
+                                            "viewport":  390,
+                                            "pageWidth":  390,
+                                            "cards":  2
+                                        },
+                                        {
+                                            "page":  "products",
+                                            "viewport":  320,
+                                            "pageWidth":  320,
+                                            "cards":  2
+                                        }
+                                    ],
+                     "filtersPreserved":  true,
+                     "exactProfitPreview":  true,
+                     "salesDefaultsAndAutomaticPrice":  true
+                 },
+    "mobileMenu":  true,
+    "desktop":  {
+                    "viewport":  1440,
+                    "pageWidth":  1425,
+                    "sidebarWidth":  244,
+                    "gridColumns":  "268.25px 268.25px 268.25px 268.25px",
+                    "chartWidth":  1075,
+                    "imagesLoaded":  true,
+                    "activeNavigation":  true,
+                    "quickActionsDisabled":  true,
+                    "noInlineScripts":  true
+                },
+    "customers":  {
+                      "emptyStates":  true,
+                      "fixturesCleaned":  true,
+                      "filtersPreserved":  true,
+                      "duplicateSubmitProtection":  true,
+                      "dirtyFormConfirmation":  true,
+                      "realCreateEditArchiveRestore":  true,
+                      "responsive":  [
+                                         {
+                                             "page":  "customers",
+                                             "viewport":  1440,
+                                             "pageWidth":  1440,
+                                             "cards":  3
+                                         },
+                                         {
+                                             "page":  "customers",
+                                             "viewport":  768,
+                                             "pageWidth":  768,
+                                             "cards":  3
+                                         },
+                                         {
+                                             "page":  "customers",
+                                             "viewport":  390,
+                                             "pageWidth":  390,
+                                             "cards":  3
+                                         },
+                                         {
+                                             "page":  "customers",
+                                             "viewport":  320,
+                                             "pageWidth":  320,
+                                             "cards":  3
+                                         },
+                                         {
+                                             "page":  "customer form",
+                                             "viewport":  1440,
+                                             "pageWidth":  1440,
+                                             "bodyWidth":  798,
+                                             "bodyScroll":  798,
+                                             "footerBottom":  748.15625
+                                         },
+                                         {
+                                             "page":  "customer form",
+                                             "viewport":  768,
+                                             "pageWidth":  768,
+                                             "bodyWidth":  498,
+                                             "bodyScroll":  498,
+                                             "footerBottom":  757.5
+                                         },
+                                         {
+                                             "page":  "customer form",
+                                             "viewport":  390,
+                                             "pageWidth":  390,
+                                             "bodyWidth":  388,
+                                             "bodyScroll":  388,
+                                             "footerBottom":  899
+                                         },
+                                         {
+                                             "page":  "customer form",
+                                             "viewport":  320,
+                                             "pageWidth":  320,
+                                             "bodyWidth":  318,
+                                             "bodyScroll":  318,
+                                             "footerBottom":  899
+                                         }
+                                     ],
+                      "errorInputRetention":  true,
+                      "salesSelection":  true,
+                      "keyboardMenuAndFocus":  true
+                  },
+    "javascriptErrors":  0,
+    "sidebarCollapse":  true,
+    "mobile":  [
+                   {
+                       "viewport":  768,
+                       "pageWidth":  768,
+                       "chartWidth":  686,
+                       "gridColumns":  "358px 358px"
+                   },
+                   {
+                       "viewport":  390,
+                       "pageWidth":  390,
+                       "chartWidth":  340,
+                       "gridColumns":  "178px 178px"
+                   },
+                   {
+                       "viewport":  320,
+                       "pageWidth":  320,
+                       "chartWidth":  270,
+                       "gridColumns":  "143px 143px"
+                   }
+               ]
+}

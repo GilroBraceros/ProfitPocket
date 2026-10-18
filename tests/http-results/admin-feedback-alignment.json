@@ -1,0 +1,38 @@
+﻿{
+    "bodyFont":  14,
+    "aligned":  true,
+    "columns":  [
+                    {
+                        "style":  null,
+                        "width":  261.734375,
+                        "display":  "table-column"
+                    },
+                    {
+                        "style":  null,
+                        "width":  364.15625,
+                        "display":  "table-column"
+                    },
+                    {
+                        "style":  null,
+                        "width":  170.6875,
+                        "display":  "table-column"
+                    },
+                    {
+                        "style":  null,
+                        "width":  170.6875,
+                        "display":  "table-column"
+                    },
+                    {
+                        "style":  null,
+                        "width":  170.734375,
+                        "display":  "table-column"
+                    }
+                ],
+    "headers":  [
+                    262,
+                    364,
+                    171,
+                    171,
+                    171
+                ]
+}

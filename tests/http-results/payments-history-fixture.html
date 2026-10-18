@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Payment Management | ProfitPocket</title>
+    <link rel="icon" type="image/jpeg" href="/profitpocket/assets/images/logo-icon.jpg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="/profitpocket/assets/css/style.css" rel="stylesheet">
+    <link href="/profitpocket/assets/css/payments.css?v=1792320118" rel="stylesheet">    </head>
+<body class="dashboard-page">
+<a class="visually-hidden-focusable dashboard-skip" href="#dashboard-content">Skip to dashboard</a>
+<aside class="offcanvas-lg offcanvas-start business-sidebar" tabindex="-1" id="business-sidebar" aria-labelledby="sidebar-label">
+    <div class="offcanvas-header d-lg-none"><span id="sidebar-label" class="fw-semibold">Business navigation</span><button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#business-sidebar" aria-label="Close navigation"></button></div>
+    <div class="sidebar-brand"><a href="/profitpocket/user/dashboard.php" aria-label="ProfitPocket dashboard">
+        <img class="sidebar-logo-full" src="/profitpocket/assets/images/logo-full.jpg" alt="ProfitPocket" width="2752" height="1536">
+        <img class="sidebar-logo-icon" src="/profitpocket/assets/images/logo-icon.jpg" alt="ProfitPocket" width="2048" height="2048">
+    </a></div>
+    <nav class="business-navigation" aria-label="Business navigation">
+        <p class="sidebar-section-label">WORKSPACE</p>
+                        <a class="sidebar-link " href="/profitpocket/user/dashboard.php"  title="Dashboard"><svg class="pp-icon " width="18" height="18" aria-hidden="true" focusable="false"><use href="/profitpocket/assets/images/bootstrap-icons.svg#grid-1x2"></use></svg><span class="sidebar-text">Dashboard</span></a>
+                <a class="sidebar-link " href="/profitpocket/user/sales.php"  title="Sales"><svg class="pp-icon " width="18" height="18" aria-hidden="true" focusable="false"><use href="/profitpocket/assets/images/bootstrap-icons.svg#receipt"></use></svg><span class="sidebar-text">Sales</span></a>
+                <a class="sidebar-link " href="/profitpocket/user/expenses.php"  title="Expenses"><svg class="pp-icon " width="18" height="18" aria-hidden="true" focusable="false"><use href="/profitpocket/assets/images/bootstrap-icons.svg#arrow-up-right-square"></use></svg><span class="sidebar-text">Expenses</span></a>
+                <a class="sidebar-link " href="/profitpocket/user/customers.php"  title="Customers"><svg class="pp-icon " width="18" height="18" aria-hidden="true" focusable="false"><use href="/profitpocket/assets/images/bootstrap-icons.svg#people"></use></svg><span class="sidebar-text">Customers</span></a>
+                <a class="sidebar-link active" href="/profitpocket/user/payments.php" aria-current="page" title="Payment Management"><svg class="pp-icon " width="18" height="18" aria-hidden="true" focusable="false"><use href="/profitpocket/assets/images/bootstrap-icons.svg#journal-text"></use></svg><span class="sidebar-text">Payment Management</span></a>
+                <a class="sidebar-link " href="/profitpocket/user/products.php"  title="Products"><svg class="pp-icon " width="18" height="18" aria-hidden="true" focusable="false"><use href="/profitpocket/assets/images/bootstrap-icons.svg#box-seam"></use></svg><span class="sidebar-text">Products</span></a>
+                <a class="sidebar-link " href="/profitpocket/user/reports.php"  title="Reports"><svg class="pp-icon " width="18" height="18" aria-hidden="true" focusable="false"><use href="/profitpocket/assets/images/bootstrap-icons.svg#bar-chart"></use></svg><span class="sidebar-text">Reports</span></a>
+                <div class="sidebar-divider"></div>
+        <a class="sidebar-link " href="/profitpocket/user/support.php"  title="Help & Support"><svg class="pp-icon " width="18" height="18" aria-hidden="true" focusable="false"><use href="/profitpocket/assets/images/bootstrap-icons.svg#journal-text"></use></svg><span class="sidebar-text">Help & Support</span></a>
+        <span class="sidebar-link upcoming" aria-disabled="true" title="Settings — upcoming"><svg class="pp-icon " width="18" height="18" aria-hidden="true" focusable="false"><use href="/profitpocket/assets/images/bootstrap-icons.svg#gear"></use></svg><span class="sidebar-text">Settings</span><span class="sidebar-upcoming">Soon</span></span>
+    </nav>
+    <div class="sidebar-bottom"><form action="/profitpocket/auth/logout.php" method="post"><input type="hidden" name="csrf_token" value="4800bd8703cea3fce563740df6fa43a539b604c10e69e38b8f71f193ce3677a3"><button class="sidebar-link sidebar-logout" type="submit" title="Sign out"><svg class="pp-icon " width="18" height="18" aria-hidden="true" focusable="false"><use href="/profitpocket/assets/images/bootstrap-icons.svg#box-arrow-left"></use></svg><span class="sidebar-text">Sign out</span></button></form></div>
+</aside>
+<header class="business-topbar">
+    <div class="d-flex align-items-center gap-2 min-width-0">
+        <button class="icon-button d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#business-sidebar" aria-controls="business-sidebar" aria-label="Open navigation"><svg class="pp-icon " width="18" height="18" aria-hidden="true" focusable="false"><use href="/profitpocket/assets/images/bootstrap-icons.svg#list"></use></svg></button>
+        <img class="mobile-brand d-lg-none" src="/profitpocket/assets/images/logo-icon.jpg" alt="ProfitPocket" width="2048" height="2048">
+        <button class="icon-button d-none d-lg-flex" type="button" id="sidebar-collapse" aria-controls="business-sidebar" aria-expanded="true" aria-label="Collapse navigation"><svg class="pp-icon " width="18" height="18" aria-hidden="true" focusable="false"><use href="/profitpocket/assets/images/bootstrap-icons.svg#layout-sidebar"></use></svg></button>
+        <span class="topbar-title">Payment Management</span><span class="topbar-separator"></span><span class="topbar-business">Payment workflow test business</span>
+    </div>
+    <div class="dropdown"><button type="button" class="profile-button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Open account menu for Payment test owner"><span class="profile-initial">P</span><span class="profile-name">Payment test owner</span><svg class="pp-icon " width="18" height="18" aria-hidden="true" focusable="false"><use href="/profitpocket/assets/images/bootstrap-icons.svg#chevron-down"></use></svg></button>
+        <div class="dropdown-menu dropdown-menu-end account-menu"><div class="px-3 py-2"><strong>Payment test owner</strong><div class="small text-secondary">payment_test@example.invalid</div><div class="small text-secondary">Business owner · payment_test</div></div><hr class="dropdown-divider"><form action="/profitpocket/auth/logout.php" method="post"><input type="hidden" name="csrf_token" value="4800bd8703cea3fce563740df6fa43a539b604c10e69e38b8f71f193ce3677a3"><button class="dropdown-item" type="submit"><svg class="pp-icon " width="18" height="18" aria-hidden="true" focusable="false"><use href="/profitpocket/assets/images/bootstrap-icons.svg#box-arrow-left"></use></svg> Sign out</button></form></div>
+    </div>
+</header>
+<main class="dashboard-main payments-page" id="dashboard-content">
+    <div class="dashboard-heading"><div><h1>Payment Management</h1><p>Track customer payments and outstanding balances.</p></div></div>
+    <div id="utang-feedback" class="alert d-none" role="status" tabindex="-1"></div>
+                <section class="summary-grid utang-summary" aria-label="Payment summary">
+                <article class="summary-card"><div class="summary-label"><h2>Total Payments Collected</h2></div><p class="summary-amount">₱4,000.00</p><p class="summary-description">11 Oct – 18 Oct 2026 · valid collections</p></article>        <article class="summary-card"><div class="summary-label"><h2>Outstanding Balance</h2></div><p class="summary-amount">₱2,000.00</p><p class="summary-description">Current balance · all sale dates</p></article>        <article class="summary-card"><div class="summary-label"><h2>Partially Paid Sales</h2></div><p class="summary-amount">1</p><p class="summary-description">Current posted sales with a balance</p></article>        <article class="summary-card"><div class="summary-label"><h2>Fully Paid Sales</h2></div><p class="summary-amount">2</p><p class="summary-description">Current posted sales with no balance</p></article>    </section>
+    <section class="dashboard-panel payments-collections" aria-labelledby="method-summary-title">
+        <div class="payments-method-heading"><h2 id="method-summary-title">Collected by payment method</h2><span>11 Oct – 18 Oct 2026</span></div>
+        <dl><div><dt>Cash</dt><dd>₱1,300.00</dd></div><div><dt>Digital Wallet</dt><dd>₱1,000.00</dd></div><div><dt>Bank Transfer</dt><dd>₱1,700.00</dd></div></dl>
+        <p class="payments-scope">Collections use payment dates; search and table filters leave these business totals unchanged. Refunded amounts and voided sales are excluded. Balances and sale counts are current across all dates. Payments do not add sales revenue.</p>
+    </section>
+    <section class="dashboard-panel utang-directory payments-directory">
+        <nav class="nav nav-tabs payments-tabs" aria-label="Payment views">
+            <a class="nav-link active" href="/profitpocket/user/payments.php?tab=history&amp;q=&amp;method=all&amp;type=all&amp;state=outstanding&amp;customer=&amp;sort=newest&amp;page=1&amp;period=custom&amp;start=2026-10-11&amp;end=2026-10-18" aria-current="page">Payment History</a><a class="nav-link " href="/profitpocket/user/payments.php?tab=balances&amp;q=&amp;method=all&amp;type=all&amp;state=outstanding&amp;customer=&amp;sort=newest&amp;page=1&amp;period=custom&amp;start=2026-10-11&amp;end=2026-10-18" >Outstanding Balances</a>        </nav>
+        <form class="payments-filter" method="get" action="/profitpocket/user/payments.php">
+            <input type="hidden" name="tab" value="history">
+            <div class="payments-search"><label for="q">Search</label><input class="form-control form-control-sm" id="q" name="q" type="search" maxlength="100" value="" placeholder="Customer or sale reference"></div>
+            <div><label for="period">Reporting period</label><select class="form-select form-select-sm" name="period" id="period"><option value="today" >Today</option><option value="week" >This week</option><option value="month" >This month</option><option value="custom" selected>Custom dates</option></select></div>
+                        <div><label for="method">Payment method</label><select class="form-select form-select-sm" id="method" name="method"><option value="all" selected>All methods</option><option value="cash" >Cash</option><option value="wallet" >Digital Wallet</option><option value="bank" >Bank Transfer</option></select></div>
+            <div><label for="type">Payment type</label><select class="form-select form-select-sm" id="type" name="type"><option value="all" selected>All types</option><option value="full" >Full Payment</option><option value="downpayment" >Downpayment</option><option value="partial" >Partial Payment</option><option value="final" >Final Payment</option></select></div>
+                        <div><label for="sort">Sort by</label><select class="form-select form-select-sm" id="sort" name="sort"><option value="newest" selected>Newest first</option><option value="oldest" >Oldest first</option></select></div>
+            <div class="payments-filter-buttons"><button class="btn btn-primary btn-sm" type="submit">Apply</button><a class="sales-reset" href="/profitpocket/user/payments.php?tab=history">Reset</a></div>
+            <div class="payments-custom-dates" id="custom-dates" >
+                <div><label for="start">From payment date</label><input class="form-control form-control-sm" id="start" type="date" name="start" value="2026-10-11" ></div><div><label for="end">To payment date</label><input class="form-control form-control-sm" id="end" type="date" name="end" value="2026-10-18" ></div>
+            </div>
+                    </form>
+        <div class="panel-heading"><div><h2>Payment History</h2><p>6 matching payments</p></div><span class="table-period">Amounts in PHP</span></div>
+                <table class="table transactions-table payments-table payments-history-table mb-0"><caption class="visually-hidden">Payments received for Payment workflow test business</caption>
+            <thead><tr><th scope="col" class="">Payment date</th><th scope="col" class="">Customer</th><th scope="col" class="">Sale reference</th><th scope="col" class="">Payment type</th><th scope="col" class="">Payment method</th><th scope="col" class="text-end">Amount</th><th scope="col" class="">Actions</th></tr></thead>
+            <tbody>            <tr>                <td data-label="Payment date">17 Oct 2026<span class="transaction-context">6:44 pm</span></td>
+                <td data-label="Customer"><strong>Payment test customer</strong></td><td data-label="Sale reference"><a href="/profitpocket/user/sale_view.php?id=1483">SL-65CB6EA629DA68AFAA5F</a></td>
+                <td data-label="Payment type"><span class="payment-badge status-paid">Final Payment</span></td>
+                <td data-label="Payment method">Digital Wallet<span class="transaction-context">Maya</span></td>
+                <td data-label="Amount" class="text-end transaction-amount">₱500.00</td>
+                <td class="utang-actions">    <div class="record-actions dropdown">
+        <a class="record-action-view" data-utang-modal="payment_details" href="/profitpocket/user/payments_action.php?action=payment_details&amp;id=838" aria-label="View details for payment 838">View</a>
+                <button class="record-action-more dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="More actions for payment 838" title="More actions"><span aria-hidden="true">⋯</span></button>
+        <ul class="dropdown-menu dropdown-menu-end record-actions-menu">
+                        <li><a class="dropdown-item " data-utang-modal="history" href="/profitpocket/user/payments_action.php?action=history&amp;id=1483">Sale Payment History</a></li>
+                        <li><a class="dropdown-item " data-utang-modal="details" href="/profitpocket/user/payments_action.php?action=details&amp;id=1483">View Associated Sale</a></li>
+                    </ul>
+            </div>
+    </td>
+            </tr>            <tr>                <td data-label="Payment date">17 Oct 2026<span class="transaction-context">6:44 pm</span></td>
+                <td data-label="Customer"><strong>Payment test customer</strong></td><td data-label="Sale reference"><a href="/profitpocket/user/sale_view.php?id=1483">SL-65CB6EA629DA68AFAA5F</a></td>
+                <td data-label="Payment type"><span class="payment-badge status-partial">Partial Payment</span></td>
+                <td data-label="Payment method">Cash</td>
+                <td data-label="Amount" class="text-end transaction-amount">₱300.00</td>
+                <td class="utang-actions">    <div class="record-actions dropdown">
+        <a class="record-action-view" data-utang-modal="payment_details" href="/profitpocket/user/payments_action.php?action=payment_details&amp;id=836" aria-label="View details for payment 836">View</a>
+                <button class="record-action-more dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="More actions for payment 836" title="More actions"><span aria-hidden="true">⋯</span></button>
+        <ul class="dropdown-menu dropdown-menu-end record-actions-menu">
+                        <li><a class="dropdown-item " data-utang-modal="history" href="/profitpocket/user/payments_action.php?action=history&amp;id=1483">Sale Payment History</a></li>
+                        <li><a class="dropdown-item " data-utang-modal="details" href="/profitpocket/user/payments_action.php?action=details&amp;id=1483">View Associated Sale</a></li>
+                    </ul>
+            </div>
+    </td>
+            </tr>            <tr>                <td data-label="Payment date">16 Oct 2026<span class="transaction-context">6:44 pm</span></td>
+                <td data-label="Customer"><strong>Payment test customer</strong></td><td data-label="Sale reference"><a href="/profitpocket/user/sale_view.php?id=1483">SL-65CB6EA629DA68AFAA5F</a></td>
+                <td data-label="Payment type"><span class="payment-badge status-partial">Partial Payment</span></td>
+                <td data-label="Payment method">Bank Transfer<span class="transaction-context">BPI</span></td>
+                <td data-label="Amount" class="text-end transaction-amount">₱700.00</td>
+                <td class="utang-actions">    <div class="record-actions dropdown">
+        <a class="record-action-view" data-utang-modal="payment_details" href="/profitpocket/user/payments_action.php?action=payment_details&amp;id=837" aria-label="View details for payment 837">View</a>
+                <button class="record-action-more dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="More actions for payment 837" title="More actions"><span aria-hidden="true">⋯</span></button>
+        <ul class="dropdown-menu dropdown-menu-end record-actions-menu">
+                        <li><a class="dropdown-item " data-utang-modal="history" href="/profitpocket/user/payments_action.php?action=history&amp;id=1483">Sale Payment History</a></li>
+                        <li><a class="dropdown-item " data-utang-modal="details" href="/profitpocket/user/payments_action.php?action=details&amp;id=1483">View Associated Sale</a></li>
+                    </ul>
+            </div>
+    </td>
+            </tr>            <tr>                <td data-label="Payment date">15 Oct 2026<span class="transaction-context">6:44 pm</span></td>
+                <td data-label="Customer"><strong>Payment test customer</strong></td><td data-label="Sale reference"><a href="/profitpocket/user/sale_view.php?id=1484">SL-992B5AFFF7A4E8155FB8</a></td>
+                <td data-label="Payment type"><span class="payment-badge status-partial">Downpayment</span></td>
+                <td data-label="Payment method">Bank Transfer<span class="transaction-context">BDO</span></td>
+                <td data-label="Amount" class="text-end transaction-amount">₱1,000.00</td>
+                <td class="utang-actions">    <div class="record-actions dropdown">
+        <a class="record-action-view" data-utang-modal="payment_details" href="/profitpocket/user/payments_action.php?action=payment_details&amp;id=835" aria-label="View details for payment 835">View</a>
+                <button class="record-action-more dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="More actions for payment 835" title="More actions"><span aria-hidden="true">⋯</span></button>
+        <ul class="dropdown-menu dropdown-menu-end record-actions-menu">
+                        <li><a class="dropdown-item " data-utang-modal="history" href="/profitpocket/user/payments_action.php?action=history&amp;id=1484">Sale Payment History</a></li>
+                        <li><a class="dropdown-item " data-utang-modal="details" href="/profitpocket/user/payments_action.php?action=details&amp;id=1484">View Associated Sale</a></li>
+                    </ul>
+            </div>
+    </td>
+            </tr>            <tr>                <td data-label="Payment date">15 Oct 2026<span class="transaction-context">6:44 pm</span></td>
+                <td data-label="Customer"><strong>Payment test customer</strong></td><td data-label="Sale reference"><a href="/profitpocket/user/sale_view.php?id=1483">SL-65CB6EA629DA68AFAA5F</a></td>
+                <td data-label="Payment type"><span class="payment-badge status-partial">Downpayment</span></td>
+                <td data-label="Payment method">Digital Wallet<span class="transaction-context">GCash</span></td>
+                <td data-label="Amount" class="text-end transaction-amount">₱500.00</td>
+                <td class="utang-actions">    <div class="record-actions dropdown">
+        <a class="record-action-view" data-utang-modal="payment_details" href="/profitpocket/user/payments_action.php?action=payment_details&amp;id=834" aria-label="View details for payment 834">View</a>
+                <button class="record-action-more dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="More actions for payment 834" title="More actions"><span aria-hidden="true">⋯</span></button>
+        <ul class="dropdown-menu dropdown-menu-end record-actions-menu">
+                        <li><a class="dropdown-item " data-utang-modal="history" href="/profitpocket/user/payments_action.php?action=history&amp;id=1483">Sale Payment History</a></li>
+                        <li><a class="dropdown-item " data-utang-modal="details" href="/profitpocket/user/payments_action.php?action=details&amp;id=1483">View Associated Sale</a></li>
+                    </ul>
+            </div>
+    </td>
+            </tr>            <tr>                <td data-label="Payment date">15 Oct 2026<span class="transaction-context">6:44 pm</span></td>
+                <td data-label="Customer"><strong>Payment test customer</strong></td><td data-label="Sale reference"><a href="/profitpocket/user/sale_view.php?id=1482">SL-5C0EB3F4006172793B64</a></td>
+                <td data-label="Payment type"><span class="payment-badge status-paid">Full Payment</span></td>
+                <td data-label="Payment method">Cash</td>
+                <td data-label="Amount" class="text-end transaction-amount">₱1,000.00</td>
+                <td class="utang-actions">    <div class="record-actions dropdown">
+        <a class="record-action-view" data-utang-modal="payment_details" href="/profitpocket/user/payments_action.php?action=payment_details&amp;id=833" aria-label="View details for payment 833">View</a>
+                <button class="record-action-more dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="More actions for payment 833" title="More actions"><span aria-hidden="true">⋯</span></button>
+        <ul class="dropdown-menu dropdown-menu-end record-actions-menu">
+                        <li><a class="dropdown-item " data-utang-modal="history" href="/profitpocket/user/payments_action.php?action=history&amp;id=1482">Sale Payment History</a></li>
+                        <li><a class="dropdown-item " data-utang-modal="details" href="/profitpocket/user/payments_action.php?action=details&amp;id=1482">View Associated Sale</a></li>
+                    </ul>
+            </div>
+    </td>
+            </tr></tbody>
+        </table>
+        <nav class="sales-pagination" aria-label="Payment pages"><span>Page 1 of 1</span><div><span aria-disabled="true">Previous</span><span aria-disabled="true">Next</span></div></nav>
+            </section>
+    </main>
+<div class="modal fade utang-modal" id="utang-action-modal" tabindex="-1" aria-labelledby="utang-modal-title" aria-hidden="true"><div class="modal-dialog modal-lg modal-dialog-scrollable modal-fullscreen-sm-down"><div class="modal-content"></div></div></div>
+<footer class="dashboard-footer small text-secondary">ProfitPocket · Payment Management</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="/profitpocket/assets/js/script.js" defer></script>
+<script src="/profitpocket/assets/js/record-actions.js" defer></script><script src="/profitpocket/assets/js/payment-methods.js" defer></script><script src="/profitpocket/assets/js/utang.js" defer></script></body>
+</html>

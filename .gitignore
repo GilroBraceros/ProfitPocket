@@ -1,0 +1,33 @@
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+config/database.local.php
+config/secrets.php
+*.pem
+*.key
+
+# Private customer uploads
+uploads/receipts/*
+!uploads/receipts/.gitkeep
+
+# Application logs
+*.log
+logs/
+storage/logs/
+
+# Database backups and exports
+database/backups/
+database/exports/
+*backup*.sql
+*dump*.sql
+
+# Editor and system files
+.vscode/*
+!.vscode/settings.json
+.DS_Store
+Thumbs.db
+
+# Dependencies
+node_modules/

@@ -1,0 +1,1 @@
+<div class="modal fade platform-modal" id="support-modal" tabindex="-1" aria-labelledby="support-modal-title" aria-hidden="true"><div class="modal-dialog modal-lg modal-dialog-scrollable modal-fullscreen-sm-down"><div class="modal-content"></div></div></div>

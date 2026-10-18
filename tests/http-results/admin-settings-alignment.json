@@ -1,0 +1,32 @@
+﻿{
+    "bodyFont":  14,
+    "aligned":  true,
+    "columns":  [
+                    {
+                        "style":  null,
+                        "width":  344.65625,
+                        "display":  "table-column"
+                    },
+                    {
+                        "style":  null,
+                        "width":  226.75,
+                        "display":  "table-column"
+                    },
+                    {
+                        "style":  null,
+                        "width":  145.109375,
+                        "display":  "table-column"
+                    },
+                    {
+                        "style":  null,
+                        "width":  190.484375,
+                        "display":  "table-column"
+                    }
+                ],
+    "headers":  [
+                    345,
+                    227,
+                    145,
+                    190
+                ]
+}

@@ -1,0 +1,6 @@
+Options -Indexes
+RewriteEngine On
+RewriteRule (^|/)\. - [F,L]
+<FilesMatch "(^\.|\.(md|sql|log|toml|ini)$)">
+    Require all denied
+</FilesMatch>

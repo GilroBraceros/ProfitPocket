@@ -1,0 +1,14 @@
+﻿PASS: payments
+PASS: auth
+PASS: dashboard
+PASS: sales
+PASS: expenses
+PASS: customers
+PASS: utang
+PASS: products
+PASS: reports
+PASS: admin
+PASS: integration
+PASS: http_auth
+PASS: http_admin
+PASS: http_integration

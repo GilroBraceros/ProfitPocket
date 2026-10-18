@@ -1,0 +1,28 @@
+
+{
+  "editor.formatOnSave": true,
+  "editor.tabSize": 4,
+  "editor.wordWrap": "on",
+  "editor.linkedEditing": true,
+  "editor.minimap.enabled": false,
+  "editor.bracketPairColorization.enabled": true,
+
+  "files.autoSave": "onFocusChange",
+
+  "emmet.includeLanguages": {
+    "php": "html"
+  },
+
+  "php.validate.enable": true,
+  "php.validate.executablePath": "C:\\xampp\\php\\php.exe",
+
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}

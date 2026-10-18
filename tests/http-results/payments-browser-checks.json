@@ -1,0 +1,88 @@
+﻿{
+    "financialWrites":  0,
+    "legacyRedirect":  true,
+    "paymentForms":  [
+                         {
+                             "category":  "cash",
+                             "width":  1440
+                         },
+                         {
+                             "category":  "wallet",
+                             "width":  1440
+                         },
+                         {
+                             "category":  "bank",
+                             "width":  1440
+                         },
+                         {
+                             "category":  "cash",
+                             "width":  768
+                         },
+                         {
+                             "category":  "wallet",
+                             "width":  768
+                         },
+                         {
+                             "category":  "bank",
+                             "width":  768
+                         },
+                         {
+                             "category":  "cash",
+                             "width":  320
+                         },
+                         {
+                             "category":  "wallet",
+                             "width":  320
+                         },
+                         {
+                             "category":  "bank",
+                             "width":  320
+                         }
+                     ],
+    "mobileMenu":  true,
+    "addSaleMethods":  true,
+    "layouts":  [
+                    {
+                        "tab":  "history",
+                        "width":  1440
+                    },
+                    {
+                        "tab":  "history",
+                        "width":  1024
+                    },
+                    {
+                        "tab":  "history",
+                        "width":  768
+                    },
+                    {
+                        "tab":  "history",
+                        "width":  390
+                    },
+                    {
+                        "tab":  "history",
+                        "width":  320
+                    },
+                    {
+                        "tab":  "balances",
+                        "width":  1440
+                    },
+                    {
+                        "tab":  "balances",
+                        "width":  1024
+                    },
+                    {
+                        "tab":  "balances",
+                        "width":  768
+                    },
+                    {
+                        "tab":  "balances",
+                        "width":  390
+                    },
+                    {
+                        "tab":  "balances",
+                        "width":  320
+                    }
+                ],
+    "javascriptErrors":  0,
+    "detailsAndHistory":  true
+}

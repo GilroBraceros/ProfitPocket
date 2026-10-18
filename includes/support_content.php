@@ -1,0 +1,26 @@
+<?php
+$isForm=$mutable && !$unavailable;
+$values=$_SERVER['REQUEST_METHOD']==='POST'?$_POST:[];
+$field=function(string $name,string $label,int $limit,bool $area=false) use ($values): void { ?>
+<div class="admin-field"><label class="form-label" for="support-<?= e($name) ?>"><?= e($label) ?></label><?php if ($area): ?><textarea class="form-control" rows="5" id="support-<?= e($name) ?>" name="<?= e($name) ?>" maxlength="<?= $limit ?>" required><?= e(is_string($values[$name]??null)?$values[$name]:'') ?></textarea><?php else: ?><input class="form-control" id="support-<?= e($name) ?>" name="<?= e($name) ?>" maxlength="<?= $limit ?>" value="<?= e(is_string($values[$name]??null)?$values[$name]:'') ?>" required><?php endif; ?></div>
+<?php };
+?>
+<?php if ($isForm): ?><form class="admin-form" method="post" action="<?= e(app_url('user/support_action.php').'?'.http_build_query(['action'=>$action]+($modal?['modal'=>1]:[]))) ?>" <?= $modal?'data-support-async':'' ?>><input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>"><input type="hidden" name="id" value="<?= e($id) ?>"><?php foreach ($token as $key=>$value): ?><input type="hidden" name="<?= e($key) ?>" value="<?= e($value) ?>"><?php endforeach; ?><?php endif; ?>
+<div class="modal-header"><h2 class="modal-title" id="support-modal-title"><?= e($page_title) ?></h2><?php if ($modal): ?><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button><?php endif; ?></div>
+<div class="modal-body"><div class="alert alert-danger admin-error <?= !$error?'d-none':'' ?>" role="alert" tabindex="-1"><?= e($error??'') ?></div>
+<?php if ($unavailable): ?>
+<?php elseif ($action==='announcement'): ?>
+<h3><?= e($row['title']) ?></h3><p class="support-note">Published <?= e(platform_date($row['published_at'])) ?></p><div class="support-text"><?= nl2br(e($row['body'])) ?></div>
+<?php elseif (in_array($action,['ticket','reply'],true)): ?>
+<div class="support-ticket-heading"><h3><?= e($row['subject']) ?></h3><span class="payment-badge status-<?= e($row['ticket_status']) ?>"><?= e(ucwords(str_replace('_',' ',$row['ticket_status']))) ?></span></div><p class="support-note">TKT-<?= e($id) ?> · <?= e(platform_date($row['created_at'])) ?></p><p class="support-text"><?= nl2br(e($row['description'])) ?></p>
+<h3>Conversation</h3><?php if (!$row['messages']): ?><p class="support-note">No replies yet. Check back here for an administrator response.</p><?php endif; ?><?php foreach ($row['messages'] as $message): ?><article class="admin-message"><strong><?= $message['role_type']==='admin'?'Support · '.e($message['full_name']):'You' ?></strong><span><?= e(platform_date($message['created_at'])) ?></span><p><?= nl2br(e($message['message_body'])) ?></p></article><?php endforeach; ?>
+<?php if ($row['history']): ?><details class="support-history"><summary>Status history</summary><?php foreach ($row['history'] as $event): ?><p><?= e(platform_date($event['changed_at'])) ?> · <?= e(ucwords(str_replace('_',' ',$event['old_status']))) ?> → <?= e(ucwords(str_replace('_',' ',$event['new_status']))) ?></p><?php endforeach; ?></details><?php endif; ?>
+<?php if ($action==='reply'): ?><?php $field('message','Your follow-up',4000,true); ?><p class="support-note">A follow-up reopens a resolved ticket. Closed tickets require a new ticket.</p><?php elseif ($row['ticket_status']!=='closed'): ?><a class="btn btn-outline-secondary btn-sm" data-support-modal href="<?= e(app_url('user/support_action.php?action=reply&id='.$id)) ?>">Add a follow-up</a><?php endif; ?>
+<?php elseif ($action==='new_ticket'): ?>
+<p class="support-note">Tell us what happened. Keep passwords and payment credentials out of your message.</p><?php $field('subject','Subject',200); $field('description','How can we help?',4000,true); ?>
+<div class="admin-field"><label class="form-label" for="support-priority">Priority</label><select class="form-select" id="support-priority" name="priority"><?php foreach (['low'=>'Low','normal'=>'Normal','high'=>'High'] as $key=>$label): ?><option value="<?= e($key) ?>" <?= ($values['priority']??'normal')===$key?'selected':'' ?>><?= e($label) ?></option><?php endforeach; ?></select></div>
+<?php elseif ($action==='feedback'): ?>
+<p class="support-note">Share a suggestion or report a problem. Use a support ticket if you need a reply.</p><div class="admin-field"><label class="form-label" for="support-category">Category</label><select class="form-select" id="support-category" name="category"><?php foreach (['suggestion','bug','compliment','other'] as $category): ?><option value="<?= e($category) ?>" <?= ($values['category']??'suggestion')===$category?'selected':'' ?>><?= e(ucfirst($category)) ?></option><?php endforeach; ?></select></div><?php $field('message','Your feedback',4000,true); ?>
+<?php endif; ?>
+</div><div class="modal-footer"><?php if ($modal): ?><button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal"><?= $isForm?'Cancel':'Close' ?></button><?php else: ?><a class="btn btn-outline-secondary" href="<?= e(app_url('user/support.php')) ?>">Back</a><?php endif; ?><?php if ($isForm): ?><button class="btn btn-primary" type="submit"><?= $action==='feedback'?'Save feedback':($action==='new_ticket'?'Submit ticket':'Save follow-up') ?></button><?php endif; ?></div>
+<?php if ($isForm): ?></form><?php endif; ?>
