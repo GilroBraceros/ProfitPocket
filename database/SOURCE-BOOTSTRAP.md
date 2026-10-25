@@ -13,8 +13,10 @@ special registration form, separate login or website cron URL is introduced.
 
 ## Exact eligibility
 
-- Linux only; the real application directory must be
-  `/home/ACCOUNT/domains/profitpocket.online/public_html/profitpocket`.
+- Linux only; the real application directory must be the domain's
+  `/home/ACCOUNT/domains/profitpocket.online/public_html` or its `profitpocket`
+  subfolder. See [LOGIN-ROUTING-FIX.md](LOGIN-ROUTING-FIX.md) for the later routing
+  diagnosis and guarded existing-connection compatibility.
 - The application must already have its working hosted database configuration.
   The configured database/user must use the same `uNUMBER_` Hostinger account
   prefix; local `profitpocket_db`/root defaults are rejected.
@@ -66,8 +68,9 @@ further inserts automatically.
 
 The live HTTPS root and registration page responded with HTTP 200, but the new
 subscription CSS and JavaScript both returned HTTP 404; registration also lacked
-the new progress flow. This is evidence the observed deployment was not the
-reviewed GitHub release. Hostinger's repository/branch/path/auto-deployment settings
+the new progress flow. Those checks alone did not establish deployment status;
+later checks found a root installation routing into the older subfolder and a root
+database-connection failure. Hostinger's repository/branch/path/auto-deployment settings
 cannot be configured through a source push alone. Someone with hosting access
 must fix or trigger deployment if it is not already connected.
 

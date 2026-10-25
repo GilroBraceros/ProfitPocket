@@ -38,6 +38,7 @@ try {
     production_expect(!production_database_matches($settings,['database_name'=>'u_test_profitpocket','database_account'=>'root@localhost']),'Wrong database account accepted.');
     $releaseRoot='/home/u123456789/domains/profitpocket.online/public_html/profitpocket';
     production_expect(production_release_location($releaseRoot,'Linux'),'Designated source deployment rejected.');
+    production_expect(production_release_location('/home/u123456789/domains/profitpocket.online/public_html','Linux'),'Domain-root deployment rejected.');
     production_expect(!production_release_location($releaseRoot,'Windows') && !production_release_location('/home/u123456789/domains/thesis.example/public_html/profitpocket','Linux'),'Source bootstrap accepts local/unrelated installation.');
     $releaseSettings=['PP_DB_NAME'=>'u123456789_profitpocket','PP_DB_USER'=>'u123456789_pp'];
     production_expect(production_release_database_matches($releaseSettings,['database_name'=>'u123456789_profitpocket','database_account'=>'u123456789_pp@localhost']),'Existing Hostinger configuration rejected.');

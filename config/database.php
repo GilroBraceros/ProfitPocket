@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__.'/upgrade.php';
+require_once __DIR__.'/database_bootstrap.php';
 
 // Web PHP and cron use the same private settings; environment variables win.
 function database_config(): array
@@ -25,6 +26,17 @@ function database_config(): array
 
 // XAMPP defaults remain available locally. Never put credentials in a public file.
 // Never put credentials in a public page or include them in an error message.
+$databasePrivate=getenv('PROFITPOCKET_DATABASE_CONFIG')?:upgrade_private_root().'/database.php';
+$databaseEnvironment=[];
+foreach (['PP_DB_NAME','PP_DB_USER','PP_DB_PASSWORD'] as $databaseKey) { $databaseEnvironment[$databaseKey]=getenv($databaseKey); }
+$databaseProject=realpath(__DIR__.'/..');
+if (database_legacy_allowed($databaseProject,PHP_OS_FAMILY,is_file($databasePrivate) || getenv('PROFITPOCKET_DATABASE_CONFIG')!==false,$databaseEnvironment)) {
+    $databaseLegacy=realpath($databaseProject.'/profitpocket/config/database.php');
+    if ($databaseLegacy && $databaseLegacy===$databaseProject.'/profitpocket/config/database.php') { database_import_legacy($databaseLegacy); }
+}
+unset($databasePrivate,$databaseEnvironment,$databaseKey,$databaseProject,$databaseLegacy);
+
+if (!function_exists('db')) {
 function db(): PDO
 {
     static $connection = null;
@@ -56,4 +68,5 @@ function db(): PDO
         header('Content-Type: text/html; charset=UTF-8');
         exit('<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>ProfitPocket unavailable</title><body><h1>Temporarily unavailable</h1><p>ProfitPocket cannot connect to its database. Please try again later.</p></body></html>');
     }
+}
 }

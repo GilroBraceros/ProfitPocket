@@ -1,5 +1,15 @@
 # ProfitPocket
 
+## Hosted login routing correction
+
+Authentication now detects root versus subfolder installation paths for forms,
+links and session cookies. The designated Hostinger domain root can reuse the
+older ProfitPocket connection include when no explicit private/env settings exist,
+without changing or copying credentials. Both hosted locations retain bootstrap
+identity and permission checks. See
+[database/LOGIN-ROUTING-FIX.md](database/LOGIN-ROUTING-FIX.md) for verified symptoms,
+changed files, tests and deployment verification.
+
 ## Source-authorized test administrators
 
 The two designated test administrators can now be provisioned once during normal

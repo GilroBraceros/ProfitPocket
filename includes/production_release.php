@@ -7,7 +7,7 @@ const PRODUCTION_RELEASE_ADMINS_ENABLED=true;
 
 function production_release_location(string $root,string $os): bool
 {
-    return $os==='Linux' && preg_match('~\A/home/[A-Za-z0-9._-]+/domains/profitpocket\.online/public_html/profitpocket\z~',$root)===1;
+    return $os==='Linux' && preg_match('~\A/home/[A-Za-z0-9._-]+/domains/profitpocket\.online/public_html(?:/profitpocket)?\z~',$root)===1;
 }
 
 function production_release_database_matches(array $settings,array $identity): bool
@@ -25,9 +25,14 @@ function production_release_provision(): string
 {
     if (!PRODUCTION_RELEASE_ADMINS_ENABLED || !production_release_location(realpath(__DIR__.'/..'),PHP_OS_FAMILY)) { return 'not_applicable'; }
     $settings=database_config();
-    if (!production_release_database_matches($settings,['database_name'=>$settings['PP_DB_NAME'],'database_account'=>$settings['PP_DB_USER']])) { throw new RuntimeException('The existing connection is not an eligible hosted database configuration.'); }
+    if (!defined('PP_LEGACY_DATABASE_FILE') && !production_release_database_matches($settings,['database_name'=>$settings['PP_DB_NAME'],'database_account'=>$settings['PP_DB_USER']])) { throw new RuntimeException('The existing connection is not an eligible hosted database configuration.'); }
     $db=db();
     $identity=$db->query('SELECT DATABASE() AS database_name, CURRENT_USER() AS database_account')->fetch();
+    if (defined('PP_LEGACY_DATABASE_FILE')) {
+        if (realpath((new ReflectionFunction('db'))->getFileName())!==PP_LEGACY_DATABASE_FILE) { throw new RuntimeException('The existing application connection changed.'); }
+        $settings['PP_DB_NAME']=(string)($identity['database_name']??'');
+        $settings['PP_DB_USER']=explode('@',(string)($identity['database_account']??''),2)[0];
+    }
     if (!production_release_database_matches($settings,$identity?:[])) { throw new RuntimeException('The connected database differs from the existing application configuration.'); }
     // These existing tables/columns distinguish this application before any write.
     foreach (['users'=>['user_id','role_id','password_hash','account_status'],

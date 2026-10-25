@@ -15,7 +15,7 @@ function production_check_location(array $config,string $root,string $os): void
         !preg_match('/\A[a-f0-9]{64}\z/',(string)$config['PP_PROVISION_TOKEN'])) {
         throw new RuntimeException('Production authorization or installation identity is missing.');
     }
-    if (!str_starts_with($root,'/home/') || !str_contains($root,'/domains/profitpocket.online/public_html/')) { throw new RuntimeException('This is not the designated Hostinger application directory.'); }
+    if (!production_release_location($root,$os)) { throw new RuntimeException('This is not the designated Hostinger application directory.'); }
     foreach (['PP_PRODUCTION_DB_NAME','PP_PRODUCTION_DB_USER'] as $key) {
         if (!is_string($config[$key]) || $config[$key]==='' || in_array(strtolower($config[$key]),['root','profitpocket_db'],true) || !preg_match('/\A[A-Za-z0-9_]+\z/',$config[$key])) { throw new RuntimeException('Explicit hosted database identity is required.'); }
     }

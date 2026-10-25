@@ -1,5 +1,9 @@
 # Hostinger production email and two temporary administrators
 
+The later live diagnosis found root forms targeting the older subfolder and a
+root database-connection failure. See [LOGIN-ROUTING-FIX.md](LOGIN-ROUTING-FIX.md)
+for automatic path detection and guarded existing-connection compatibility.
+
 The owner subsequently authorized automatic source-based creation of the two
 designated test administrators. See [SOURCE-BOOTSTRAP.md](SOURCE-BOOTSTRAP.md):
 its existing-connection checks and activity-log ledger supersede the private

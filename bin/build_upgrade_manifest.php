@@ -3,7 +3,7 @@ declare(strict_types=1);
 if (PHP_SAPI!=='cli') { http_response_code(403); exit; }
 // Run locally after tests, then deploy this manifest with the reviewed release.
 $root=realpath(__DIR__.'/..');
-$paths=['index.php','.htaccess','config/database.php','config/email.php','config/upgrade.php','config/.htaccess','database/migrations/20261025_subscriptions.sql','database/migrations/20261025_registration_payments.sql'];
+$paths=['index.php','.htaccess','config/database.php','config/database_bootstrap.php','config/paths.php','config/email.php','config/upgrade.php','config/.htaccess','database/migrations/20261025_subscriptions.sql','database/migrations/20261025_registration_payments.sql'];
 foreach (['auth','admin','user','includes','emails','emails/templates','bin'] as $dir) {
     foreach (glob($root.'/'.$dir.'/*.php') as $file) { $paths[]=str_replace('\\','/',substr($file,strlen($root)+1)); }
     if (is_file($root.'/'.$dir.'/.htaccess')) { $paths[]=$dir.'/.htaccess'; }

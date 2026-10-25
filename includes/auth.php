@@ -2,11 +2,14 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../config/paths.php';
 date_default_timezone_set('Asia/Manila');
 ini_set('display_errors', '0');
 ini_set('log_errors', '1');
 
-define('APP_BASE_PATH', rtrim(getenv('PP_BASE_PATH') ?: '/profitpocket', '/'));
+$baseOverride=getenv('PP_BASE_PATH');
+define('APP_BASE_PATH',profitpocket_base_path($_SERVER,$baseOverride===false?null:$baseOverride));
+unset($baseOverride);
 const AUTH_IDLE_SECONDS = 1800;
 
 if (session_status() !== PHP_SESSION_ACTIVE) {
@@ -24,6 +27,7 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 }
 
 header('Cache-Control: no-store, private');
+header('X-ProfitPocket-Release: 20261026-root-auth-v1');
 header('X-Content-Type-Options: nosniff');
 header('X-Frame-Options: DENY');
 header('Referrer-Policy: same-origin');
