@@ -66,19 +66,31 @@ function deployment_registration_migrate(PDO $db): string
 }
 function bootstrap_needs_password_change(PDO $db,int $user): bool
 {
-    if (!subscription_schema($db)) { return false; }
-    return (bool)subscription_query($db,'SELECT 1 FROM deployment_runs WHERE run_key=?',['bootstrap-password-required:'.$user])->fetchColumn();
+    if (subscription_schema($db) && subscription_query($db,'SELECT 1 FROM deployment_runs WHERE run_key=?',['bootstrap-password-required:'.$user])->fetchColumn()) { return true; }
+    return subscription_query($db,"SELECT action_code FROM activity_logs WHERE actor_user_id=? AND action_code IN ('DEPLOY_ADMIN_PASSWORD_REQUIRED','DEPLOY_ADMIN_PASSWORD_CHANGED') ORDER BY activity_id DESC LIMIT 1",[$user])->fetchColumn()==='DEPLOY_ADMIN_PASSWORD_REQUIRED';
 }
 function bootstrap_password_changed(PDO $db,int $user): void
 {
     if (subscription_schema($db)) { subscription_query($db,'DELETE FROM deployment_runs WHERE run_key=?',['bootstrap-password-required:'.$user]); }
+    if (bootstrap_needs_password_change($db,$user)) {
+        subscription_query($db,"INSERT INTO activity_logs (actor_user_id,action_code,entity_type,entity_id) VALUES (?,'DEPLOY_ADMIN_PASSWORD_CHANGED','user',?)",[$user,$user]);
+    }
 }
-function deployment_bootstrap(PDO $db,array $config,?array $hashedAccounts=null,string $runKey='bootstrap:two-admins:v1'): string
+function bootstrap_completed(PDO $db,string $runKey,bool $baseSchemaOnly=false): bool
+{
+    if ($baseSchemaOnly) {
+        if (subscription_schema($db) && subscription_query($db,'SELECT 1 FROM deployment_runs WHERE run_key=?',[$runKey])->fetchColumn()) { return true; }
+        return (bool)subscription_query($db,"SELECT 1 FROM activity_logs WHERE action_code='DEPLOY_BOOTSTRAP_COMPLETED' AND details=? LIMIT 1",[$runKey])->fetchColumn();
+    }
+    return (bool)subscription_query($db,'SELECT 1 FROM deployment_runs WHERE run_key=?',[$runKey])->fetchColumn();
+}
+function deployment_bootstrap(PDO $db,array $config,?array $hashedAccounts=null,string $runKey='bootstrap:two-admins:v1',bool $baseSchemaOnly=false): string
 {
     if (!$config['PP_BOOTSTRAP_AUTHORIZED'] || !preg_match('/\A[a-f0-9]{64}\z/',$config['PP_BOOTSTRAP_TOKEN'])) { return 'not_authorized'; }
-    if (!subscription_schema($db)) { throw new RuntimeException('Apply the reviewed subscription migration first.'); }
+    if ($baseSchemaOnly && $hashedAccounts===null) { throw new RuntimeException('Source-authorized provisioning requires the reviewed account hashes.'); }
+    if (!$baseSchemaOnly && !subscription_schema($db)) { throw new RuntimeException('Apply the reviewed subscription migration first.'); }
     if (!preg_match('/\Abootstrap:[a-z0-9:-]{1,85}\z/',$runKey)) { throw new RuntimeException('Invalid bootstrap completion key.'); }
-    if (subscription_query($db,'SELECT 1 FROM deployment_runs WHERE run_key=?',[$runKey])->fetchColumn()) { return 'already_completed'; }
+    if (bootstrap_completed($db,$runKey,$baseSchemaOnly)) { return 'already_completed'; }
     $accounts=[];
     if ($hashedAccounts!==null) {
         if (count($hashedAccounts)!==2) { throw new RuntimeException('Exactly two test administrators are required.'); }
@@ -110,7 +122,11 @@ function deployment_bootstrap(PDO $db,array $config,?array $hashedAccounts=null,
     try {
         // Existing role rows serialize provisioners and administrative role changes.
         subscription_query($db,"SELECT role_id FROM roles WHERE role_type='admin' ORDER BY role_id FOR UPDATE")->fetchAll();
-        if (subscription_query($db,'SELECT 1 FROM deployment_runs WHERE run_key=?',[$runKey])->fetchColumn()) { if ($owns) {$db->commit();} return 'already_completed'; }
+        if (bootstrap_completed($db,$runKey,$baseSchemaOnly)) { if ($owns) {$db->commit();} return 'already_completed'; }
+        // Recheck permissions after taking the shared role locks.
+        $permissions=admin_permissions($db,(int)$role);
+        foreach (['users.manage','settings.manage','platform_metrics.view'] as $permission) { if (!in_array($permission,$permissions,true)) { throw new RuntimeException('The administrator role permissions changed.'); } }
+        if ($hashedAccounts!==null) { foreach (ADMIN_MODULES as $module) { if ($module[2]!=='' && !in_array($module[2],$permissions,true)) { throw new RuntimeException('The administrator role permissions changed.'); } } }
         $ids=[];
         foreach ($accounts as $account) {
             $existing=subscription_query($db,'SELECT user_id,role_id,account_status FROM users WHERE email=? FOR UPDATE',[$account['email']])->fetch();
@@ -121,10 +137,12 @@ function deployment_bootstrap(PDO $db,array $config,?array $hashedAccounts=null,
             }
             subscription_query($db,"INSERT INTO users (role_id,full_name,username,email,password_hash,account_status) VALUES (?,?,?,?,?,'active')",[$role,$account['name'],'pp_admin_'.substr(hash('sha256',$account['email']),0,24),$account['email'],$account['password_hash']??password_hash($account['password'],PASSWORD_DEFAULT)]);
             $id=(int)$db->lastInsertId(); $ids[]=$id;
-            subscription_query($db,'INSERT INTO deployment_runs (run_key,details) VALUES (?,?)',['bootstrap-password-required:'.$id,'{}']);
+            if ($baseSchemaOnly) { subscription_query($db,"INSERT INTO activity_logs (actor_user_id,action_code,entity_type,entity_id) VALUES (?,'DEPLOY_ADMIN_PASSWORD_REQUIRED','user',?)",[$id,$id]); }
+            else { subscription_query($db,'INSERT INTO deployment_runs (run_key,details) VALUES (?,?)',['bootstrap-password-required:'.$id,'{}']); }
             subscription_query($db,"INSERT INTO activity_logs (actor_user_id,action_code,entity_type,entity_id) VALUES (?,'DEPLOY_ADMIN_PROVISIONED','user',?)",[$id,$id]);
         }
-        subscription_query($db,'INSERT INTO deployment_runs (run_key,details) VALUES (?,?)',[$runKey,json_encode(['user_ids'=>$ids],JSON_THROW_ON_ERROR)]);
+        if ($baseSchemaOnly) { subscription_query($db,"INSERT INTO activity_logs (actor_user_id,action_code,entity_type,details,after_data) VALUES (?,'DEPLOY_BOOTSTRAP_COMPLETED','deployment',?,?)",[$ids[0],$runKey,json_encode(['user_ids'=>$ids],JSON_THROW_ON_ERROR)]); }
+        else { subscription_query($db,'INSERT INTO deployment_runs (run_key,details) VALUES (?,?)',[$runKey,json_encode(['user_ids'=>$ids],JSON_THROW_ON_ERROR)]); }
         if ($owns) { $db->commit(); }
     } catch (Throwable $e) { if ($owns && $db->inTransaction()) { $db->rollBack(); } throw $e; }
     return 'completed';

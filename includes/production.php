@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 require_once __DIR__.'/deployment.php';
+require_once __DIR__.'/production_release.php';
 
 const PRODUCTION_ADMIN_RUN='bootstrap:hostinger-test-admins:v1';
 
@@ -60,7 +61,7 @@ function production_initialize(): void
     if (PHP_SAPI==='cli' || PHP_OS_FAMILY!=='Linux') { return; }
     try {
         $config=upgrade_config();
-        if ($config['PP_ENVIRONMENT']!=='production' || !$config['PP_PROVISION_TEST_ADMINS']) { return; }
+        if ($config['PP_ENVIRONMENT']!=='production' || !$config['PP_PROVISION_TEST_ADMINS']) { production_release_provision(); return; }
         // The completion record permanently disables inserts on future requests.
         production_provision(db(),$config);
     } catch (Throwable $e) {
@@ -71,7 +72,8 @@ function production_initialize(): void
 
 function production_admin_status(PDO $db): array
 {
-    $details=subscription_query($db,'SELECT details FROM deployment_runs WHERE run_key=?',[PRODUCTION_ADMIN_RUN])->fetchColumn();
+    $details=subscription_schema($db)?subscription_query($db,'SELECT details FROM deployment_runs WHERE run_key=?',[PRODUCTION_ADMIN_RUN])->fetchColumn():false;
+    if (!$details) { $details=subscription_query($db,"SELECT after_data FROM activity_logs WHERE action_code='DEPLOY_BOOTSTRAP_COMPLETED' AND details=? ORDER BY activity_id DESC LIMIT 1",[PRODUCTION_ADMIN_RUN])->fetchColumn(); }
     $ids=$details?(json_decode($details,true)['user_ids']??[]):[];
     $result=[];
     foreach ($ids as $id) {

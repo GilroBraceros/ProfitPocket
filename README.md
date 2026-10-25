@@ -1,5 +1,14 @@
 # ProfitPocket
 
+## Source-authorized test administrators
+
+The two designated test administrators can now be provisioned once during normal
+initialization of the complete deployed release, without an extra private bootstrap
+configuration or SSH alias. Strict Linux installation, existing configured Hostinger
+database identity, schema, permissions and release checks remain in force. XAMPP is
+ineligible. This does not configure hosting deployment or supply missing DB/API
+credentials. See [database/SOURCE-BOOTSTRAP.md](database/SOURCE-BOOTSTRAP.md).
+
 ## Hostinger production setup — 26 October 2026
 
 An explicitly authorized production bootstrap can create the two temporary test

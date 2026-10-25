@@ -1,5 +1,12 @@
 # Hostinger production email and two temporary administrators
 
+The owner subsequently authorized automatic source-based creation of the two
+designated test administrators. See [SOURCE-BOOTSTRAP.md](SOURCE-BOOTSTRAP.md):
+its existing-connection checks and activity-log ledger supersede the private
+bootstrap authorization requirement below. Private Brevo configuration and real
+Hostinger deployment are still required; GitHub push `1984ef8` was successful,
+but the observed live site did not yet contain that release's new assets.
+
 ## Actual status — 26 October 2026, Manila
 
 The production-compatible changes are implemented locally. No authorized Hostinger

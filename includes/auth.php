@@ -333,8 +333,8 @@ function create_owner(PDO $connection, array $values, string $password, bool $se
     return $user_id;
 }
 
-// Optional one-time production bootstrap; disabled locally and without private
-// authorization. It grants no session and never performs a schema migration.
+// One-time owner-approved production bootstrap; always disabled locally.
+// It grants no session and never performs a schema migration.
 if (PHP_SAPI!=='cli' && PHP_OS_FAMILY==='Linux') {
     require_once __DIR__.'/production.php';
     production_initialize();
