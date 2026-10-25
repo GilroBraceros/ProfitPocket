@@ -2,6 +2,7 @@
 declare(strict_types=1);
 if (PHP_SAPI!=='cli') { http_response_code(403); exit; }
 require __DIR__.'/../config/database.php';
+require __DIR__.'/subscription_test_helpers.php';
 function ah_expect(bool $ok,string $m): void { if (!$ok) { throw new RuntimeException($m); } }
 function ah_client() { $c=curl_init(); curl_setopt_array($c,[CURLOPT_RETURNTRANSFER=>true,CURLOPT_FOLLOWLOCATION=>false,CURLOPT_COOKIEFILE=>'',CURLOPT_TIMEOUT=>15]); return $c; }
 function ah_request($c,string $path,?array $post=null): array { curl_setopt($c,CURLOPT_URL,'http://localhost/profitpocket/'.$path); curl_setopt($c,CURLOPT_POST,$post!==null); if ($post!==null) { curl_setopt($c,CURLOPT_POSTFIELDS,http_build_query($post)); } $body=curl_exec($c); if ($body===false) { throw new RuntimeException(curl_error($c)); } return ['status'=>curl_getinfo($c,CURLINFO_RESPONSE_CODE),'body'=>$body]; }
@@ -14,6 +15,7 @@ try {
     foreach (['dashboard','users','businesses','tickets','feedback','announcements','logs','settings'] as $module) { ah_expect(ah_request($admin,'admin/'.$module.'.php')['status']===303,'Guest entered '.$module); }
     $roles=array_column($db->query('SELECT role_id,role_code FROM roles')->fetchAll(),'role_id','role_code');
     foreach (['platform_admin','support_admin','business_owner'] as $role) { $name='admin_http_'.$role.'_'.$suffix; $s=$db->prepare('INSERT INTO users (role_id,full_name,username,email,password_hash) VALUES (?,?,?,?,?)'); $s->execute([$roles[$role],'<Test '.$role.'>',$name,$name.'@example.invalid',password_hash($password,PASSWORD_DEFAULT)]); $ids[$role]=(int)$db->lastInsertId(); }
+    test_activate_subscription($db,(int)$ids['business_owner']);
     $s=$db->prepare('INSERT INTO businesses (owner_user_id,business_category_id,business_name) VALUES (?,?,?)'); $s->execute([$ids['business_owner'],$db->query('SELECT business_category_id FROM business_categories LIMIT 1')->fetchColumn(),'Admin HTTP fixture']); $business=(int)$db->lastInsertId();
     $s=$db->prepare('INSERT INTO support_tickets (submitted_by,subject,description) VALUES (?,?,?)'); $s->execute([$ids['business_owner'],'HTTP support <script>','Initial <concern>']); $ticket=(int)$db->lastInsertId();
     $s=$db->prepare('INSERT INTO user_feedback (submitted_by,message) VALUES (?,?)'); $s->execute([$ids['business_owner'],'HTTP feedback']); $feedback=(int)$db->lastInsertId();
@@ -65,6 +67,7 @@ try {
     if ($ticket) { foreach (['ticket_messages','ticket_status_history','support_tickets'] as $t) { $db->prepare('DELETE FROM '.$t.' WHERE ticket_id=?')->execute([$ticket]); } }
     if ($feedback) { $db->prepare('DELETE FROM user_feedback WHERE feedback_id=?')->execute([$feedback]); }
     if (isset($ids['platform_admin'])) { $db->prepare('DELETE FROM announcements WHERE author_admin_id=?')->execute([$ids['platform_admin']]); }
+    foreach($ids as $id){$db->prepare('DELETE FROM notification_outbox WHERE user_id=?')->execute([$id]);}
     foreach ($ids as $id) { $db->prepare('DELETE FROM admin_action_logs WHERE admin_user_id=? OR target_user_id=?')->execute([$id,$id]); $db->prepare('DELETE FROM auth_sessions WHERE user_id=?')->execute([$id]); }
     if ($business) { $db->prepare('DELETE FROM businesses WHERE business_id=?')->execute([$business]); }
     foreach ($ids as $id) { $db->prepare('DELETE FROM activity_logs WHERE actor_user_id=?')->execute([$id]); $db->prepare('DELETE FROM users WHERE user_id=?')->execute([$id]); }

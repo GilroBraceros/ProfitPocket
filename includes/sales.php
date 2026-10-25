@@ -248,6 +248,11 @@ function sale_save_children(PDO $db, array $user, int $id, array $data, string $
         $db->prepare('INSERT INTO sale_payments (sale_id,business_id,payment_method_id,provider_name,entered_by,amount,paid_at,reference_number,idempotency_key,notes) VALUES (?,?,?,?,?,?,?,?,?,?)')->execute([$id,$user['business_id'],$data['method_id'],$data['provider_name'],$user['user_id'],$data['paid'],$data['sold_at'],$data['reference']!==''?$data['reference']:null,'initial-' . $key,$data['payment_notes']!==''?$data['payment_notes']:null]);
     }
     if ($data['mode'] === 'posted') { $db->prepare("UPDATE sales SET sale_status='posted' WHERE sale_id=? AND business_id=?")->execute([$id,$user['business_id']]); }
+    if ($data['mode']==='posted' && bccomp($data['paid'],'0',2)>0) {
+        require_once __DIR__.'/notifications.php';
+        $payment=$db->prepare('SELECT payment_id FROM sale_payments WHERE business_id=? AND idempotency_key=?'); $payment->execute([$user['business_id'],'initial-'.$key]);
+        notification_payment_event($db,(int)$user['business_id'],(int)$payment->fetchColumn());
+    }
 }
 
 function sale_create(PDO $db, array $user, array $input, string $key): int

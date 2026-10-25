@@ -1,7 +1,7 @@
 <section class="summary-grid admin-summary" aria-label="Platform summary">
     <?php foreach ([
         'total'=>['Total Users','Business-owner accounts'],
-        'active'=>['Active Accounts','Owners with access'],
+        'active'=>['Active Accounts','Enabled for sign-in'],
         'businesses'=>['Registered Businesses','Linked business profiles'],
         'tickets'=>['Open Support Tickets','Open and in progress'],
     ] as $key=>[$label,$note]): ?>

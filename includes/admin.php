@@ -9,6 +9,7 @@ const ADMIN_MODULES=[
     'dashboard'=>['Dashboard','ProfitPocket platform overview','platform_metrics.view','grid-1x2'],
     'users'=>['User Management','Manage registered ProfitPocket accounts.','users.manage','people'],
     'businesses'=>['Business Management','View and manage registered businesses.','users.manage','box-seam'],
+    'subscriptions'=>['Subscription Management','Review monthly owner subscriptions and payment proofs.','users.manage','journal-text'],
     'tickets'=>['Support Tickets','Review and respond to user concerns.','support.manage','journal-text'],
     'feedback'=>['User Feedback','Review suggestions and feedback from ProfitPocket users.','support.manage','journal-text'],
     'announcements'=>['Announcements','Manage important platform announcements.','announcements.manage','journal-plus'],
@@ -209,6 +210,10 @@ function admin_change(PDO $db,array $actor,string $action,int $id,array $input,s
         $hashPassword=$new!==''?password_hash($new,PASSWORD_DEFAULT):$row['password_hash'];
         admin_query($db,'UPDATE users SET full_name=?,email=?,phone=?,password_hash=? WHERE user_id=?',[$name,$email,$phone?:null,$hashPassword,$actorId]); unset($row['password_hash']); $before=$row; $after+=['full_name'=>$name,'email'=>$email,'phone'=>$phone,'password_changed'=>$new!=='']; $target=$actorId;
         admin_query($db,'UPDATE auth_sessions SET revoked_at=CURRENT_TIMESTAMP WHERE user_id=? AND revoked_at IS NULL',[$actorId]); $logout=true;
+        if ($new!=='') {
+            admin_query($db,'UPDATE password_reset_tokens SET used_at=CURRENT_TIMESTAMP WHERE user_id=? AND used_at IS NULL',[$actorId]);
+            require_once __DIR__.'/notifications.php'; notification_enqueue($db,'password_changed','admin-password-change:'.$actorId.':'.$key,['user_id'=>$actorId,'recipient_email'=>$row['email']]);
+        }
     }
     admin_audit($db,$actorId,$target,'ADMIN_'.strtoupper($action),$before,$after,$reason,$key,$hash);
     return ['id'=>$id,'replayed'=>false,'logout'=>$logout];

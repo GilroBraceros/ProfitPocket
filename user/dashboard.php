@@ -5,6 +5,7 @@ require_once __DIR__ . '/../includes/dashboard.php';
 require_once __DIR__ . '/../includes/payments.php';
 require_once __DIR__ . '/../includes/platform.php';
 $user = require_role('owner');
+require_once __DIR__.'/../includes/subscriptions.php'; subscription_require_access($user);
 $page_title = 'Dashboard';
 $dashboard_layout = true;
 $active_page = 'dashboard';

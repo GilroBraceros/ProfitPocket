@@ -113,6 +113,8 @@ function customer_save(PDO $db, array $user, int $id, array $input, string $key)
     $values=[$data['customer_name']]; foreach (['phone','email','address','notes'] as $field) { $values[]=$data[$field]!==''?$data[$field]:null; }
     if ($id) { array_push($values,$user['business_id'],$id); customer_query($db,'UPDATE customers SET customer_name=?,phone=?,email=?,address=?,notes=? WHERE business_id=? AND customer_id=?',$values); }
     else { array_unshift($values,$user['business_id']); customer_query($db,'INSERT INTO customers (business_id,customer_name,phone,email,address,notes) VALUES (?,?,?,?,?,?)',$values); $id=(int)$db->lastInsertId(); }
+    require_once __DIR__.'/notifications.php';
+    notification_save_preferences($db,$user,$id,$input,$old);
     $before=$old?array_intersect_key($old,$data):[];
     sale_audit($db,$user,$id,$action,$before,['request_key'=>$key,'data'=>$data,'shared_phone_confirmed'=>sale_text($input,'allow_shared_phone')==='1'],'customer');
     return $id;

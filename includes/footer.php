@@ -1,4 +1,4 @@
-<footer class="<?= !empty($dashboard_layout) ? 'dashboard-footer' : 'container py-4 text-center' ?> small text-secondary">ProfitPocket<?= !empty($dashboard_layout) ? ' · ' . e($page_title ?? 'Business overview') : ' &middot; Made for your everyday business' ?></footer>
+<?php if (empty($hide_default_footer)): ?><footer class="<?= !empty($dashboard_layout) ? 'dashboard-footer' : 'container py-4 text-center' ?> small text-secondary">ProfitPocket<?= !empty($dashboard_layout) ? ' · ' . e($page_title ?? 'Business overview') : ' &middot; Made for your everyday business' ?></footer><?php endif; ?>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <?php if (!empty($dashboard_layout) && in_array($active_page ?? 'dashboard',['dashboard','reports'],true)): ?><script src="<?= e(app_url('assets/js/chart.umd.min.js')) ?>"></script><?php endif; ?>
 <script src="<?= e(app_url('assets/js/script.js')) ?>" defer></script>

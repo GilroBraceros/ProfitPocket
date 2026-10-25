@@ -25,7 +25,9 @@ try {
     $saleBase=['sold_at'=>date('Y-m-d\TH:i',strtotime('-2 days')),'save_mode'=>'posted','payment_plan'=>'unpaid','customer_id'=>(string)$id,'initial_payment'=>'0','payment_method_id'=>(string)$method,'due_date'=>date('Y-m-d',strtotime('-1 day')),'items'=>[['product_id'=>(string)$product,'quantity'=>'1','unit_price'=>'1000']],'discount_type'=>'none','discount_value'=>'0','notes'=>''];
     $first=sale_create($db,$user,$saleBase,bin2hex(random_bytes(32))); $row=utang_read($db,$business,$first); utang_expect(utang_status($row)==='Unpaid' && $row['balance_due']==='1000.00' && utang_overdue($row),'Unpaid/overdue wrong');
     $payment=['amount'=>'300','payment_method_id'=>(string)$method,'paid_at'=>date('Y-m-d\TH:i'),'reference_number'=>'0','notes'=>'<safe notes>']; $key=bin2hex(random_bytes(32));
-    $totals=dashboard_data($db,$business,dashboard_period(['period'=>'week']))['totals'];
+    // Keep the two-day-old fixtures in scope across Monday/week boundaries.
+    $financialPeriod=dashboard_period(['period'=>'custom','start'=>substr($saleBase['sold_at'],0,10),'end'=>date('Y-m-d')]);
+    $totals=dashboard_data($db,$business,$financialPeriod)['totals'];
     $saved=utang_collect($db,$user,$first,$payment,$key); utang_expect(!$saved['replayed'] && utang_collect($db,$user,$first,$payment,$key)['replayed'],'Replay did not deduplicate');
     $row=utang_read($db,$business,$first); utang_expect($row['balance_due']==='700.00' && utang_status($row)==='Partially Paid' && utang_overdue($row) && count($row['payments'])===1,'300 partial failed');
     utang_reject($db,fn()=>utang_collect($db,$user,$first,array_replace($payment,['amount'=>'200']),$key),'Changed replay accepted');
@@ -56,12 +58,12 @@ try {
     utang_collect($db,$user,$second,array_replace($payment,['amount'=>'100']),bin2hex(random_bytes(32)));
     utang_expect(utang_list($db,$business,utang_filters([]))['summary']['outstanding']==='1200.00','Archived debt lost');
     utang_expect(customer_read($db,$business,$id)['outstanding']==='1200.00','Customer totals disconnected');
-    $totalsAfter=dashboard_data($db,$business,dashboard_period(['period'=>'week']))['totals'];
+    $totalsAfter=dashboard_data($db,$business,$financialPeriod)['totals'];
     // Additional sales add revenue, but collecting on any existing sale does not.
     utang_expect($totalsAfter['sales']-$totals['sales']===130000,'Collections inflated revenue');
-    $before=dashboard_data($db,$business,dashboard_period(['period'=>'week']));
+    $before=dashboard_data($db,$business,$financialPeriod);
     utang_collect($db,$user,$third,array_replace($payment,['amount'=>'0.01']),bin2hex(random_bytes(32)));
-    $after=dashboard_data($db,$business,dashboard_period(['period'=>'week'])); utang_expect($before['totals']===$after['totals'],'Centavo payment changed revenue/profit/expenses/COGS');
+    $after=dashboard_data($db,$business,$financialPeriod); utang_expect($before['totals']===$after['totals'],'Centavo payment changed revenue/profit/expenses/COGS');
     // Create a second active contact for a voidable credit and pagination fixtures.
     $other=customer_save($db,$user,0,['customer_name'=>'Other credit customer'],bin2hex(random_bytes(32)));
     $draft=sale_create($db,$user,array_replace($saleBase,['save_mode'=>'draft','customer_id'=>(string)$other,'initial_payment'=>'0']),bin2hex(random_bytes(32)));

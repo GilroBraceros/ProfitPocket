@@ -137,5 +137,7 @@ function payment_collect(PDO $db, array $user, int $id, array $input, string $ke
     if (bccomp($balance,'0',2)<=0) { throw new UtangValidation('This sale is already fully paid. Its history is still available.','amount'); }
     if (bccomp($data['amount'],$balance,2)>0) { throw new UtangValidation('Payment cannot exceed the remaining balance of '.sale_money($balance).'.','amount'); }
     customer_query($db,"INSERT INTO sale_payments (sale_id,business_id,payment_method_id,provider_name,entered_by,payment_kind,amount,paid_at,reference_number,idempotency_key,notes) VALUES (?,?,?,?,?,'collection',?,?,?,?,?)",[$id,$user['business_id'],$data['payment_method_id'],$data['provider_name'],$user['user_id'],$data['amount'],$data['paid_at'],$data['reference_number'],$durable,$data['notes']]);
-    return ['payment_id'=>(int)$db->lastInsertId(),'replayed'=>false];
+    $paymentId=(int)$db->lastInsertId();
+    require_once __DIR__.'/notifications.php'; notification_payment_event($db,(int)$user['business_id'],$paymentId);
+    return ['payment_id'=>$paymentId,'replayed'=>false];
 }

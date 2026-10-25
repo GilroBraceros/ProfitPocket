@@ -5,6 +5,16 @@
 !.env.example
 config/database.local.php
 config/secrets.php
+config/email.local.php
+config/upgrade.local.php
+profitpocket-private/
+tests/.sessions/
+tests/http-results/email-*
+tests/http-results/browser-*/
+tests/http-results/subscription-*
+tests/http-results/homepage-*
+tests/http-results/onboarding-*
+storage/email-previews/
 *.pem
 *.key
 

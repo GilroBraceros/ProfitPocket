@@ -125,7 +125,7 @@ $badge=fn(string $status)=>'<span class="payment-badge admin-status status-'.e($
     <input type="hidden" name="setting_key" value="<?= e($row['setting_key']) ?>">
     <?php $settingLabels=['platform_name'=>'Support platform name','platform_description'=>'Support introduction','support_email'=>'Support email','support_phone'=>'Support phone'];
     $field('setting_value',$settingLabels[$row['setting_key']],$row['setting_key']==='support_email'?'email':($row['setting_key']==='platform_description'?'textarea':'text'),$row['setting_key']==='platform_description'?2000:191); ?>
-    <p class="admin-help">Shown on the owner's Help & Support page. Email delivery is not configured.</p>
+    <p class="admin-help">Shown on the owner's Help & Support page. Transactional email uses separate private server configuration.</p>
     <?php elseif ($action==='role'): ?>
     <div class="admin-record-header"><div><h3><?= e($roleTarget['full_name']) ?></h3><p><?= e($roleTarget['email']) ?></p></div></div>
     <div class="admin-field"><label for="admin-role" class="form-label">Administrator role</label><select class="form-select" id="admin-role" name="role_id"><?php foreach ($roles as $role): ?><option value="<?= e($role['role_id']) ?>" <?= (string)($values['role_id']??'')===(string)$role['role_id']?'selected':'' ?>><?= e($role['role_name']) ?></option><?php endforeach; ?></select></div>

@@ -23,7 +23,7 @@ $form_url=app_url('user/payments_action.php').'?action='.$action.($modal?'&modal
             <div class="mt-3"><label class="form-label" for="notes">Payment notes <span class="field-optional">(optional)</span></label><textarea class="form-control" id="notes" name="notes" maxlength="4000" rows="2"><?= e($values['notes']) ?></textarea></div>
         </section>
         <dl class="utang-payment-preview" data-balance="<?= e($row['balance_due']) ?>" aria-live="polite" aria-atomic="true"><div><dt>Current balance</dt><dd><?= e(sale_money($row['balance_due'])) ?></dd></div><div><dt>New payment</dt><dd data-preview-payment>₱0.00</dd></div><div><dt>Remaining after payment</dt><dd data-preview-balance><?= e(sale_money($row['balance_due'])) ?></dd></div></dl>
-        <p class="sale-modal-note">The balance is checked again before saving. No email or SMS is sent.</p>
+        <p class="sale-modal-note">The balance is checked again before saving. Email confirmations require configured sending and the customer’s permission. No SMS is sent.</p>
         <?php else: ?>
         <input type="hidden" name="revision" value="<?= e($_SERVER['REQUEST_METHOD']==='POST' && is_string($_POST['revision']??null)?$_POST['revision']:utang_due_revision($row['due_date'])) ?>">
         <label class="form-label" for="due_date">Due date <span class="field-optional">(optional)</span></label><input class="form-control" type="date" id="due_date" name="due_date" min="<?= e(substr($row['sold_at'],0,10)) ?>" value="<?= e($values['due_date']) ?>"><p class="form-text">Leave blank if no due date is agreed. A sale with a remaining balance becomes overdue after its due date.</p><p class="sale-modal-note">Due-date changes remain in the audit history. Payments and sale amounts stay unchanged.</p>

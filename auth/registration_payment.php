@@ -1,0 +1,17 @@
+<?php
+declare(strict_types=1);
+require_once __DIR__.'/../includes/registration.php'; require_guest();
+$db=db();$onboarding=registration_current($db);
+if(!$onboarding){flash('Your registration session expired. Your account is preserved; sign in to resume payment.');redirect_to('auth/login.php');}
+if($onboarding['initial_submission_id']){redirect_to('auth/registration_complete.php');}
+$_SESSION['onboarding_payment_key']??=bin2hex(random_bytes(32));$error=null;$methods=subscription_methods($db);
+if($_SERVER['REQUEST_METHOD']==='POST'){
+    try{
+        if(!valid_csrf() || !hash_equals($_SESSION['onboarding_payment_key'],post_text('request_key'))){http_response_code(403);throw new InvalidArgumentException('This form expired. Reload before submitting.');}
+        subscription_receive_proof($db,(int)$onboarding['user_id'],$_POST,$_FILES['proof']??[],post_text('request_key'),$_SESSION['onboarding_token']);
+        redirect_to('auth/registration_complete.php');
+    }catch(InvalidArgumentException $e){$error=$e->getMessage();}catch(Throwable $e){http_response_code(503);$error='Payment proof could not be saved. Your account is preserved. Please try again or sign in to resume.';error_log('ProfitPocket: onboarding payment unavailable.');}
+}
+$page_title='Activate Your ProfitPocket Account';$active_page='subscription';$registrationStep=2;subscription_preview_headers();require __DIR__.'/../includes/header.php';
+?>
+<main class="onboarding-shell"><div class="onboarding-brand"><a class="pp-wordmark" href="<?= e(app_url()) ?>"><img src="<?= e(app_url('assets/images/logo-icon.jpg')) ?>" width="42" height="42" alt="">ProfitPocket</a><a href="<?= e(app_url('auth/login.php')) ?>">Sign in to resume later</a></div><?php require __DIR__.'/../includes/registration_progress.php'; ?><div class="onboarding-heading"><p class="eyebrow">YOU'RE ALMOST READY</p><h1>Activate Your ProfitPocket Account</h1><p>You're almost ready to start managing your business! Complete your subscription payment to activate your ProfitPocket account.</p></div><div class="onboarding-payment-layout"><section class="subscription-card"><h2>Monthly Subscription: ₱100.00</h2><?php if($error): ?><div class="alert alert-danger" role="alert"><?= e($error) ?></div><?php endif; ?><?php if(!$methods): ?><div class="alert alert-info" role="status">Payment setup is temporarily unavailable. Your account has been created and is preserved. You can return in this browser within one hour, or sign in later to finish payment safely.</div><a class="btn btn-outline-secondary" href="<?= e(app_url('auth/login.php')) ?>">Sign in later</a><?php else: $paymentAction=app_url('auth/registration_payment.php');$paymentKey=$_SESSION['onboarding_payment_key'];require __DIR__.'/../includes/subscription_payment_form.php';endif; ?></section><aside><section class="subscription-card onboarding-summary"><p class="eyebrow">YOUR NEW WORKSPACE</p><h2><?= e($onboarding['business_name']) ?></h2><p><?= e($onboarding['email']) ?></p><dl class="subscription-facts"><div><dt>Plan</dt><dd>ProfitPocket Monthly</dd></div><div><dt>Amount</dt><dd>₱100.00</dd></div><div><dt>Access begins</dt><dd>After administrator approval</dd></div></dl><p class="form-text mt-3 mb-0">No automatic recurring charge. Your private registration session lasts one hour. Sign-in remains available if you need to continue later.</p></section></aside></div></main><script src="<?= e(app_url('assets/js/subscriptions.js')) ?>" defer></script><?php require __DIR__.'/../includes/footer.php'; ?>

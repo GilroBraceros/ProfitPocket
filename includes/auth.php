@@ -131,7 +131,9 @@ function current_user(): ?array
 
 function home_path(array $user): string
 {
-    return $user['role_type'] === 'admin' ? 'admin/dashboard.php' : 'user/dashboard.php';
+    require_once __DIR__.'/deployment.php';
+    if ($user['role_type']==='admin') { return bootstrap_needs_password_change(db(),(int)$user['user_id'])?'auth/change_password.php':'admin/dashboard.php'; }
+    return subscription_has_access(db(),$user)?'user/dashboard.php':'user/subscription.php';
 }
 
 function require_guest(): void
@@ -161,6 +163,10 @@ function require_role(string $role): array
         require __DIR__ . '/footer.php';
         exit;
     }
+    if ($role==='admin') {
+        require_once __DIR__.'/deployment.php';
+        if (bootstrap_needs_password_change(db(),(int)$user['user_id'])) { redirect_to('auth/change_password.php'); }
+    }
     return $user;
 }
 
@@ -185,6 +191,7 @@ function require_permission(string $permission): array
 function require_business(): array
 {
     $user = require_role('owner');
+    require_once __DIR__.'/subscriptions.php'; subscription_require_access($user);
     if (!$user['business_id']) {
         flash('Your account has no linked business. Please contact the administrator.');
         redirect_to('user/dashboard.php');
@@ -296,7 +303,7 @@ function registration_errors(array $values, string $password, string $confirmati
 }
 
 // The caller owns the transaction. Public registration can only assign the owner role.
-function create_owner(PDO $connection, array $values, string $password): int
+function create_owner(PDO $connection, array $values, string $password, bool $sendWelcome=true): int
 {
     $statement = $connection->prepare("SELECT role_id FROM roles WHERE role_code = 'business_owner' AND role_type = 'owner'");
     $statement->execute();
@@ -318,7 +325,17 @@ function create_owner(PDO $connection, array $values, string $password): int
         'INSERT INTO businesses (owner_user_id, business_category_id, business_name) VALUES (?, ?, ?)'
     );
     $statement->execute([$user_id, $values['business_category_id'], $values['business_name']]);
+    require_once __DIR__.'/subscriptions.php'; subscription_initialize_owner($connection,$user_id);
     $statement=$connection->prepare("INSERT INTO activity_logs (actor_user_id,action_code,entity_type,entity_id) VALUES (?,'USER_REGISTERED','user',?)");
     $statement->execute([$user_id,$user_id]);
+    require_once __DIR__.'/notifications.php';
+    if ($sendWelcome) { notification_enqueue($connection,'welcome','welcome:'.$user_id,['user_id'=>$user_id,'recipient_email'=>$values['email']]); }
     return $user_id;
+}
+
+// Optional one-time production bootstrap; disabled locally and without private
+// authorization. It grants no session and never performs a schema migration.
+if (PHP_SAPI!=='cli' && PHP_OS_FAMILY==='Linux') {
+    require_once __DIR__.'/production.php';
+    production_initialize();
 }

@@ -14,7 +14,8 @@
         <?php endforeach; ?>
         <div class="sidebar-divider"></div>
         <a class="sidebar-link <?= $current_navigation==='support'?'active':'' ?>" href="<?= e(app_url('user/support.php')) ?>" <?= $current_navigation==='support'?'aria-current="page"':'' ?> title="Help & Support"><?= dashboard_icon('journal-text') ?><span class="sidebar-text">Help & Support</span></a>
-        <span class="sidebar-link upcoming" aria-disabled="true" title="Settings — upcoming"><?= dashboard_icon('gear') ?><span class="sidebar-text">Settings</span><span class="sidebar-upcoming">Soon</span></span>
+        <a class="sidebar-link <?= $current_navigation==='subscription'?'active':'' ?>" href="<?= e(app_url('user/subscription.php')) ?>"><?= dashboard_icon('journal-text') ?><span class="sidebar-text">Subscription</span></a>
+        <a class="sidebar-link" href="<?= e(app_url('user/settings.php')) ?>"><?= dashboard_icon('gear') ?><span class="sidebar-text">Account settings</span></a>
     </nav>
     <div class="sidebar-bottom"><form action="<?= e(app_url('auth/logout.php')) ?>" method="post"><input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>"><button class="sidebar-link sidebar-logout" type="submit" title="Sign out"><?= dashboard_icon('box-arrow-left') ?><span class="sidebar-text">Sign out</span></button></form></div>
 </aside>
@@ -26,7 +27,7 @@
         <span class="topbar-title"><?= e($page_title) ?></span><span class="topbar-separator"></span><span class="topbar-business"><?= e($user['business_name'] ?? 'No business linked') ?></span>
     </div>
     <div class="dropdown"><button type="button" class="profile-button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Open account menu for <?= e($user['full_name']) ?>"><span class="profile-initial"><?= e(mb_strtoupper(mb_substr($user['full_name'], 0, 1))) ?></span><span class="profile-name"><?= e($user['full_name']) ?></span><?= dashboard_icon('chevron-down') ?></button>
-        <div class="dropdown-menu dropdown-menu-end account-menu"><div class="px-3 py-2"><strong><?= e($user['full_name']) ?></strong><div class="small text-secondary"><?= e($user['email']) ?></div><div class="small text-secondary">Business owner · <?= e($user['username']) ?></div></div><hr class="dropdown-divider"><form action="<?= e(app_url('auth/logout.php')) ?>" method="post"><input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>"><button class="dropdown-item" type="submit"><?= dashboard_icon('box-arrow-left') ?> Sign out</button></form></div>
+        <div class="dropdown-menu dropdown-menu-end account-menu"><div class="px-3 py-2"><strong><?= e($user['full_name']) ?></strong><div class="small text-secondary"><?= e($user['email']) ?></div><div class="small text-secondary">Business owner · <?= e($user['username']) ?></div></div><hr class="dropdown-divider"><a class="dropdown-item" href="<?= e(app_url('auth/change_password.php')) ?>">Change password</a><form action="<?= e(app_url('auth/logout.php')) ?>" method="post"><input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>"><button class="dropdown-item" type="submit"><?= dashboard_icon('box-arrow-left') ?> Sign out</button></form></div>
     </div>
 </header>
 <?php else: ?>

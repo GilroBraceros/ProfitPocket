@@ -1,7 +1,29 @@
 <?php
 declare(strict_types=1);
 
-// XAMPP defaults. Set PP_DB_* environment variables for another local server.
+require_once __DIR__.'/upgrade.php';
+
+// Web PHP and cron use the same private settings; environment variables win.
+function database_config(): array
+{
+    $file=getenv('PROFITPOCKET_DATABASE_CONFIG')?:upgrade_private_root().'/database.php';
+    $private=[];
+    if (is_file($file)) {
+        $resolved=realpath($file);
+        if (!$resolved || upgrade_public_path($resolved)) { throw new RuntimeException('Database configuration must be outside the web root.'); }
+        ob_start(); try { $private=require $resolved; } finally { ob_end_clean(); }
+        if (!is_array($private)) { throw new RuntimeException('Invalid private database configuration.'); }
+    }
+    $values=['PP_DB_HOST'=>'127.0.0.1','PP_DB_PORT'=>'3306','PP_DB_NAME'=>'profitpocket_db','PP_DB_USER'=>'root','PP_DB_PASSWORD'=>''];
+    foreach ($values as $key=>$default) { $env=getenv($key); $values[$key]=$env!==false?$env:($private[$key]??$default); }
+    foreach (['PP_DB_HOST','PP_DB_NAME','PP_DB_USER'] as $key) {
+        if (!is_string($values[$key]) || $values[$key]==='' || preg_match('/[;\r\n\x00]/',$values[$key])) { throw new RuntimeException('Invalid private database setting.'); }
+    }
+    if (!ctype_digit((string)$values['PP_DB_PORT']) || (int)$values['PP_DB_PORT']<1 || (int)$values['PP_DB_PORT']>65535) { throw new RuntimeException('Invalid database port.'); }
+    return $values;
+}
+
+// XAMPP defaults remain available locally. Never put credentials in a public file.
 // Never put credentials in a public page or include them in an error message.
 function db(): PDO
 {
@@ -10,13 +32,10 @@ function db(): PDO
         return $connection;
     }
 
-    $host = getenv('PP_DB_HOST') ?: '127.0.0.1';
-    $port = getenv('PP_DB_PORT') ?: '3306';
-    $name = getenv('PP_DB_NAME') ?: 'profitpocket_db';
-    $user = getenv('PP_DB_USER') ?: 'root';
-    $password = getenv('PP_DB_PASSWORD');
-
     try {
+        $settings=database_config();
+        $host=$settings['PP_DB_HOST']; $port=$settings['PP_DB_PORT']; $name=$settings['PP_DB_NAME'];
+        $user=$settings['PP_DB_USER']; $password=$settings['PP_DB_PASSWORD'];
         $connection = new PDO(
             "mysql:host={$host};port={$port};dbname={$name};charset=utf8mb4",
             $user,
@@ -30,8 +49,9 @@ function db(): PDO
         );
         $connection->exec("SET time_zone = '+08:00'");
         return $connection;
-    } catch (PDOException $exception) {
-        error_log('ProfitPocket: database connection failed. Check local database configuration.');
+    } catch (Throwable $exception) {
+        error_log('ProfitPocket: database connection failed. Check private database configuration.');
+        if (PHP_SAPI==='cli') { throw new RuntimeException('Database configuration or connection is unavailable.'); }
         http_response_code(503);
         header('Content-Type: text/html; charset=UTF-8');
         exit('<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>ProfitPocket unavailable</title><body><h1>Temporarily unavailable</h1><p>ProfitPocket cannot connect to its database. Please try again later.</p></body></html>');

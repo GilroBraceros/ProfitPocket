@@ -11,7 +11,7 @@
         <?php
         $groups=[
             'Overview'=>['dashboard'=>'Dashboard'],
-            'Management'=>['users'=>'Users','businesses'=>'Businesses'],
+            'Management'=>['users'=>'Users','businesses'=>'Businesses','subscriptions'=>'Subscriptions'],
             'Support'=>['tickets'=>'Support Tickets','feedback'=>'Feedback'],
             'Platform'=>['announcements'=>'Announcements','logs'=>'Activity Logs','settings'=>'Settings'],
         ];

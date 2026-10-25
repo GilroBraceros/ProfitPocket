@@ -1,8 +1,68 @@
 # ProfitPocket
 
+## Hostinger production setup — 26 October 2026
+
+An explicitly authorized production bootstrap can create the two temporary test
+administrators during initialization or a one-time CLI job. XAMPP and mismatched
+application/database identities are rejected. A private database loader supports
+the same settings in web PHP and cron. The hosted setup job verifies the real Brevo
+sender, enables private email settings and records a single controlled test attempt;
+a separate read-only checker reports provider delivery.
+
+No Hostinger deployment, account creation or hosted email test has been performed.
+See [database/HOSTINGER-PRODUCTION-SETUP.md](database/HOSTINGER-PRODUCTION-SETUP.md)
+for the exact private configuration, hPanel jobs, verification and temporary
+bootstrap cleanup. No SSH alias or manual administrator SQL inserts are required.
+
+## Registration payment and QR improvements
+
+New owners now complete **Account Details → Subscription Payment → Verification**
+without signing in between steps. Administrators manage GCash, Bank Transfer and
+Other receiving accounts with private QR uploads; Maya is excluded from subscription
+choices. Initial proof submission sends one combined pending-verification welcome
+and an authorized administrator review notice. Existing approval and renewal rules
+remain in place.
+
+The approved additive migration is applied locally. See
+[database/REGISTRATION-PAYMENTS-REVIEW.md](database/REGISTRATION-PAYMENTS-REVIEW.md)
+for the complete workflow, changed files, tests and Hostinger deployment steps.
+
 The database connection, authentication module, Business Owner Dashboard,
 Sales Management, Expense Management, Customer Management, Payment Management, and
 Product Management, Financial Reports and the System Administrator Panel are implemented.
+
+## Homepage, monthly subscriptions and secure deployment — 25 October 2026
+
+Visitors now see the public ProfitPocket homepage. Business owners use a ₱100
+manual monthly subscription with private payment proofs, administrator review,
+renewals and server-side paid-feature restrictions. Account/password, subscription
+and support pages remain accessible while a subscription is pending or expired.
+Existing financial modules and calculations are preserved.
+
+The approved migration and Pending Payment policy are applied locally, with local
+enforcement enabled. Six subscription emails extend the original eight. Safe
+diagnostics, private email activation, a single authorized real-test sender and
+an idempotent CLI deployment/admin bootstrap runner are ready. Local Brevo sending
+has now been enabled, and one authorized real test was confirmed delivered.
+Hostinger email/provisioning still require private settings and deployment
+configuration; no production administrator creation was performed.
+
+See [database/SYSTEM-UPGRADE.md](database/SYSTEM-UPGRADE.md) for the full workflow,
+changed files, executed tests, actual site URL, migration order, private payment
+storage, two-administrator setup, Hostinger cron jobs and remaining production steps.
+
+## Brevo transactional email — 25 October 2026
+
+Eight PHP-rendered notifications now cover registration, secure password recovery,
+password changes, customer payments and scheduled credit reminders. Customer
+notifications require explicit recorded permission. Sending remains disabled
+until a replacement API key, verified sender, private reset secret and actual
+HTTPS application URL are configured. The exposed key was not stored or used.
+
+The two notification tables were applied only to local XAMPP with approval;
+production migration and deployment remain manual. The complete trigger rules,
+configuration variables, Hostinger cron setup, changed-file inventory and testing
+results are in [database/EMAIL-NOTIFICATIONS.md](database/EMAIL-NOTIFICATIONS.md).
 
 ## Complete administrator frontend overhaul — 11 October 2026
 
@@ -44,7 +104,8 @@ registrations and administrator logins now record safe actual platform events.
 The required checklist, complete changed-file inventory, tests and limitations are
 in [database/INTEGRATION-AUDIT.md](database/INTEGRATION-AUDIT.md).
 
-Email delivery, password recovery mail, announcement expiry/read tracking and
+Email and password recovery are now implemented as described in the email section;
+they require private server configuration. Announcement expiry/read tracking and
 backup execution remain unavailable. Owner business Settings remains explicitly
 disabled as Soon. Bootstrap still requires the existing CDN connection. No new
 dependency, default account or database structure change was introduced.
@@ -439,9 +500,9 @@ access; the app's own CSS and JavaScript are local.
 - Business modules take their business ID from `require_business()` rather than
   request parameters. Every future data query must still filter by that ID.
 
-Password recovery is **not implemented**: the schema has reset-token support, but
-no mail delivery or trusted application URL is configured. The help page explains
-this limitation and does not claim to send a reset email. The owner dashboard uses
+Password recovery now uses single-use, expiring hashed tokens and the notification
+outbox; sending requires private configuration as described in the email guide.
+The recovery form always displays a generic response. The owner dashboard uses
 actual financial records. The administrator management modules are now implemented
 with the existing permissions, as described above.
 

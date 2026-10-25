@@ -8,6 +8,7 @@ if (PHP_SAPI !== 'cli') {
 // Real HTTP tests: temporary fixture rows are removed in finally, by exact IDs.
 // No existing account credentials or profile records are changed.
 require_once __DIR__ . '/../config/database.php';
+require_once __DIR__.'/subscription_test_helpers.php';
 $connection = db();
 $base = 'http://localhost/profitpocket';
 $handle = curl_init();
@@ -103,7 +104,7 @@ try {
     expect_http($reply['status'] === 200, 'Registration page unavailable');
     $category = $connection->query('SELECT business_category_id FROM business_categories LIMIT 1')->fetchColumn();
     $values = [
-        'csrf_token' => form_token($reply), 'full_name' => '<HTTP Test Owner>',
+        'csrf_token' => form_token($reply), 'request_key'=>named_field($reply,'request_key'), 'full_name' => '<HTTP Test Owner>',
         'username' => $username, 'email' => $suffix . '@example.invalid',
         'password' => $password, 'password_confirmation' => $password,
         'business_name' => '<HTTP Test Business>', 'business_category_id' => $category,
@@ -124,8 +125,13 @@ try {
     expect_http($owner !== false, 'Registration did not create the owner and business');
     $fixture_ids[] = $owner['user_id'];
     expect_http($owner['role_type'] === 'owner', 'Role injection created an admin');
+    test_activate_subscription($connection,(int)$owner['user_id']);
+    // The onboarding session is intentionally separate from a normal sign-in.
+    curl_setopt($handle,CURLOPT_COOKIELIST,'ALL');
     $duplicate = $values;
-    $duplicate['csrf_token'] = form_token(request_http('auth/register.php'));
+    $duplicateForm=request_http('auth/register.php');
+    $duplicate['csrf_token'] = form_token($duplicateForm);
+    $duplicate['request_key'] = named_field($duplicateForm,'request_key');
     expect_http(str_contains(request_http('auth/register.php', $duplicate)['body'], 'already registered'), 'Duplicate registration accepted');
     $checks[] = 'PASS: real registration, validation, duplicate handling, and owner-only role';
 

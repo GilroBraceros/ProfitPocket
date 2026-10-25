@@ -2,6 +2,7 @@
 declare(strict_types=1);
 if (PHP_SAPI!=='cli') { http_response_code(403); exit; }
 require __DIR__.'/../config/database.php';
+require __DIR__.'/subscription_test_helpers.php';
 function integration_expect(bool $ok,string $message): void { if (!$ok) { throw new RuntimeException($message); } }
 function integration_client() { $client=curl_init(); curl_setopt_array($client,[CURLOPT_RETURNTRANSFER=>true,CURLOPT_FOLLOWLOCATION=>false,CURLOPT_COOKIEFILE=>'',CURLOPT_TIMEOUT=>15]); return $client; }
 function integration_request($client,string $path,?array $post=null): array {
@@ -43,9 +44,10 @@ try {
     $before=integration_request($admin,'admin/dashboard.php');
     foreach (['owner'=>$owner,'other'=>$other] as $label=>$client) {
         $username='integration_'.$label.'_'.$suffix; $page=integration_request($client,'auth/register.php');
-        $response=integration_request($client,'auth/register.php',['csrf_token'=>integration_field($page,'csrf_token'),'full_name'=>'Integration '.$label.' '.$suffix,'username'=>$username,'email'=>$username.'@example.invalid','business_name'=>'Integration business '.$label.' '.$suffix,'business_category_id'=>(string)$db->query('SELECT business_category_id FROM business_categories LIMIT 1')->fetchColumn(),'password'=>$password,'password_confirmation'=>$password]);
+        $response=integration_request($client,'auth/register.php',['csrf_token'=>integration_field($page,'csrf_token'),'request_key'=>integration_field($page,'request_key'),'full_name'=>'Integration '.$label.' '.$suffix,'username'=>$username,'email'=>$username.'@example.invalid','business_name'=>'Integration business '.$label.' '.$suffix,'business_category_id'=>(string)$db->query('SELECT business_category_id FROM business_categories LIMIT 1')->fetchColumn(),'password'=>$password,'password_confirmation'=>$password]);
         integration_expect($response['status']===303,'Owner registration failed');
         $statement=$db->prepare('SELECT user_id FROM users WHERE username=?'); $statement->execute([$username]); $ids[]=(int)$statement->fetchColumn();
+        test_activate_subscription($db,(int)end($ids));
         integration_login($client,$username,$password);
     }
     $after=integration_request($admin,'admin/dashboard.php');

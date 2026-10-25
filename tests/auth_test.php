@@ -13,6 +13,7 @@ session_save_path(__DIR__ . '/.sessions');
 $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
 $_SERVER['HTTP_USER_AGENT'] = 'ProfitPocket integration test';
 require_once __DIR__ . '/../includes/auth.php';
+require_once __DIR__.'/subscription_test_helpers.php';
 
 function check(bool $condition, string $description): void
 {
@@ -101,7 +102,9 @@ try {
         check($session_admin !== null && can_access_role($session_admin, 'admin') && !can_access_role($session_admin, 'owner'), 'Admin role boundary failed');
         check(home_path($session_admin) === 'admin/dashboard.php', 'Admin redirect failed');
     }
-    check(home_path($session_owner) === 'user/dashboard.php', 'Owner redirect failed');
+    if (subscription_enabled()) { check(home_path($session_owner)==='user/subscription.php','Unpaid owner routing failed'); }
+    test_activate_subscription($connection,(int)$user_id);
+    check(home_path($session_owner) === 'user/dashboard.php', 'Paid owner redirect failed');
     check(session_user($connection, 'tampered token') === null, 'Tampered session accepted');
     $statement = $connection->prepare("UPDATE users SET account_status='suspended' WHERE user_id=?");
     $statement->execute([$user_id]);

@@ -4,6 +4,9 @@ $values=['customer_name'=>'','phone'=>'','email'=>'','address'=>'','notes'=>''];
 if ($row) { $values=array_replace($values,array_intersect_key($row,$values)); }
 if ($_SERVER['REQUEST_METHOD']==='POST') { foreach ($values as $field=>$value) { if (is_string($_POST[$field]??null)) { $values[$field]=$_POST[$field]; } } }
 $form_url=app_url('user/customer_action.php').'?action='.$action.($modal?'&modal=1':'');
+require_once __DIR__.'/notifications.php';
+$emailPreferences=$row?notification_preferences($connection,(int)$user['business_id'],(int)$row['customer_id']):[];
+if ($_SERVER['REQUEST_METHOD']==='POST') { $emailPreferences=['payment_receipts'=>($_POST['email_receipts']??'')==='1','reminders'=>($_POST['email_reminders']??'')==='1','consent_note'=>is_string($_POST['email_consent_note']??null)?$_POST['email_consent_note']:'']; }
 ?>
 <?php if ($is_form): ?><form class="customer-form" method="post" action="<?= e($form_url) ?>" <?= $modal?'data-customer-async novalidate':'' ?>><?php endif; ?>
 <div class="<?= $modal?'modal-header':'customer-form-heading' ?>"><h2 class="modal-title" id="customer-modal-title"><?= e($page_title) ?></h2><?php if ($modal): ?><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button><?php endif; ?></div>
@@ -43,6 +46,10 @@ $form_url=app_url('user/customer_action.php').'?action='.$action.($modal?'&modal
                 <div class="col-12 customer-shared-phone <?= $duplicate_warning?'':'d-none' ?>"><div class="alert alert-light mb-0"><label class="form-check"><input class="form-check-input" type="checkbox" name="allow_shared_phone" value="1" <?= post_text('allow_shared_phone')==='1'?'checked':'' ?>><span class="form-check-label">These are different people who share this contact number.</span></label></div></div>
                 <div class="col-12"><label class="form-label" for="address">Address <span class="field-optional">(optional)</span></label><textarea class="form-control" id="address" name="address" maxlength="255" rows="2" autocomplete="street-address"><?= e($values['address']) ?></textarea></div>
                 <div class="col-12"><label class="form-label" for="notes">Customer notes <span class="field-optional">(optional)</span></label><textarea class="form-control" id="notes" name="notes" maxlength="4000" rows="2"><?= e($values['notes']) ?></textarea></div>
+                <section class="col-12 customer-detail-section"><h3>Email permissions</h3><p class="form-text">Only enable messages the customer agreed to receive at this address. Sending stays disabled until the server is configured.</p><input type="hidden" name="email_preferences_present" value="1">
+                <label class="d-flex gap-2 mb-2"><input class="form-check-input" type="checkbox" name="email_receipts" value="1" <?= !empty($emailPreferences['payment_receipts'])?'checked':'' ?>> Payment confirmations</label><label class="d-flex gap-2 mb-3"><input class="form-check-input" type="checkbox" name="email_reminders" value="1" <?= !empty($emailPreferences['reminders'])?'checked':'' ?>> Due-date and overdue reminders</label>
+                <label class="form-label" for="email_consent_note">Consent note</label><input class="form-control mb-2" id="email_consent_note" name="email_consent_note" maxlength="255" value="<?= e($emailPreferences['consent_note']??'') ?>" placeholder="How and when the customer agreed">
+                <label class="d-flex gap-2"><input class="form-check-input" type="checkbox" name="email_consent_confirm" value="1"> I confirm the customer agreed to the selected messages at this email address.</label><p class="form-text">Confirmation is required when enabling a permission or changing the recipient address. Leave both permissions off when no agreement exists.</p></section>
             </div>
         <?php endif; ?>
     <?php endif; ?>
