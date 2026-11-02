@@ -7,6 +7,8 @@ require_once __DIR__.'/../includes/subscription_methods.php'; subscription_previ
 require_once __DIR__.'/../includes/subscription_diagnostics.php';
 require_once __DIR__.'/../includes/subscription_setup.php';
 require_once __DIR__.'/../includes/subscription_email.php';
+require_once __DIR__.'/../includes/email_admin_setup.php';
+header('Cache-Control: no-store');
 $user=require_permission('users.manage'); $db=db(); $permissions=admin_permissions($db,(int)$user['role_id']);
 $module='subscriptions'; $active_page='admin'; $subscription_page=true; $dashboard_layout=true; $page_title='Subscription Management';
 $error=null; $notice=take_flash(); $rows=[]; $metrics=[]; $detail=null; $editMethod=null; $methods=[]; $pages=1; $page=1;
@@ -14,6 +16,24 @@ $_SESSION['subscription_method_key']??=bin2hex(random_bytes(32));
 $_SESSION['subscription_setup_key']??=bin2hex(random_bytes(32));
 $qrUpload=null;$qrCommitted=false;$previousQr=null;$setupIssues=[];
 try {
+    if ($_SERVER['REQUEST_METHOD']==='POST' && in_array(post_text('action'),['configure_email','test_email'],true)) {
+        if (!valid_csrf()) {http_response_code(403);throw new InvalidArgumentException('This form expired. Reload and try again.');}
+        admin_authorize($db,(int)$user['user_id'],'settings.manage');
+        email_setup_require_https($_SERVER);
+        if (post_text('action')==='configure_email') {
+            try {email_admin_save($db,(int)$user['user_id'],$_POST,$_SERVER,APP_BASE_PATH);}
+            finally {unset($_POST['brevo_api_key'],$_REQUEST['brevo_api_key']);}
+            flash('Brevo confirmed the sender. Private email settings were saved and sending is enabled. Send one test to verify delivery.');
+        } else {
+            if (post_text('confirm_test_email')!=='1') {throw new InvalidArgumentException('Confirm the controlled inbox before sending a real test email.');}
+            $recipient=post_text('test_email');
+            if (!email_recipient_valid($recipient) || strlen($recipient)>191) {throw new InvalidArgumentException('Enter a real inbox you control. Reserved test login addresses cannot receive email.');}
+            try {$test=email_send_diagnostic($db,email_config(),['PP_EMAIL_TEST_AUTHORIZED'=>true,'PP_EMAIL_TEST_ADDRESS'=>$recipient],true);}
+            catch (Throwable $e) {throw new InvalidArgumentException('The email test could not complete. Check the enabled configuration and verified sender.');}
+            flash(($test['replayed']??false?'A test for this inbox was already attempted; it was not resent. ':'').subscription_email_message((string)($test['status']??'uncertain')));
+        }
+        redirect_to('admin/subscriptions.php#subscription-email-status');
+    }
     if ($_SERVER['REQUEST_METHOD']==='POST' && post_text('action')==='setup_subscriptions') {
         if (!valid_csrf()) {http_response_code(403);throw new InvalidArgumentException('This form expired. Reload and try again.');}
         subscription_setup_apply($db,(int)$user['user_id'],$_POST,true,$_SESSION['subscription_setup_key']);

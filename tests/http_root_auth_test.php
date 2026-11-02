@@ -41,6 +41,13 @@ try{
     root_expect($rejected['status']===403,'Approval-email action accepted invalid CSRF.');
     $rejected=root_request($curl,'admin/subscriptions.php',['action'=>'send_approval_email','csrf_token'=>root_field($subscriptionPage,'csrf_token'),'submission_id'=>'1']);
     root_expect($rejected['status']===200 && str_contains($rejected['body'],'Confirm the approval email'),'Approval email did not require confirmation.');
+    root_expect(str_contains($subscriptionPage['body'],'Configure hosted Brevo email') && !preg_match('/xkeysib-[A-Za-z0-9_-]+/',$subscriptionPage['body']),'Private email setup form is missing or exposed an API key.');
+    $rejected=root_request($curl,'admin/subscriptions.php',['action'=>'configure_email','csrf_token'=>'invalid']);
+    root_expect($rejected['status']===403,'Email configuration accepted invalid CSRF.');
+    foreach (['configure_email','test_email'] as $action) {
+        $rejected=root_request($curl,'admin/subscriptions.php',['action'=>$action,'csrf_token'=>root_field($subscriptionPage,'csrf_token')]);
+        root_expect($rejected['status']===200 && str_contains($rejected['body'],'Use the hosted HTTPS ProfitPocket page'),'Local HTTP request could configure email or send a real test.');
+    }
     echo "PASS: domain-root form/actions/assets, cookie/CSRF, administrator login, mandatory password change, fresh sign-in, dashboard and subscription access; fictional fixture removed and real sending disabled.\n";
 }catch(Throwable $e){fwrite(STDERR,'FAIL: '.$e->getMessage().PHP_EOL);$failed=true;}
 finally{

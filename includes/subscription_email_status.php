@@ -37,5 +37,6 @@ try {
         </form>
         <?php endif; ?>
     <?php endif; ?>
+    <?php require __DIR__.'/email_admin_setup_form.php'; ?>
 </section>
 <?php endif; ?>
