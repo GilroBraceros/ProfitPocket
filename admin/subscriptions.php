@@ -4,11 +4,12 @@ require_once __DIR__.'/../includes/subscriptions.php';
 require_once __DIR__.'/../includes/admin.php';
 require_once __DIR__.'/../includes/email_templates.php';
 require_once __DIR__.'/../includes/subscription_methods.php'; subscription_preview_headers();
+require_once __DIR__.'/../includes/subscription_diagnostics.php';
 $user=require_permission('users.manage'); $db=db(); $permissions=admin_permissions($db,(int)$user['role_id']);
 $module='subscriptions'; $active_page='admin'; $subscription_page=true; $dashboard_layout=true; $page_title='Subscription Management';
 $error=null; $notice=take_flash(); $rows=[]; $metrics=[]; $detail=null; $editMethod=null; $methods=[]; $pages=1; $page=1;
 $_SESSION['subscription_method_key']??=bin2hex(random_bytes(32));
-$qrUpload=null;$qrCommitted=false;$previousQr=null;
+$qrUpload=null;$qrCommitted=false;$previousQr=null;$setupIssues=[];
 try {
     if (!subscription_schema($db)) { throw new RuntimeException('The subscription migration must be applied first.'); }
     if (isset($_GET['view'])) {
@@ -55,7 +56,13 @@ try {
     }
 } catch (InvalidArgumentException $e) { $error=$e->getMessage(); if ($db->inTransaction()) {$db->rollBack();} }
 catch (AdminDenied $e) { http_response_code(403); $error='Your role cannot make this change.'; if ($db->inTransaction()) {$db->rollBack();} }
-catch (Throwable $e) { http_response_code(503); $error='Subscription management is temporarily unavailable. Check the approved migration and private configuration.'; if ($db->inTransaction()) {$db->rollBack();} error_log('ProfitPocket: subscription administration unavailable.'); }
+catch (Throwable $e) {
+    http_response_code(503);
+    $error='Subscription management is temporarily unavailable.';
+    if ($db->inTransaction()) {$db->rollBack();}
+    $setupIssues=subscription_admin_diagnosis($db,$e);
+    error_log('ProfitPocket: subscription administration unavailable ['.implode(',',array_unique(array_column($setupIssues,'code'))).'].');
+}
 if ($_SERVER['REQUEST_METHOD']==='POST' && post_text('action')==='method' && $error) { $editMethod=['method_id'=>post_text('method_id'),'method_name'=>post_text('method_name'),'recipient_name'=>post_text('recipient_name'),'account_identifier'=>post_text('account_identifier'),'instructions'=>post_text('instructions'),'is_enabled'=>post_text('is_enabled')==='1']; }
 if($qrUpload && !$qrCommitted && is_file($qrUpload['path'])){unlink($qrUpload['path']);}
 require __DIR__.'/../includes/header.php'; require __DIR__.'/../includes/admin_navbar.php';
@@ -63,6 +70,7 @@ require __DIR__.'/../includes/header.php'; require __DIR__.'/../includes/admin_n
 <main class="dashboard-main admin-main" id="dashboard-content"><div class="dashboard-heading"><div><h1>Subscription Management</h1><p>Verify actual received payments before granting monthly business access.</p></div></div>
 <?php if ($notice): ?><div class="alert alert-success" role="status"><?= e($notice) ?></div><?php endif; ?>
 <?php if ($error): ?><div class="alert alert-danger" role="alert"><?= e($error) ?></div><?php endif; ?>
+<?php if ($setupIssues): ?><section class="subscription-card" aria-labelledby="subscription-setup-title"><h2 id="subscription-setup-title">Hosted subscription setup diagnosis</h2><p>These checks are read-only and visible only to authorized administrators. No database changes were applied.</p><ul><?php foreach ($setupIssues as $issue): ?><li><strong><?= e($issue['code']) ?></strong>: <?= e($issue['message']) ?></li><?php endforeach; ?></ul><p class="form-text mb-0">Diagnosis version: subscriptions-20261102-v1. Share these codes with the developer; do not share passwords or API keys.</p></section><?php endif; ?>
 <?php if ($metrics): ?><div class="subscription-metrics"><?php foreach (['owners'=>'Registered owners','active'=>'Active subscriptions','pending_payment'=>'Awaiting first payment','pending'=>'Pending verification','expired'=>'Expired subscriptions','rejected'=>'Rejected submissions','revenue'=>'Verified subscription revenue'] as $key=>$label): ?><article><span><?= e($label) ?></span><strong><?= e($key==='revenue'?email_money((string)$metrics[$key]):(string)$metrics[$key]) ?></strong></article><?php endforeach; ?></div><?php endif; ?>
 <?php if ($detail): $snapshot=json_decode($detail['method_snapshot'],true); ?>
 <section class="subscription-card" id="payment-review"><div class="d-flex flex-wrap justify-content-between gap-2 mb-3"><h2>Review submission #<?= e($detail['submission_id']) ?></h2><span class="subscription-status" data-state="<?= e($detail['status']) ?>"><?= e(subscription_label($detail['status'])) ?></span></div>
@@ -73,5 +81,5 @@ require __DIR__.'/../includes/header.php'; require __DIR__.'/../includes/admin_n
 <?php endif; ?>
 <section class="subscription-card"><h2>Payment verification</h2><form class="subscription-filter" method="get"><div><label for="q">Search owner, business or email</label><input class="form-control" id="q" name="q" maxlength="100" value="<?= e($q??'') ?>"></div><div><label for="state">Submission status</label><select class="form-select" id="state" name="state"><?php foreach (['pending'=>'Pending verification','approved'=>'Approved','rejected'=>'Rejected','all'=>'All statuses'] as $value=>$label): ?><option value="<?= e($value) ?>" <?= ($filter??'pending')===$value?'selected':'' ?>><?= e($label) ?></option><?php endforeach; ?></select></div><button class="btn btn-outline-secondary">Apply filters</button></form>
 <div class="table-responsive"><table class="table subscription-table"><thead><tr><th>Submission / date</th><th>Owner / business</th><th>Method / reference</th><th class="amount">Amount</th><th>Status</th><th>Action</th></tr></thead><tbody><?php foreach ($rows as $row): $snapshot=json_decode($row['method_snapshot'],true); ?><tr><td>#<?= e($row['submission_id']) ?><small><?= e(email_date($row['submitted_at'])) ?></small></td><td><?= e($row['full_name']) ?><small><?= e($row['business_name']??'No linked business') ?></small><small><?= e($row['email']) ?></small></td><td><?= e($snapshot['method_name']) ?><small><?= e($row['reference_number']?:'No reference supplied') ?></small></td><td class="amount"><?= e(email_money($row['amount'])) ?></td><td><span class="subscription-status" data-state="<?= e($row['status']) ?>"><?= e(subscription_label($row['status'])) ?></span></td><td><a class="record-action-view" href="?<?= e(http_build_query(['view'=>$row['submission_id'],'state'=>$filter??'pending','q'=>$q??''])) ?>#payment-review">View</a></td></tr><?php endforeach; ?><?php if (!$rows): ?><tr><td colspan="6" class="text-center text-secondary py-4">No matching payment submissions.</td></tr><?php endif; ?></tbody></table></div><nav class="d-flex justify-content-end gap-3 align-items-center flex-wrap" aria-label="Subscription submission pages"><?php if ($page>1): ?><a href="?<?= e(http_build_query(['page'=>$page-1,'state'=>$filter,'q'=>$q])) ?>">Previous</a><?php endif; ?><span class="small">Page <?= e($page) ?> of <?= e($pages) ?></span><?php if ($page<$pages): ?><a href="?<?= e(http_build_query(['page'=>$page+1,'state'=>$filter,'q'=>$q])) ?>">Next</a><?php endif; ?></nav></section>
-<?php if(admin_can($permissions,'settings.manage') && subscription_schema($db)){require __DIR__.'/../includes/subscription_method_management.php';} ?>
+<?php if(!$error && admin_can($permissions,'settings.manage') && subscription_schema($db)){require __DIR__.'/../includes/subscription_method_management.php';} ?>
 </main><script src="<?= e(app_url('assets/js/subscriptions.js')) ?>" defer></script><?php require __DIR__.'/../includes/footer.php'; ?>
