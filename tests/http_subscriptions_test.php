@@ -62,6 +62,12 @@ try {
     $second=(int)subscription_query($db,'SELECT MAX(submission_id) FROM subscription_payments WHERE user_id=?',[$ids['owner']])->fetchColumn();
     sh_expect(sh_review($clients['admin'],$second,'approved','Actual receipt verified in fictional test',true)['status']===303,'Approval failed');
     $expires=subscription_state($db,$ids['owner'])['expires_at'];sh_expect(sh_review($clients['admin'],$second,'approved','Actual receipt verified in fictional test',true)['status']===303 && subscription_state($db,$ids['owner'])['expires_at']===$expires,'Approval replay added paid time');
+    $approvalEmail=sh_request($clients['admin'],'admin/subscriptions.php?view='.$second);
+    sh_expect($approvalEmail['status']===200 && str_contains($approvalEmail['body'],'Approval email for submission'),'Approval email delivery status missing.');
+    $queueBefore=(int)subscription_query($db,'SELECT COUNT(*) FROM notification_outbox WHERE subscription_payment_id=?',[$second])->fetchColumn();
+    $mail=sh_request($clients['admin'],'admin/subscriptions.php?view='.$second,['csrf_token'=>sh_value($approvalEmail['body'],'csrf_token'),'action'=>'send_approval_email','submission_id'=>$second,'confirm_email'=>'1']);
+    sh_expect($mail['status']===303 && subscription_state($db,$ids['owner'])['expires_at']===$expires && (int)subscription_query($db,'SELECT COUNT(*) FROM notification_outbox WHERE subscription_payment_id=?',[$second])->fetchColumn()===$queueBefore,'Existing approval email request changed paid time or duplicated the event.');
+    sh_expect(sh_request($clients['owner'],'admin/subscriptions.php',['action'=>'send_approval_email','submission_id'=>$second,'confirm_email'=>'1'])['status']===403,'Owner could request administrative approval email.');
     foreach(['dashboard','sales','expenses','customers','products','payments','reports']as$route){sh_expect(sh_request($clients['owner'],'user/'.$route.'.php')['status']===200,'Approved owner could not open '.$route);}
     sh_snapshot('active',sh_request($clients['owner'],'user/subscription.php')['body']);
     echo "PASS: real multipart PNG/PDF submissions, private downloads, owner isolation, pending/rejected states, corrected proof, verified approval, replay and paid feature access.\n";

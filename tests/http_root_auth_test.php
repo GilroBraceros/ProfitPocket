@@ -36,6 +36,11 @@ try{
     root_expect($rejected['status']===403,'Setup accepted an invalid CSRF token.');
     $rejected=root_request($curl,'admin/subscriptions.php',['action'=>'setup_subscriptions','csrf_token'=>root_field($subscriptionPage,'csrf_token'),'request_key'=>'stale','approve_schema'=>'1','owner_policy'=>'pending-payment']);
     root_expect($rejected['status']===200 && str_contains($rejected['body'],'setup form expired'),'Setup accepted a stale approval form.');
+    root_expect(str_contains($subscriptionPage['body'],'Email notifications') && str_contains($subscriptionPage['body'],'Sending on this server'),'Administrator cannot inspect hosted email status.');
+    $rejected=root_request($curl,'admin/subscriptions.php',['action'=>'send_approval_email','csrf_token'=>'invalid','confirm_email'=>'1','submission_id'=>'1']);
+    root_expect($rejected['status']===403,'Approval-email action accepted invalid CSRF.');
+    $rejected=root_request($curl,'admin/subscriptions.php',['action'=>'send_approval_email','csrf_token'=>root_field($subscriptionPage,'csrf_token'),'submission_id'=>'1']);
+    root_expect($rejected['status']===200 && str_contains($rejected['body'],'Confirm the approval email'),'Approval email did not require confirmation.');
     echo "PASS: domain-root form/actions/assets, cookie/CSRF, administrator login, mandatory password change, fresh sign-in, dashboard and subscription access; fictional fixture removed and real sending disabled.\n";
 }catch(Throwable $e){fwrite(STDERR,'FAIL: '.$e->getMessage().PHP_EOL);$failed=true;}
 finally{

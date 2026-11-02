@@ -6,6 +6,7 @@ require_once __DIR__.'/../includes/email_templates.php';
 require_once __DIR__.'/../includes/subscription_methods.php'; subscription_preview_headers();
 require_once __DIR__.'/../includes/subscription_diagnostics.php';
 require_once __DIR__.'/../includes/subscription_setup.php';
+require_once __DIR__.'/../includes/subscription_email.php';
 $user=require_permission('users.manage'); $db=db(); $permissions=admin_permissions($db,(int)$user['role_id']);
 $module='subscriptions'; $active_page='admin'; $subscription_page=true; $dashboard_layout=true; $page_title='Subscription Management';
 $error=null; $notice=take_flash(); $rows=[]; $metrics=[]; $detail=null; $editMethod=null; $methods=[]; $pages=1; $page=1;
@@ -21,6 +22,15 @@ try {
         redirect_to('admin/subscriptions.php');
     }
     if (!subscription_schema($db)) { throw new RuntimeException('The subscription migration must be applied first.'); }
+    if ($_SERVER['REQUEST_METHOD']==='POST' && post_text('action')==='send_approval_email') {
+        if (!valid_csrf()) {http_response_code(403);throw new InvalidArgumentException('This form expired. Reload and try again.');}
+        if (post_text('confirm_email')!=='1') {throw new InvalidArgumentException('Confirm the approval email before sending.');}
+        $submission=filter_var(post_text('submission_id'),FILTER_VALIDATE_INT);
+        if (!$submission || $submission<1) {throw new InvalidArgumentException('Choose a valid approved payment.');}
+        $emailResult=subscription_request_approval_email($db,(int)$user['user_id'],$submission);
+        flash(subscription_email_message($emailResult));
+        redirect_to('admin/subscriptions.php?view='.$submission.'#subscription-email-status');
+    }
     if (isset($_GET['view'])) {
         $id=filter_var($_GET['view'],FILTER_VALIDATE_INT);
         $detail=subscription_query($db,'SELECT p.*,u.full_name,u.email,u.account_status,b.business_name,a.full_name AS reviewer FROM subscription_payments p JOIN users u ON u.user_id=p.user_id LEFT JOIN businesses b ON b.owner_user_id=u.user_id LEFT JOIN users a ON a.user_id=p.reviewed_by WHERE p.submission_id=?',[$id?:0])->fetch();
@@ -38,9 +48,17 @@ try {
             $previousQr=subscription_method_action($db,(int)$user['user_id'],(int)post_text('method_id'),substr($action,7));
         } elseif ($action==='review') {
             if (post_text('confirm')!=='1') { throw new InvalidArgumentException('Confirm your payment review decision.'); }
-            subscription_review($db,(int)$user['user_id'],(int)post_text('submission_id'),post_text('decision'),post_text('review_note'),post_text('payment_verified')==='1');
+            $reviewResult=subscription_review($db,(int)$user['user_id'],(int)post_text('submission_id'),post_text('decision'),post_text('review_note'),post_text('payment_verified')==='1');
         } else { throw new InvalidArgumentException('Choose a valid subscription action.'); }
         $db->commit();$qrCommitted=true;
+        if ($action==='review') {
+            if (!empty($reviewResult['replayed'])) {
+                try {$emailStatus=subscription_email_status($db,(int)post_text('submission_id'))['status']??'not_queued';}
+                catch (Throwable $e) {$emailStatus='not_queued';}
+            } else {$emailStatus=subscription_deliver_review_email($db,$reviewResult['notification_id']??null);}
+            flash('Payment review saved. '.subscription_email_message($emailStatus));
+            redirect_to('admin/subscriptions.php?view='.(int)post_text('submission_id'));
+        }
         if($previousQr){try{subscription_cleanup_qr($db,$previousQr);}catch(Throwable $e){error_log('ProfitPocket: old QR retained for cleanup.');}}
         if (str_starts_with($action,'method')) { $_SESSION['subscription_method_key']=bin2hex(random_bytes(32)); }
         flash(str_starts_with($action,'method')?'Payment method updated.':'Payment review saved.'); redirect_to('admin/subscriptions.php');
@@ -79,6 +97,7 @@ require __DIR__.'/../includes/header.php'; require __DIR__.'/../includes/admin_n
 <main class="dashboard-main admin-main" id="dashboard-content"><div class="dashboard-heading"><div><h1>Subscription Management</h1><p>Verify actual received payments before granting monthly business access.</p></div></div>
 <?php if ($notice): ?><div class="alert alert-success" role="status"><?= e($notice) ?></div><?php endif; ?>
 <?php if ($error): ?><div class="alert alert-danger" role="alert"><?= e($error) ?></div><?php endif; ?>
+<?php require __DIR__.'/../includes/subscription_email_status.php'; ?>
 <?php if ($setupIssues): ?><section class="subscription-card" aria-labelledby="subscription-setup-title"><h2 id="subscription-setup-title">Hosted subscription setup diagnosis</h2><p>These diagnosis checks are read-only and visible only to authorized administrators.</p><ul><?php foreach ($setupIssues as $issue): ?><li><strong><?= e($issue['code']) ?></strong>: <?= e($issue['message']) ?></li><?php endforeach; ?></ul><p class="form-text mb-0">Diagnosis version: subscriptions-20261102-v2. Share these codes with the developer; do not share passwords or API keys.</p></section><?php endif; ?>
 <?php if (admin_can($permissions,'settings.manage') && (!subscription_schema($db) || !registration_payment_schema($db))): ?>
 <?php require __DIR__.'/../includes/subscription_setup_form.php'; ?>

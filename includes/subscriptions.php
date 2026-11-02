@@ -167,8 +167,8 @@ function subscription_review(PDO $db,int $actor,int $id,string $decision,string 
     admin_audit($db,$actor,$owner,'SUBSCRIPTION_'.strtoupper($decision),['status'=>'pending'],['status'=>$decision,'submission_id'=>$id,'amount'=>SUBSCRIPTION_PRICE,'period_end'=>$end?->format('Y-m-d H:i:s')],$decision==='approved'?'Administrator confirmed receipt of payment':mb_substr($note,0,250),'subscription-review-'.$id,hash('sha256',$decision.':'.$id));
     require_once __DIR__.'/notifications.php';
     $type=$decision==='rejected'?'subscription_rejected':($renewal?'subscription_renewed':'subscription_approved');
-    notification_enqueue($db,$type,'subscription-decision:'.$id,['user_id'=>$owner,'subscription_payment_id'=>$id]);
-    return ['replayed'=>false,'status'=>$decision,'period_end'=>$end?->format('Y-m-d H:i:s')];
+    $notification=notification_enqueue($db,$type,'subscription-decision:'.$id,['user_id'=>$owner,'subscription_payment_id'=>$id]);
+    return ['replayed'=>false,'status'=>$decision,'period_end'=>$end?->format('Y-m-d H:i:s'),'notification_id'=>$notification];
 }
 function subscription_save_method(PDO $db,int $actor,int $id,array $input,?array $qr=null): array
 {
@@ -198,7 +198,9 @@ function subscription_generate_reminders(PDO $db,?DateTimeImmutable $now=null): 
 }
 function subscription_notification(PDO $db,array $job): array
 {
-    if (!subscription_enabled()) { throw new DomainException('subscription_rollout_disabled'); }
+    // An actual payment decision remains notifiable even when paid-module
+    // enforcement is off. Only scheduled expiry reminders depend on rollout.
+    if (!$job['subscription_payment_id'] && !subscription_enabled()) { throw new DomainException('subscription_rollout_disabled'); }
     $user=subscription_query($db,"SELECT u.full_name,u.email,u.account_status FROM users u JOIN roles r ON r.role_id=u.role_id WHERE u.user_id=? AND r.role_type='owner'",[$job['user_id']])->fetch();
     if (!$user || $user['account_status']!=='active') { throw new DomainException('subscription_account_ineligible'); }
     $data=['name'=>$user['full_name'],'amount'=>SUBSCRIPTION_PRICE];

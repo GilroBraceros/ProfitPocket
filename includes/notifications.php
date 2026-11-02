@@ -147,7 +147,9 @@ function notification_attempt(PDO $db,array $job,array $config,?callable $transp
     $result=brevo_send($config,$rendered,$job['event_key'],$transport); $status=$result['status'];
     $delay=max(30,min(600,(int)($result['retry']??60))); $retry=$status==='retry' && (int)$job['attempts']<2;
     $stored=$retry?'pending':($status==='retry'?'failed':$status);
-    $db->prepare('UPDATE notification_outbox SET status=?,failure_code=?,message_id=?,accepted_at=CASE WHEN ?=\'accepted\' THEN CURRENT_TIMESTAMP ELSE NULL END,available_at=DATE_ADD(CURRENT_TIMESTAMP,INTERVAL ? SECOND),reset_nonce=CASE WHEN ?=\'pending\' THEN reset_nonce ELSE NULL END WHERE notification_id=?')->execute([$stored,$result['code']??null,$result['message_id']??null,$stored,$delay,$stored,$job['notification_id']]);
+    $acceptedAt=$stored==='accepted'?'CURRENT_TIMESTAMP':'NULL';
+    $resetNonce=$stored==='pending'?'reset_nonce':'NULL';
+    $db->prepare('UPDATE notification_outbox SET status=?,failure_code=?,message_id=?,accepted_at='.$acceptedAt.',available_at=DATE_ADD(CURRENT_TIMESTAMP,INTERVAL ? SECOND),reset_nonce='.$resetNonce.' WHERE notification_id=?')->execute([$stored,$result['code']??null,$result['message_id']??null,$delay,$job['notification_id']]);
     return $retry?'retry':$stored;
 }
 function notification_process(PDO $db,?array $config=null,?callable $transport=null,int $limit=30): array
@@ -164,6 +166,28 @@ function notification_process(PDO $db,?array $config=null,?callable $transport=n
         foreach ($jobs as $job) { $counts[notification_attempt($db,$job,$config,$transport)]++; }
     } finally { $db->prepare('SELECT RELEASE_LOCK(?)')->execute([$lock]); }
     return $counts;
+}
+// Send only this event after its business transaction commits. Share the cron
+// worker's lock and idempotency rules; never drain unrelated customer messages.
+function notification_process_one(PDO $db,int $id,?array $config=null,?callable $transport=null): string
+{
+    if ($db->inTransaction()) {throw new LogicException('Email delivery must run after commit.');}
+    $config??=email_config();
+    if (!email_ready($config)) {return 'disabled';}
+    $lock='pp-email:'.substr(hash('sha256',$db->query('SELECT DATABASE()')->fetchColumn()),0,32);
+    $query=$db->prepare('SELECT GET_LOCK(?,0)');$query->execute([$lock]);
+    if (!(int)$query->fetchColumn()) {return 'busy';}
+    try {
+        $query=$db->prepare('SELECT *,available_at<=CURRENT_TIMESTAMP AS due FROM notification_outbox WHERE notification_id=?');$query->execute([$id]);$job=$query->fetch();
+        if (!$job) {return 'not_queued';}
+        if ($job['status']==='processing') {
+            $db->prepare("UPDATE notification_outbox SET status='uncertain',failure_code='interrupted_attempt',reset_nonce=NULL WHERE notification_id=? AND status='processing'")->execute([$id]);
+            return 'uncertain';
+        }
+        if ($job['status']!=='pending') {return $job['status'];}
+        if (!$job['due']) {return 'pending';}
+        return notification_attempt($db,$job,$config,$transport);
+    } finally {$db->prepare('SELECT RELEASE_LOCK(?)')->execute([$lock]);}
 }
 function notification_generate_reminders(PDO $db,?array $config=null,?DateTimeImmutable $today=null): int
 {

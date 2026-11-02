@@ -60,7 +60,10 @@ try {
     sub_expect(subscription_review($db,$admin,$id,'approved','Verified test receipt',true,$now)['replayed'],'Repeated approval extended subscription twice');
     sub_expect(subscription_state($db,$owner,$now)['expires_at']===$firstEnd,'Approval replay changed period');
     sub_reject($db,fn()=>subscription_review($db,$admin,$id,'rejected','Changed decision',false),'Conflicting review accepted');
-    $notice=subscription_query($db,"SELECT * FROM notification_outbox WHERE subscription_payment_id=? AND notification_type='subscription_approved'",[$id])->fetch(); sub_expect(notification_attempt($db,$notice,$config,$mock)==='accepted','Activation email missing');
+    $notice=subscription_query($db,"SELECT * FROM notification_outbox WHERE subscription_payment_id=? AND notification_type='subscription_approved'",[$id])->fetch();
+    putenv('PP_SUBSCRIPTIONS_ENABLED=false');
+    try {sub_expect(notification_attempt($db,$notice,$config,$mock)==='accepted','Approval email was blocked by disabled subscription enforcement');}
+    finally {putenv('PP_SUBSCRIPTIONS_ENABLED=true');}
     sub_reject($db,fn()=>subscription_submit($db,$owner,$input,$proof(3),bin2hex(random_bytes(32))),'Verified reference reused');
     sub_reject($db,fn()=>subscription_submit($db,$owner,['method_id'=>$method],$proof(2),bin2hex(random_bytes(32))),'Same proof reused');
     $renewal=subscription_submit($db,$owner,['method_id'=>$method,'reference_number'=>'RENEW-'.$suffix],$proof(3),bin2hex(random_bytes(32)));
