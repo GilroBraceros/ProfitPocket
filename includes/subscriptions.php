@@ -160,7 +160,10 @@ function subscription_review(PDO $db,int $actor,int $id,string $decision,string 
         $end=subscription_month_end($start,$anchor);
         subscription_query($db,'UPDATE owner_subscriptions SET started_at=?,expires_at=?,billing_anchor=? WHERE user_id=?',[$subscription['active']?$subscription['started_at']:$start->format('Y-m-d H:i:s'),$end->format('Y-m-d H:i:s'),$anchor,$owner]);
     }
-    subscription_query($db,'UPDATE subscription_payments SET status=?,reviewed_by=?,reviewed_at=?,review_note=?,period_start=?,period_end=?,is_renewal=?,reference_key=CASE WHEN ?=\'rejected\' THEN NULL ELSE reference_key END WHERE submission_id=?',[$decision,$actor,$now->format('Y-m-d H:i:s'),$note,$start?->format('Y-m-d H:i:s'),$end?->format('Y-m-d H:i:s'),(int)$renewal,$decision,$id]);
+    // The decision is already validated above. Select a fixed SQL fragment in PHP
+    // so native prepared statements do not compare differently collated strings.
+    $referenceUpdate=$decision==='rejected'?',reference_key=NULL':'';
+    subscription_query($db,'UPDATE subscription_payments SET status=?,reviewed_by=?,reviewed_at=?,review_note=?,period_start=?,period_end=?,is_renewal=?'.$referenceUpdate.' WHERE submission_id=?',[$decision,$actor,$now->format('Y-m-d H:i:s'),$note,$start?->format('Y-m-d H:i:s'),$end?->format('Y-m-d H:i:s'),(int)$renewal,$id]);
     admin_audit($db,$actor,$owner,'SUBSCRIPTION_'.strtoupper($decision),['status'=>'pending'],['status'=>$decision,'submission_id'=>$id,'amount'=>SUBSCRIPTION_PRICE,'period_end'=>$end?->format('Y-m-d H:i:s')],$decision==='approved'?'Administrator confirmed receipt of payment':mb_substr($note,0,250),'subscription-review-'.$id,hash('sha256',$decision.':'.$id));
     require_once __DIR__.'/notifications.php';
     $type=$decision==='rejected'?'subscription_rejected':($renewal?'subscription_renewed':'subscription_approved');

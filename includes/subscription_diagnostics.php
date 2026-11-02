@@ -59,7 +59,7 @@ function subscription_admin_diagnosis(PDO $db, ?Throwable $failure=null): array
         $number=$failure instanceof PDOException?(int)($failure->errorInfo[1]??0):0;
         $issues[]=match ($number) {
             1054,1146=>['code'=>'related_schema_mismatch','message'=>'A related account or business table does not match this release. Compare the hosted schema with the reviewed project schema.'],
-            1267,1271=>['code'=>'database_collation','message'=>'The hosted database query failed because text collations are incompatible. The hosting administrator must review column collations.'],
+            1267,1271=>['code'=>'database_collation','message'=>'A text comparison used incompatible collations. Report which action failed so the query and connection settings can be checked.'],
             1142,1143,1044,1045=>['code'=>'database_permissions','message'=>'The hosted database account does not have permission for this operation.'],
             default=>['code'=>'operation_failed','message'=>'The subscription tables and migration record are present. The operation still failed; check PHP requirements and private payment-proof storage permissions in the hosting configuration.'],
         };

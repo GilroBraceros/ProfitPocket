@@ -7,7 +7,7 @@ approval controls. There is no automatic migration on a Git push or page load.
 The administrator subscription page now displays safe, read-only setup checks when
 an operation fails. It requires the existing `users.manage` permission and does not
 expose raw exceptions, credentials, database names, or filesystem paths. The page
-shows diagnosis version `subscriptions-20261102-v1` to identify this deployment.
+shows diagnosis version `subscriptions-20261102-v2` to identify this deployment.
 
 After GitHub auto-deployment, sign in as an administrator and open Subscription
 Management. If it fails, report the codes shown in the setup diagnosis card.

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 require_once __DIR__.'/upgrade.php';
 require_once __DIR__.'/database_bootstrap.php';
+require_once __DIR__.'/database_session.php';
 
 // Web PHP and cron use the same private settings; environment variables win.
 function database_config(): array
@@ -32,7 +33,9 @@ foreach (['PP_DB_NAME','PP_DB_USER','PP_DB_PASSWORD'] as $databaseKey) { $databa
 $databaseProject=realpath(__DIR__.'/..');
 if (database_legacy_allowed($databaseProject,PHP_OS_FAMILY,is_file($databasePrivate) || getenv('PROFITPOCKET_DATABASE_CONFIG')!==false,$databaseEnvironment)) {
     $databaseLegacy=realpath($databaseProject.'/profitpocket/config/database.php');
-    if ($databaseLegacy && $databaseLegacy===$databaseProject.'/profitpocket/config/database.php') { database_import_legacy($databaseLegacy); }
+    if ($databaseLegacy && $databaseLegacy===$databaseProject.'/profitpocket/config/database.php' && database_import_legacy($databaseLegacy)) {
+        database_initialize_session(db());
+    }
 }
 unset($databasePrivate,$databaseEnvironment,$databaseKey,$databaseProject,$databaseLegacy);
 
@@ -59,7 +62,7 @@ function db(): PDO
                 PDO::ATTR_TIMEOUT => 5,
             ]
         );
-        $connection->exec("SET time_zone = '+08:00'");
+        database_initialize_session($connection);
         return $connection;
     } catch (Throwable $exception) {
         error_log('ProfitPocket: database connection failed. Check private database configuration.');
