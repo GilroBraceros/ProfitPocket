@@ -1,5 +1,9 @@
 # Hosted subscription diagnosis
 
+The existing administrator page now offers an explicitly confirmed setup action.
+See [SUBSCRIPTION-WEB-SETUP.md](SUBSCRIPTION-WEB-SETUP.md) for its exact scope and
+approval controls. There is no automatic migration on a Git push or page load.
+
 The administrator subscription page now displays safe, read-only setup checks when
 an operation fails. It requires the existing `users.manage` permission and does not
 expose raw exceptions, credentials, database names, or filesystem paths. The page

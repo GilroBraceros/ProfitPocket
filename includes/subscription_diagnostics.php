@@ -45,6 +45,16 @@ function subscription_admin_diagnosis(PDO $db, ?Throwable $failure=null): array
     } catch (Throwable $e) {
         $issues[]=['code'=>'private_config_invalid','message'=>'The private upgrade configuration cannot be loaded. It must return a PHP array and be stored outside the public web directory.'];
     }
+    if ($failure instanceof PDOException) {
+        $number=(int)($failure->errorInfo[1]??0);
+        $operationIssue=match ($number) {
+            1142,1143,1044,1045=>['code'=>'database_permissions','message'=>'The hosted database account does not have permission for this operation. Database setup requires CREATE and ALTER permissions.'],
+            1005,1215,1824,3780=>['code'=>'migration_relationship','message'=>'A database relationship could not be created. The hosted parent tables, key types and indexes need review.'],
+            1064=>['code'=>'migration_sql_failed','message'=>'The hosted SQL server rejected a migration statement. Report this code and the hosted MySQL or MariaDB version.'],
+            default=>null,
+        };
+        if ($operationIssue && !in_array($operationIssue['code'],array_column($issues,'code'),true)) {$issues[]=$operationIssue;}
+    }
     if (!$issues && $failure) {
         $number=$failure instanceof PDOException?(int)($failure->errorInfo[1]??0):0;
         $issues[]=match ($number) {

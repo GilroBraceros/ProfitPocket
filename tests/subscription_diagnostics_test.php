@@ -47,6 +47,8 @@ try {
     diagnosis_expect(array_column(subscription_admin_diagnosis($db),'code')===['missing_table'] && count($db->queries)===4,'Missing deployment ledger caused a follow-up query.');
     $failure=new PDOException('SECRET_PASSWORD');$failure->errorInfo=['HY000',1267,'SECRET_PASSWORD'];
     diagnosis_expect(array_column(subscription_admin_diagnosis(new SubscriptionDiagnosticConnection(),$failure),'code')===['database_collation'],'Collation failure not distinguished.');
+    $failure->errorInfo=['42000',1142,'SECRET_PASSWORD'];
+    diagnosis_expect(array_column(subscription_admin_diagnosis(new SubscriptionDiagnosticConnection(['deployment_runs'=>1146]),$failure),'code')===['missing_table','database_permissions'],'Missing schema hid the actual CREATE/ALTER permission failure.');
     file_put_contents($config,"<?php return false;\n");
     diagnosis_expect(array_column(subscription_admin_diagnosis(new SubscriptionDiagnosticConnection()),'code')===['private_config_invalid'],'Invalid private configuration not distinguished.');
     echo "PASS: read-only setup checks, missing tables/columns/ledger, permissions, collation, private configuration and secret redaction.\n";

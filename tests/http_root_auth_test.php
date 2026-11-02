@@ -30,6 +30,12 @@ try{
     $form=root_request($curl,'auth/login.php');$login=root_request($curl,'auth/login.php',['csrf_token'=>root_field($form,'csrf_token'),'identifier'=>$email,'password'=>$next]);
     root_expect($login['status']===303 && ($login['headers']['location']??'')==='/admin/dashboard.php' && root_request($curl,'admin/dashboard.php')['status']===200,'Root dashboard access failed.');
     root_expect(root_request($curl,'admin/subscriptions.php')['status']===200,'Root subscription management access failed.');
+    $subscriptionPage=root_request($curl,'admin/subscriptions.php');
+    root_expect(!str_contains($subscriptionPage['body'],'Apply reviewed subscription setup'),'Completed setup still shows its migration action.');
+    $rejected=root_request($curl,'admin/subscriptions.php',['action'=>'setup_subscriptions','csrf_token'=>'invalid','approve_schema'=>'1']);
+    root_expect($rejected['status']===403,'Setup accepted an invalid CSRF token.');
+    $rejected=root_request($curl,'admin/subscriptions.php',['action'=>'setup_subscriptions','csrf_token'=>root_field($subscriptionPage,'csrf_token'),'request_key'=>'stale','approve_schema'=>'1','owner_policy'=>'pending-payment']);
+    root_expect($rejected['status']===200 && str_contains($rejected['body'],'setup form expired'),'Setup accepted a stale approval form.');
     echo "PASS: domain-root form/actions/assets, cookie/CSRF, administrator login, mandatory password change, fresh sign-in, dashboard and subscription access; fictional fixture removed and real sending disabled.\n";
 }catch(Throwable $e){fwrite(STDERR,'FAIL: '.$e->getMessage().PHP_EOL);$failed=true;}
 finally{

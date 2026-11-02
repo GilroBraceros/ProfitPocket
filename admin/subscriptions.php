@@ -5,12 +5,21 @@ require_once __DIR__.'/../includes/admin.php';
 require_once __DIR__.'/../includes/email_templates.php';
 require_once __DIR__.'/../includes/subscription_methods.php'; subscription_preview_headers();
 require_once __DIR__.'/../includes/subscription_diagnostics.php';
+require_once __DIR__.'/../includes/subscription_setup.php';
 $user=require_permission('users.manage'); $db=db(); $permissions=admin_permissions($db,(int)$user['role_id']);
 $module='subscriptions'; $active_page='admin'; $subscription_page=true; $dashboard_layout=true; $page_title='Subscription Management';
 $error=null; $notice=take_flash(); $rows=[]; $metrics=[]; $detail=null; $editMethod=null; $methods=[]; $pages=1; $page=1;
 $_SESSION['subscription_method_key']??=bin2hex(random_bytes(32));
+$_SESSION['subscription_setup_key']??=bin2hex(random_bytes(32));
 $qrUpload=null;$qrCommitted=false;$previousQr=null;$setupIssues=[];
 try {
+    if ($_SERVER['REQUEST_METHOD']==='POST' && post_text('action')==='setup_subscriptions') {
+        if (!valid_csrf()) {http_response_code(403);throw new InvalidArgumentException('This form expired. Reload and try again.');}
+        subscription_setup_apply($db,(int)$user['user_id'],$_POST,true,$_SESSION['subscription_setup_key']);
+        $_SESSION['subscription_setup_key']=bin2hex(random_bytes(32));
+        flash('Subscription database setup completed. Add a real receiving account before accepting subscription payments.');
+        redirect_to('admin/subscriptions.php');
+    }
     if (!subscription_schema($db)) { throw new RuntimeException('The subscription migration must be applied first.'); }
     if (isset($_GET['view'])) {
         $id=filter_var($_GET['view'],FILTER_VALIDATE_INT);
@@ -58,7 +67,7 @@ try {
 catch (AdminDenied $e) { http_response_code(403); $error='Your role cannot make this change.'; if ($db->inTransaction()) {$db->rollBack();} }
 catch (Throwable $e) {
     http_response_code(503);
-    $error='Subscription management is temporarily unavailable.';
+    $error=post_text('action')==='setup_subscriptions'?'Subscription setup did not complete. Some additions may already exist; review the diagnosis before retrying.':'Subscription management is temporarily unavailable.';
     if ($db->inTransaction()) {$db->rollBack();}
     $setupIssues=subscription_admin_diagnosis($db,$e);
     error_log('ProfitPocket: subscription administration unavailable ['.implode(',',array_unique(array_column($setupIssues,'code'))).'].');
@@ -70,7 +79,10 @@ require __DIR__.'/../includes/header.php'; require __DIR__.'/../includes/admin_n
 <main class="dashboard-main admin-main" id="dashboard-content"><div class="dashboard-heading"><div><h1>Subscription Management</h1><p>Verify actual received payments before granting monthly business access.</p></div></div>
 <?php if ($notice): ?><div class="alert alert-success" role="status"><?= e($notice) ?></div><?php endif; ?>
 <?php if ($error): ?><div class="alert alert-danger" role="alert"><?= e($error) ?></div><?php endif; ?>
-<?php if ($setupIssues): ?><section class="subscription-card" aria-labelledby="subscription-setup-title"><h2 id="subscription-setup-title">Hosted subscription setup diagnosis</h2><p>These checks are read-only and visible only to authorized administrators. No database changes were applied.</p><ul><?php foreach ($setupIssues as $issue): ?><li><strong><?= e($issue['code']) ?></strong>: <?= e($issue['message']) ?></li><?php endforeach; ?></ul><p class="form-text mb-0">Diagnosis version: subscriptions-20261102-v1. Share these codes with the developer; do not share passwords or API keys.</p></section><?php endif; ?>
+<?php if ($setupIssues): ?><section class="subscription-card" aria-labelledby="subscription-setup-title"><h2 id="subscription-setup-title">Hosted subscription setup diagnosis</h2><p>These diagnosis checks are read-only and visible only to authorized administrators.</p><ul><?php foreach ($setupIssues as $issue): ?><li><strong><?= e($issue['code']) ?></strong>: <?= e($issue['message']) ?></li><?php endforeach; ?></ul><p class="form-text mb-0">Diagnosis version: subscriptions-20261102-v1. Share these codes with the developer; do not share passwords or API keys.</p></section><?php endif; ?>
+<?php if ($setupIssues || (admin_can($permissions,'settings.manage') && !registration_payment_schema($db))): ?>
+<?php require __DIR__.'/../includes/subscription_setup_form.php'; ?>
+<?php endif; ?>
 <?php if ($metrics): ?><div class="subscription-metrics"><?php foreach (['owners'=>'Registered owners','active'=>'Active subscriptions','pending_payment'=>'Awaiting first payment','pending'=>'Pending verification','expired'=>'Expired subscriptions','rejected'=>'Rejected submissions','revenue'=>'Verified subscription revenue'] as $key=>$label): ?><article><span><?= e($label) ?></span><strong><?= e($key==='revenue'?email_money((string)$metrics[$key]):(string)$metrics[$key]) ?></strong></article><?php endforeach; ?></div><?php endif; ?>
 <?php if ($detail): $snapshot=json_decode($detail['method_snapshot'],true); ?>
 <section class="subscription-card" id="payment-review"><div class="d-flex flex-wrap justify-content-between gap-2 mb-3"><h2>Review submission #<?= e($detail['submission_id']) ?></h2><span class="subscription-status" data-state="<?= e($detail['status']) ?>"><?= e(subscription_label($detail['status'])) ?></span></div>
