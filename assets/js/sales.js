@@ -324,7 +324,12 @@ if (salesModalElement && typeof bootstrap !== 'undefined') {
             let refreshed = true;
             try { await refreshSales(); } catch (_) { refreshed = false; }
             busy = false; modal.hide();
-            showFeedback(result.message + (refreshed ? '' : ' The sale was saved, but the list could not refresh. Reload the page to see updated figures.'),refreshed);
+            if (result.silent) {
+                const feedback=document.getElementById('sales-feedback');
+                if (feedback) { feedback.classList.add('d-none'); feedback.textContent=''; }
+            } else {
+                showFeedback(result.message + (refreshed ? '' : ' The sale was saved, but the list could not refresh. Reload the page to see updated figures.'),refreshed);
+            }
         } catch (error) {
             showError(form,error.message + ' Your entered information has been kept.');
         } finally {

@@ -107,7 +107,11 @@ if (utangModalElement && typeof bootstrap!=='undefined') {
             }
             dirty=false; let refreshed=true; try { await refreshCredits(); } catch (_) { refreshed=false; }
             busy=false; modal.hide(); const feedback=document.getElementById('utang-feedback');
-            feedback.className=`alert ${refreshed?'alert-success':'alert-warning'}`; feedback.textContent=result.message+(refreshed?'':' The change was saved, but the list could not refresh. Reload to see updated figures.'); feedback.focus({preventScroll:true});
+            if (result.silent) {
+                if (feedback) { feedback.classList.add('d-none'); feedback.textContent=''; }
+            } else {
+                feedback.className=`alert ${refreshed?'alert-success':'alert-warning'}`; feedback.textContent=result.message+(refreshed?'':' The change was saved, but the list could not refresh. Reload to see updated figures.'); feedback.focus({preventScroll:true});
+            }
         } catch (error) { showError(form,error.message+' Your entered information has been kept.'); }
         finally { busy=false; form.removeAttribute('aria-busy'); controls.forEach(([element,disabled])=>{element.disabled=disabled;}); content.querySelectorAll('[data-bs-dismiss]').forEach(element=>{element.disabled=false;}); button.textContent=label; }
     });

@@ -22,9 +22,11 @@ try {
         if (sale_text($_POST,'intent')==='preview') {sale_ui_json(true,'Email preview updated.',['html'=>$preview]);}
         $connection->beginTransaction();$job=customer_reminder_request($connection,$user,$id,$_POST,sale_text($_POST,'request_key'));$connection->commit();
         try {$status=notification_process_one($connection,$job);}catch(Throwable $e) {$status='unavailable';error_log('ProfitPocket email: reminder_delivery_unavailable');}
-        $message='Reminder requested. '.customer_mail_label($status).'.';
-        if ($modal) {sale_ui_json(true,$message,['sale_id'=>$id]);}
-        flash($message);redirect_to('user/sale_view.php?id='.$id);
+        $silent=$status==='accepted';
+        $message=$silent?'':'Reminder requested. '.customer_mail_label($status).'.';
+        if ($modal) {sale_ui_json(true,$message,['sale_id'=>$id,'silent'=>$silent]);}
+        if (!$silent) {flash($message);}
+        redirect_to('user/sale_view.php?id='.$id);
     }
     $history=customer_mail_history($connection,$user,$id);
     if (!$reason && customer_reminder_cooldown($history)) {$reason='cooldown';}
