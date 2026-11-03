@@ -1,0 +1,31 @@
+html,body { margin:0; padding:0; background:#f5f8f6; color:#21392c; font-family:Arial,Helvetica,sans-serif; overflow-wrap:anywhere; }
+table { border-collapse:collapse; width:100%; }
+.pp-email-outer > tbody > tr > td { padding:24px 12px; }
+.pp-email-card { max-width:600px; background:#fff; border:1px solid #dfe8e2; border-top:5px solid #164b35; border-radius:8px; }
+.pp-email-header,.pp-email-footer { padding:24px 28px; }
+.pp-email-header { border-bottom:1px solid #e6ede8; }
+.pp-email-header table { width:auto; }
+.pp-email-header td:first-child { padding-right:12px; }
+.pp-email-header strong { font-size:25px; color:#164b35; }
+.pp-email-header span { font-size:12px; color:#5a6e61; }
+img { display:block; width:56px; height:auto; max-width:100%; border:0; }
+.pp-email-content { padding:28px; word-break:break-word; }
+h1 { font-size:23px; line-height:1.35; color:#164b35; margin:0 0 24px; }
+h2 { font-size:17px; margin:24px 0 12px; }
+p { font-size:15px; line-height:1.7; margin:0 0 16px; }
+.pp-email-details { background:#f3f8f5; border:1px solid #dce8df; border-radius:6px; margin:20px 0; table-layout:fixed; }
+.pp-email-details td { padding:12px; font-size:13px; line-height:1.6; vertical-align:top; }
+.pp-email-details td:first-child { width:47%; color:#506957; }
+.pp-email-details td:last-child { text-align:right; font-size:14px; font-weight:bold; }
+.pp-email-items { table-layout:fixed; }
+.pp-email-items td,.pp-email-items th { padding:10px; text-align:left; vertical-align:top; font-size:14px; }
+.pp-email-items th { border-bottom:1px solid #dce8df; }
+.pp-email-items td:last-child,.pp-email-items th:last-child { text-align:right; }
+.pp-email-footer { border-top:1px solid #e6ede8; color:#5a6e61; font-size:12px; line-height:1.8; }
+a { color:#164b35; }
+@media(max-width:400px) {
+    .pp-email-header,.pp-email-footer,.pp-email-content { padding:16px; }
+    .pp-email-header strong { font-size:20px; white-space:nowrap; }
+    .pp-email-header td:first-child { padding-right:8px; }
+    img { width:44px; }
+}

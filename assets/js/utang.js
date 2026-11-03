@@ -65,7 +65,7 @@ if (utangModalElement && typeof bootstrap!=='undefined') {
         if (!link || event.button!==0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
         event.preventDefault(); if (busy) return; if (dirty) { confirmDiscard(()=>link.click()); return; }
         pendingLoad?.abort(); pendingLoad=new AbortController(); const currentLoad=pendingLoad; opener=link; dirty=false;
-        dialog.classList.toggle('modal-lg',['details','history','payment'].includes(link.dataset.utangModal));
+        dialog.classList.toggle('modal-lg',['details','history','payment','reminder'].includes(link.dataset.utangModal));
         content.innerHTML='<div class="modal-header"><h2 class="modal-title" id="utang-modal-title">Loading payment information</h2><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body utang-modal-loading" role="status"><span class="spinner-border spinner-border-sm" aria-hidden="true"></span> Loading…</div>';
         modal.show(); const url=new URL(link.href); url.searchParams.set('modal','1'); url.searchParams.set('action',link.dataset.utangModal);
         try {

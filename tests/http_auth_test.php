@@ -183,6 +183,15 @@ try {
     expect_http(count($ids)===1,'Draft replay duplicated a row'); $sale_id=$ids[0];
     $details=request_http('user/sale_view.php?id='.$sale_id);
     expect_http($details['status']===200 && str_contains($details['body'],'&lt;HTTP sale note&gt;') && str_contains($details['body'],'250.00'),'Saved draft details/totals/escaping failed');
+    $reminder=request_http('user/sale_email.php?modal=1&id='.$sale_id);
+    expect_http($reminder['status']===200 && str_contains($reminder['body'],'Send Payment Reminder') && str_contains($reminder['body'],'sandbox=""') && str_contains($reminder['body'],'disabled'),'Draft reminder preview or disabled-send state missing');
+    $reminderFields=['sale_id'=>$sale_id,'intent'=>'preview','owner_message'=>'<HTTP reminder>'];
+    foreach(['csrf_token','request_key','request_signature','recipient_revision'] as$name){$reminderFields[$name]=named_field($reminder,$name);}
+    $preview=request_http('user/sale_email.php?modal=1',$reminderFields);$previewJson=json_decode($preview['body'],true,512,JSON_THROW_ON_ERROR);
+    expect_http($preview['status']===200 && $previewJson['success'] && str_contains($previewJson['html'],'&lt;HTTP reminder&gt;'),'Reminder preview did not render escaped personal message');
+    $invalidReminder=$reminderFields;$invalidReminder['csrf_token']='invalid';expect_http(request_http('user/sale_email.php?modal=1',$invalidReminder)['status']===403,'Reminder preview accepted forged CSRF');
+    $invalidReminder=$reminderFields;$invalidReminder['request_signature']='invalid';expect_http(request_http('user/sale_email.php?modal=1',$invalidReminder)['status']===403,'Reminder accepted forged transaction signature');
+    $invalidReminder=$reminderFields;$invalidReminder['intent']='send';$invalidReminder['confirm_recipient']='1';expect_http(request_http('user/sale_email.php?modal=1',$invalidReminder)['status']===400,'Draft sale sent a reminder');
     $edit_form=request_http('user/sale_form.php?id='.$sale_id); $edit=sales_fields($edit_form);
     $edit=array_replace($sale_fields,$edit,['revision'=>named_field($edit_form,'revision'),'notes'=>'Changed HTTP note']);
     $query=$connection->prepare('SELECT sale_item_id FROM sale_items WHERE sale_id=? AND business_id=?'); $query->execute([$sale_id,$owner['business_id']]);
@@ -192,6 +201,7 @@ try {
     expect_http(str_contains(request_http('user/sales.php?state=draft&q=SL-')['body'],'250.00'),'HTTP draft search failed');
     expect_http(request_http('user/sales.php?period=custom&start=2026-02-30&end=2026-03-01')['status']===400,'Invalid sales dates accepted');
     $foreign_sale=$connection->query('SELECT sale_id FROM sales WHERE business_id<>'.(int)$owner['business_id'].' LIMIT 1')->fetchColumn();
+    expect_http(request_http('user/sale_email.php?id='.$foreign_sale)['status']===404,'Owner reached another business reminder');
     expect_http(request_http('user/sale_view.php?id='.$foreign_sale)['status']===404 && request_http('user/sale_form.php?id='.$foreign_sale)['status']===404,'Foreign sale visible or editable');
     $void=['csrf_token'=>form_token($details),'sale_id'=>(string)$sale_id,'request_key'=>named_field($details,'request_key'),'request_signature'=>'forged','revision'=>named_field($details,'revision'),'void_reason'=>'forged'];
     expect_http(request_http('user/sale_view.php',$void)['status']===403,'Forged void accepted');

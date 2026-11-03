@@ -3,8 +3,8 @@
     <div class="offcanvas-header d-lg-none"><span>Administration</span><button class="btn-close" type="button" data-bs-dismiss="offcanvas" data-bs-target="#business-sidebar" aria-label="Close navigation"></button></div>
     <div class="sidebar-brand">
         <a href="<?= e(app_url('admin/dashboard.php')) ?>" aria-label="ProfitPocket administration">
-            <img class="sidebar-logo-full" src="<?= e(app_url('assets/images/logo-full.jpg')) ?>" alt="ProfitPocket">
-            <img class="sidebar-logo-icon" src="<?= e(app_url('assets/images/logo-icon.jpg')) ?>" alt="ProfitPocket">
+            <img class="sidebar-logo-full" src="<?= e(app_url('assets/branding.php?logo=full')) ?>" alt="ProfitPocket">
+            <img class="sidebar-logo-icon" src="<?= e(app_url('assets/branding.php?logo=icon')) ?>" alt="ProfitPocket">
         </a>
     </div>
     <nav class="business-navigation" aria-label="Administration">

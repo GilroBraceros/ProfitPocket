@@ -18,6 +18,7 @@ try {
         else { $replayed=utang_edit_due($connection,$user,$id,$_POST,sale_text($_POST,'request_key')); }
         $connection->commit();
         $message=$action==='payment'?($replayed?'This payment was already recorded. No second payment was added.':'Payment recorded successfully.'):($replayed?'This due-date change was already saved.':'Due date updated successfully.');
+        if ($action==='payment') {require_once __DIR__.'/../includes/customer_email.php';$message.=' '.customer_mail_label(customer_mail_dispatch($connection,$user,$id,(int)$saved['payment_id'])).'.';}
         if ($modal) { header('Content-Type: application/json; charset=UTF-8'); echo json_encode(['success'=>true,'message'=>$message,'id'=>$id],JSON_THROW_ON_ERROR); exit; }
         flash($message); redirect_to('user/payments.php?tab=balances');
     }

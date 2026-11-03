@@ -54,7 +54,7 @@ require __DIR__ . '/../includes/header.php';
 ?>
 <main class="container auth-shell">
     <section class="auth-intro">
-        <a class="brand" href="<?= e(app_url()) ?>">ProfitPocket</a>
+        <a class="brand d-inline-flex align-items-center gap-2" href="<?= e(app_url()) ?>"><img src="<?= e(app_url('assets/branding.php?logo=icon')) ?>" width="48" height="48" alt="">ProfitPocket</a>
         <p class="eyebrow mt-5">YOUR BUSINESS, WITH CLARITY</p>
         <h1>Small business.<br>A clearer tomorrow.</h1>
         <p class="intro-copy">Keep your business records in one place, starting with a secure account.</p>

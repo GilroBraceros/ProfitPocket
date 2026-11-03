@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 require __DIR__ . '/../includes/header.php';
 ?>
 <main class="onboarding-shell">
-    <div class="onboarding-brand"><a class="pp-wordmark" href="<?= e(app_url()) ?>"><img src="<?= e(app_url('assets/images/logo-icon.jpg')) ?>" width="42" height="42" alt="">ProfitPocket</a><a href="<?= e(app_url('auth/login.php')) ?>">Sign in</a></div>
+    <div class="onboarding-brand"><a class="pp-wordmark" href="<?= e(app_url()) ?>"><img src="<?= e(app_url('assets/branding.php?logo=icon')) ?>" width="42" height="42" alt="">ProfitPocket</a><a href="<?= e(app_url('auth/login.php')) ?>">Sign in</a></div>
     <?php require __DIR__.'/../includes/registration_progress.php'; ?>
     <div class="onboarding-register mx-auto">
         <section class="subscription-card onboarding-account-card" aria-labelledby="register-heading">

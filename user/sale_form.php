@@ -36,8 +36,11 @@ try {
         if ($id) { sale_edit($connection, $user, $id, $_POST, sale_text($_POST,'request_key')); }
         else { $id = sale_create($connection, $user, $_POST, sale_text($_POST,'request_key')); }
         $connection->commit();
-        if ($modal) { sale_ui_json(true, $sale && $sale['sale_status']==='posted' ? 'Sale notes saved.' : 'Sale saved successfully.', ['sale_id'=>$id]); }
-        flash('Sale saved successfully.');
+        require_once __DIR__.'/../includes/customer_email.php';
+        $mailStatus=customer_mail_dispatch($connection,$user,$id);
+        $savedMessage=($sale && $sale['sale_status']==='posted'?'Sale notes saved.':'Sale saved successfully.').' '.customer_mail_label($mailStatus).'.';
+        if ($modal) { sale_ui_json(true,$savedMessage,['sale_id'=>$id]); }
+        flash($savedMessage);
         redirect_to('user/sale_view.php?id='.$id);
     }
 } catch (SaleNotFound $exception) {

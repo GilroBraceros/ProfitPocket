@@ -53,6 +53,7 @@ $form_url=app_url('user/payments_action.php').'?action='.$action.($modal?'&modal
         </tbody></table><?php else: ?><p class="sale-modal-note">No payments have been recorded for this sale.</p><?php endif; ?>
         <p class="sale-modal-note">Complete chronological history, including initial payments and refunds. Payment types follow the recording sequence even when a payment date is backdated. Net payments: <?= e(sale_money($row['total_paid'])) ?>.</p></section>
     <?php endif; ?>
+    <?php if (!$is_form): $emailSale=$row;$emailSurface='utang';require __DIR__.'/customer_email_status.php';endif; ?>
     <?php endif; ?>
 </div>
 <div class="<?= $modal?'modal-footer':'utang-form-footer' ?>">

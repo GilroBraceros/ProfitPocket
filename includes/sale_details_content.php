@@ -11,5 +11,6 @@
     <?php if ($sale['notes']): ?><section class="sale-modal-section"><h3>Notes</h3><p class="sale-notes"><?= nl2br(e($sale['notes'])) ?></p></section><?php endif; ?>
     <?php if ($sale['sale_status']==='draft'): ?><p class="sale-modal-note">This draft is not included in sales or customer debt until completed.</p><?php endif; ?>
     <?php if ($sale['sale_status']==='void'): ?><p class="sale-modal-note"><strong>Void reason:</strong> <?= e($sale['void_reason']) ?></p><?php endif; ?>
+    <?php $emailSale=$sale;$emailSurface='sale';require __DIR__.'/customer_email_status.php'; ?>
 </div>
 <div class="modal-footer"><button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Close</button></div>

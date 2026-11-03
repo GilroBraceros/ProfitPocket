@@ -13,6 +13,7 @@ $cleanupUser=null; $failed=false; $_SERVER['REMOTE_ADDR']='email-test-'.bin2hex(
 try {
     email_expect(!email_recipient_valid('person@example.invalid') && email_recipient_valid('person@example.invalid',true),'Development recipient guard');
     $sample=['name'=>'<script>','customer_name'=>'<unsafe>','business_name'=>'Sample Store','amount'=>'1250.00','previous'=>'2000.00','remaining'=>'750.00','total_paid'=>'2000.00','paid_at'=>'2026-10-25 09:30:00','changed_at'=>'2026-10-25 09:30:00','due_date'=>'2026-10-28','reference_number'=>null,'reset_token'=>str_repeat('b',64),'submitted_at'=>'2026-10-25 09:30:00','period_start'=>'2026-10-25 09:30:00','period_end'=>'2026-11-25 09:30:00','reason'=>'Sample rejection','owner_name'=>'Sample Owner','submission_id'=>1];
+    $sample+=['sale_number'=>'TEST-PURCHASE','sold_at'=>'2026-11-03 10:00:00','total'=>'2000.00','amount_paid'=>'1250.00','owner_message'=>'Please coordinate with the store.','items'=>[['name'=>'Test item','quantity'=>'2','unit_price'=>'1000.00','total'=>'2000.00']]];
     foreach (EMAIL_TYPES as $type) { $r=email_render($type,$sample,$config); email_expect(!str_contains($r['html'],'<script>') && str_contains($r['html'],'ProfitPocket') && str_contains($r['html'],'All rights reserved.'),'Unsafe/unbranded template '.$type); email_expect(!preg_match('/href="http:/',$r['html']),'Non-HTTPS CTA'); }
     email_expect(email_money('1250.00')==='₱1,250.00' && str_contains(email_date('2026-10-25 09:30:00'),'9:30 am PHT'),'Peso/time formatting');
     $r=email_render('welcome',$sample,$config)+['to_email'=>'user@example.invalid','to_name'=>'Sample'];
@@ -33,9 +34,9 @@ try {
     $product=sale_product_create($db,$user,['product_name'=>'Email test product','default_selling_price'=>'2000','default_unit_cost'=>'100'],bin2hex(random_bytes(32)));
     $base=['customer_id'=>(string)$customer,'sold_at'=>date('Y-m-d\TH:i',strtotime('-4 days')),'save_mode'=>'posted','payment_plan'=>'partial','initial_payment'=>'500','payment_category'=>'cash','discount_type'=>'none','discount_value'=>'0','items'=>[['product_id'=>(string)$product,'quantity'=>'1','unit_price'=>'2000']],'due_date'=>date('Y-m-d',strtotime('+3 days'))];
     $sale=sale_create($db,$user,$base,bin2hex(random_bytes(32)));
-    $partial=customer_query($db,"SELECT * FROM notification_outbox WHERE business_id=? AND sale_id=? AND notification_type='partial_payment'",[$business,$sale])->fetch();
+    $partial=customer_query($db,"SELECT * FROM notification_outbox WHERE business_id=? AND sale_id=? AND notification_type='purchase_installment'",[$business,$sale])->fetch();
     email_expect((bool)$partial && notification_attempt($db,$partial,$config,$mock)==='accepted','Downpayment/partial hook');
-    $partialDetails=notification_resolve($db,$partial,$config)['data']; email_expect($partialDetails['previous']==='2000.00' && $partialDetails['remaining']==='1500.00','Payment balances');
+    $partialDetails=notification_resolve($db,$partial,$config)['data']; email_expect($partialDetails['total']==='2000.00' && $partialDetails['amount_paid']==='500.00' && $partialDetails['remaining']==='1500.00','Purchase balances');
     notification_generate_reminders($db,$config); notification_generate_reminders($db,$config);
     $upcoming=customer_query($db,"SELECT * FROM notification_outbox WHERE business_id=? AND sale_id=? AND notification_type='upcoming_due'",[$business,$sale])->fetch();
     email_expect((bool)$upcoming && (int)customer_query($db,"SELECT COUNT(*) FROM notification_outbox WHERE sale_id=? AND notification_type='upcoming_due'",[$sale])->fetchColumn()===1 && notification_attempt($db,$upcoming,$config,$mock)==='accepted','Upcoming reminder/repeated cron');
@@ -45,7 +46,7 @@ try {
     $settled=customer_query($db,"SELECT * FROM notification_outbox WHERE sale_id=? AND notification_type='balance_settled'",[$sale])->fetch(); email_expect((bool)$settled && notification_attempt($db,$settled,$config,$mock)==='accepted','Settlement event');
     email_expect((int)customer_query($db,'SELECT COUNT(*) FROM notification_outbox WHERE payment_id=?',[$settled['payment_id']])->fetchColumn()===1,'Duplicate confirmation');
     $full=sale_create($db,$user,array_replace($base,['payment_plan'=>'full','initial_payment'=>'2000']),bin2hex(random_bytes(32)));
-    $recorded=customer_query($db,"SELECT * FROM notification_outbox WHERE sale_id=? AND notification_type='payment_recorded'",[$full])->fetch(); email_expect((bool)$recorded && notification_attempt($db,$recorded,$config,$mock)==='accepted','Full payment misclassified as settlement');
+    $recorded=customer_query($db,"SELECT * FROM notification_outbox WHERE sale_id=? AND notification_type='purchase_paid'",[$full])->fetch(); email_expect((bool)$recorded && notification_attempt($db,$recorded,$config,$mock)==='accepted','Fully paid purchase confirmation missing');
     $savedSale=payment_sale_read($db,$business,$full);
     $originalMode=(string)$db->query('SELECT @@SESSION.sql_mode')->fetchColumn();
     $db->prepare('SET SESSION sql_mode=?')->execute([$originalMode.',STRICT_ALL_TABLES']);
@@ -53,12 +54,12 @@ try {
     finally { $db->prepare('SET SESSION sql_mode=?')->execute([$originalMode]); }
     email_expect($db->inTransaction() && payment_sale_read($db,$business,$full)['net_sale']===$savedSale['net_sale'],'Email log failure damaged a valid financial record');
     $invalid=customer_save($db,$user,0,['customer_name'=>'No email customer'],bin2hex(random_bytes(32))); $noEmail=sale_create($db,$user,array_replace($base,['customer_id'=>(string)$invalid]),bin2hex(random_bytes(32)));
-    $skip=customer_query($db,'SELECT * FROM notification_outbox WHERE sale_id=?',[$noEmail])->fetch(); email_expect(notification_attempt($db,$skip,$config,$mock)==='skipped' && email_job($db,(int)$skip['notification_id'])['failure_code']==='invalid_recipient','Missing recipient');
+    $skip=customer_query($db,'SELECT * FROM notification_outbox WHERE sale_id=?',[$noEmail])->fetch(); email_expect(!$skip && customer_mail_reason(customer_mail_context($db,$user,$noEmail))==='no_customer_email','Missing recipient must not create an email attempt');
     $retryId=notification_enqueue($db,'password_changed','retry:'.$suffix,['user_id'=>$uid,'recipient_email'=>'owner_'.$suffix.'@example.invalid'],$config); $retryJob=email_job($db,$retryId);
     for ($i=0;$i<3;$i++) { notification_attempt($db,$retryJob,$config,fn()=>['http'=>429,'body'=>'{}','retry'=>30]); }
     email_expect(email_job($db,$retryId)['status']==='failed' && email_job($db,$retryId)['attempts']===3,'Unbounded retries');
     notification_save_preferences($db,$user,$customer,array_replace($permission,['email_receipts'=>'0','email_reminders'=>'0']),null);
-    $denied=sale_create($db,$user,$base,bin2hex(random_bytes(32))); $deniedJob=customer_query($db,'SELECT * FROM notification_outbox WHERE sale_id=?',[$denied])->fetch(); email_expect(notification_attempt($db,$deniedJob,$config,$mock)==='skipped' && email_job($db,(int)$deniedJob['notification_id'])['failure_code']==='consent_missing','Missing permission');
+    $denied=sale_create($db,$user,$base,bin2hex(random_bytes(32))); $deniedJob=customer_query($db,'SELECT * FROM notification_outbox WHERE sale_id=?',[$denied])->fetch(); email_expect(!$deniedJob && customer_mail_reason(customer_mail_context($db,$user,$denied))==='consent_missing','Missing permission');
     try { notification_attempt($db,$retryJob,$config); throw new RuntimeException('Precommit send allowed'); } catch (LogicException $e) {}
     $db->rollBack(); email_expect((int)$db->query('SELECT COUNT(*) FROM notification_outbox')->fetchColumn()===$baseline,'Rollback retained financial emails');
     echo "PASS: transactional registration/payment hooks, mutually exclusive confirmations, exact balances, consent, missing email, both reminder stages, duplicate jobs, bounded retries and precommit-send guard; financial fixtures rolled back.\n";

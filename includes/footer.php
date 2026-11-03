@@ -7,6 +7,7 @@
 <?php if (in_array($active_page??'',['sales','utang','payments'],true)): ?><script src="<?= e(app_url('assets/js/payment-methods.js')) ?>" defer></script><?php endif; ?>
 <?php if (($active_page ?? '') === 'admin'): ?><script src="<?= e(app_url('assets/js/admin.js')) ?>" defer></script><?php endif; ?>
 <?php if (($active_page ?? '') === 'sales'): ?><script src="<?= e(app_url('assets/js/sales.js')) ?>" defer></script><?php endif; ?>
+<?php if (in_array($active_page??'',['sales','utang','payments'],true)): ?><script src="<?= e(app_url('assets/js/customer-email.js')) ?>" defer></script><?php endif; ?>
 <?php if (($active_page ?? '') === 'expenses'): ?><script src="<?= e(app_url('assets/js/expenses.js')) ?>" defer></script><?php endif; ?>
 <?php if (($active_page ?? '') === 'customers'): ?><script src="<?= e(app_url('assets/js/customers.js')) ?>" defer></script><?php endif; ?>
 <?php if (in_array($active_page??'',['utang','payments'],true)): ?><script src="<?= e(app_url('assets/js/utang.js')) ?>" defer></script><?php endif; ?>

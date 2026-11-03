@@ -22,7 +22,7 @@ require __DIR__ . '/includes/header.php';
     <a class="visually-hidden-focusable" href="#main-content">Skip to content</a>
     <nav class="navbar navbar-expand-lg pp-public-nav" aria-label="Main navigation">
         <div class="container">
-            <a class="pp-wordmark" href="<?= e(app_url()) ?>"><img src="<?= e(app_url('assets/images/logo-icon.jpg')) ?>" width="42" height="42" alt="">ProfitPocket</a>
+            <a class="pp-wordmark" href="<?= e(app_url()) ?>"><img src="<?= e(app_url('assets/branding.php?logo=icon')) ?>" width="42" height="42" alt="">ProfitPocket</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#public-navigation" aria-controls="public-navigation" aria-expanded="false" aria-label="Open navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="public-navigation">
                 <div class="navbar-nav mx-auto"><?php foreach (['Home' => '#home', 'Features' => '#features', 'How It Works' => '#how-it-works', 'Pricing' => '#pricing', 'About' => '#about'] as $label => $href): ?><a class="nav-link" href="<?= e($href) ?>"><?= e($label) ?></a><?php endforeach; ?></div>
@@ -40,7 +40,7 @@ require __DIR__ . '/includes/header.php';
                 <p class="pp-fine-print">₱100 per calendar month · Manually verified payments · No automatic charges</p>
             </div>
             <div class="pp-workspace" aria-label="ProfitPocket tools overview">
-                <div class="pp-workspace-heading"><img src="<?= e(app_url('assets/images/logo-icon.jpg')) ?>" width="40" height="40" alt="">
+                <div class="pp-workspace-heading"><img src="<?= e(app_url('assets/branding.php?logo=icon')) ?>" width="40" height="40" alt="">
                     <div><strong>Your business, in view</strong><span>One organized place for your records</span></div><span class="pp-dot" aria-hidden="true"></span>
                 </div>
                 <div class="pp-workspace-grid">

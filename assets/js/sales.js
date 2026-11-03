@@ -234,7 +234,7 @@ if (salesModalElement && typeof bootstrap !== 'undefined') {
         const currentLoad = pendingLoad;
         opener = link; dirty = false;
         dialog.classList.toggle('modal-xl', ['create','edit'].includes(link.dataset.saleModal));
-        dialog.classList.toggle('modal-lg', link.dataset.saleModal === 'details');
+        dialog.classList.toggle('modal-lg', ['details','reminder'].includes(link.dataset.saleModal));
         dialog.classList.toggle('modal-fullscreen-sm-down', link.dataset.saleModal !== 'void');
         content.innerHTML = '<div class="modal-header"><h2 class="modal-title" id="sales-modal-title">Loading sale</h2><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body sale-modal-loading" role="status"><span class="spinner-border spinner-border-sm" aria-hidden="true"></span> Loading…</div>';
         modal.show();

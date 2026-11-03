@@ -153,6 +153,12 @@ body { background: #f5f8f6; color: #21392c; font-family: system-ui, -apple-syste
 a { color: var(--forest); }
 a:hover { color: var(--forest-dark); }
 .brand { color: var(--forest); font-size: 1.65rem; font-weight: 750; letter-spacing: -.05em; text-decoration: none; }
+.customer-email-preview { display:block; width:100%; height:430px; border:1px solid #dce8df; border-radius:10px; background:#fff; }
+.customer-email-section { margin-top:1.25rem; padding-top:1rem; border-top:1px solid #e1e9e4; overflow-wrap:anywhere; }
+.customer-email-history { list-style:none; padding:0; margin:1rem 0 0; }
+.customer-email-history li { display:grid; gap:.25rem; padding:.75rem 0; border-bottom:1px solid #edf1ef; }
+.customer-email-history span,.customer-email-history small { color:#53685b; overflow-wrap:anywhere; }
+@media(max-width:575.98px) { .customer-email-preview { height:360px; } }
 .app-navbar { background: var(--forest-dark); }
 .eyebrow { color: var(--forest); font-size: .75rem; font-weight: 700; letter-spacing: .13em; }
 .card { border: 1px solid #dee8e1; border-radius: 1rem; box-shadow: 0 8px 32px rgba(20, 70, 45, .04); }

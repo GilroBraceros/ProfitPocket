@@ -10,7 +10,7 @@ if (!defined('APP_BASE_PATH')) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= e($page_title ?? 'Your business') ?> | ProfitPocket</title>
-    <link rel="icon" type="image/jpeg" href="<?= e(app_url('assets/images/logo-icon.jpg')) ?>">
+    <link rel="icon" type="image/jpeg" href="<?= e(app_url('assets/branding.php?logo=icon')) ?>">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="<?= e(app_url('assets/css/style.css')) ?>" rel="stylesheet">
     <?php if (in_array($active_page??'',['landing','subscription'],true) || !empty($subscription_page)): ?><link href="<?= e(app_url('assets/css/subscriptions.css')) ?>" rel="stylesheet"><?php endif; ?>

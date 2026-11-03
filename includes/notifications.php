@@ -41,7 +41,9 @@ function notification_payment_event(PDO $db,int $business,int $payment): void
         $r=payment_read($db,$business,$payment); $sale=$r['sale']; $p=$r['payment'];
         if ($sale['sale_status']!=='posted' || $p['payment_kind']!=='collection') { return; }
         $type=match($p['payment_type']) { 'downpayment','partial'=>'partial_payment','final'=>'balance_settled',default=>'payment_recorded' };
-        notification_enqueue($db,$type,'payment:'.$business.':'.$payment,['business_id'=>$business,'sale_id'=>$sale['sale_id'],'payment_id'=>$payment,'customer_id'=>$sale['customer_id']],$c);
+        if (!str_starts_with((string)$p['idempotency_key'],'initial-')) {$type=bccomp($sale['balance_due'],'0',2)===0?'balance_settled':'partial_payment';}
+        if (!$sale['customer_id'] || !filter_var($sale['email'],FILTER_VALIDATE_EMAIL)) {return;}
+        notification_enqueue($db,$type,'payment:'.$business.':'.$payment,['user_id'=>$p['entered_by'],'business_id'=>$business,'sale_id'=>$sale['sale_id'],'payment_id'=>$payment,'customer_id'=>$sale['customer_id'],'recipient_email'=>$sale['email']],$c);
     } catch (Throwable $e) { error_log('ProfitPocket email: event_queue_unavailable'); }
 }
 function notification_preferences(PDO $db,int $business,int $customer): array
@@ -80,6 +82,7 @@ function notification_reset_token(string $nonce,array $config): string
 }
 function notification_resolve(PDO $db,array $job,array $config): array
 {
+    if (in_array($job['notification_type'],['purchase_paid','purchase_unpaid','purchase_installment','manual_reminder'],true)) {require_once __DIR__.'/customer_email.php';return customer_mail_resolve($db,$job);}
     if (in_array($job['notification_type'],['registration_payment_submitted','subscription_admin_review'],true)) { require_once __DIR__.'/registration.php'; return registration_notification($db,$job); }
     if (str_starts_with($job['notification_type'],'subscription_')) { require_once __DIR__.'/subscriptions.php'; return subscription_notification($db,$job); }
     if (in_array($job['notification_type'],['welcome','password_reset','password_changed'],true)) {
@@ -108,7 +111,7 @@ function notification_resolve(PDO $db,array $job,array $config): array
     if ($job['recipient_email'] && mb_strtolower($job['recipient_email'])!==mb_strtolower($customer['email'])) { throw new DomainException('recipient_changed'); }
     $sale=payment_sale_read($db,(int)$job['business_id'],(int)$job['sale_id']);
     if ((int)$sale['customer_id']!==(int)$job['customer_id']) { throw new DomainException('customer_mismatch'); }
-    $data=['customer_name'=>$customer['customer_name'],'business_name'=>$customer['business_name'],'remaining'=>$sale['balance_due'],'due_date'=>$sale['due_date']];
+    $data=['customer_name'=>$customer['customer_name'],'business_name'=>$customer['business_name'],'remaining'=>$sale['balance_due'],'due_date'=>$sale['due_date'],'sale_number'=>$sale['sale_number'],'sold_at'=>$sale['sold_at'],'total'=>$sale['net_sale']];
     if ($isReminder) {
         $expected='reminder:'.$job['sale_id'].':'.$sale['due_date'].':'.$job['notification_type'];
         $today=date('Y-m-d');
@@ -119,6 +122,7 @@ function notification_resolve(PDO $db,array $job,array $config): array
         if (!$p || $p['payment_kind']!=='collection') { throw new DomainException('payment_missing'); }
         $classification=payment_classify($sale)[$p['payment_id']]??null;
         $expectedType=match($classification) { 'downpayment','partial'=>'partial_payment','final'=>'balance_settled',default=>'payment_recorded' };
+        if (!str_starts_with((string)$p['idempotency_key'],'initial-')) {$expectedType=in_array($classification,['full','final'],true)?'balance_settled':'partial_payment';}
         if ($job['notification_type']!==$expectedType) { throw new DomainException('payment_type_mismatch'); }
         foreach ($ordered as $item) { if ($item['payment_kind']==='refund' && (int)$item['reverses_payment_id']===(int)$p['payment_id']) { throw new DomainException('payment_reversed'); } }
         $previous=bcsub($sale['net_sale'],$before,2); $remaining=bcsub($previous,$p['amount'],2);

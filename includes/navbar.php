@@ -3,8 +3,8 @@
 <aside class="offcanvas-lg offcanvas-start business-sidebar" tabindex="-1" id="business-sidebar" aria-labelledby="sidebar-label">
     <div class="offcanvas-header d-lg-none"><span id="sidebar-label" class="fw-semibold">Business navigation</span><button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#business-sidebar" aria-label="Close navigation"></button></div>
     <div class="sidebar-brand"><a href="<?= e(app_url('user/dashboard.php')) ?>" aria-label="ProfitPocket dashboard">
-        <img class="sidebar-logo-full" src="<?= e(app_url('assets/images/logo-full.jpg')) ?>" alt="ProfitPocket" width="2752" height="1536">
-        <img class="sidebar-logo-icon" src="<?= e(app_url('assets/images/logo-icon.jpg')) ?>" alt="ProfitPocket" width="2048" height="2048">
+        <img class="sidebar-logo-full" src="<?= e(app_url('assets/branding.php?logo=full')) ?>" alt="ProfitPocket" width="2752" height="1536">
+        <img class="sidebar-logo-icon" src="<?= e(app_url('assets/branding.php?logo=icon')) ?>" alt="ProfitPocket" width="2048" height="2048">
     </a></div>
     <nav class="business-navigation" aria-label="Business navigation">
         <p class="sidebar-section-label">WORKSPACE</p>
@@ -22,7 +22,7 @@
 <header class="business-topbar">
     <div class="d-flex align-items-center gap-2 min-width-0">
         <button class="icon-button d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#business-sidebar" aria-controls="business-sidebar" aria-label="Open navigation"><?= dashboard_icon('list') ?></button>
-        <img class="mobile-brand d-lg-none" src="<?= e(app_url('assets/images/logo-icon.jpg')) ?>" alt="ProfitPocket" width="2048" height="2048">
+        <img class="mobile-brand d-lg-none" src="<?= e(app_url('assets/branding.php?logo=icon')) ?>" alt="ProfitPocket" width="2048" height="2048">
         <button class="icon-button d-none d-lg-flex" type="button" id="sidebar-collapse" aria-controls="business-sidebar" aria-expanded="true" aria-label="Collapse navigation"><?= dashboard_icon('layout-sidebar') ?></button>
         <span class="topbar-title"><?= e($page_title) ?></span><span class="topbar-separator"></span><span class="topbar-business"><?= e($user['business_name'] ?? 'No business linked') ?></span>
     </div>
